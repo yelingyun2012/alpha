@@ -1,40 +1,26 @@
 /**
- * 导入依赖包
+ * Vue vue.js框架库
+ * router 引入路由
+ * store 引入状态管理器
+ * App 视图依赖组件
+ * nprogress 引入数据加载进度条
  */
-import * as fundebug from 'fundebug-javascript'
 import Vue from 'vue'
 import router from '../../router'
 import store from '../../store'
-import 'nprogress/nprogress.css'
-import 'iview/dist/styles/iview.css'
-/**
- * 导入依赖组件
- */
 import App from '../../component/App.vue'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 /**
- * 导入框架按需加载组件
- * @type {string}
+ * 1.引入在线bug检测
+ * 2.引入iview组件按需加载
  */
-import Form from 'iview/src/components/form'
-import Input from 'iview/src/components/input'
-import Button from 'iview/src/components/button'
+// import '../../utils/fundebug'
+import '../../utils/iview'
 
-const components = {
-  Form,
-  FormItem: Form.Item,
-  Input,
-  Button
-}
-
-const install = function (Vue) {
-  Object.keys(components).forEach((key) => {
-    Vue.component(key, components[key])
-  })
-}
-install(Vue)
-
-fundebug.apikey = '193c68f5a0b0cb42703a7fa4224574d06bac33dd803da781289df5dffb2894cd'
-
+/**
+ * 实例化 Vue 对象
+ */
 new Vue({
   el: '#app',
   router,

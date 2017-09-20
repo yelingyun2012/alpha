@@ -13,7 +13,6 @@ yarn.lock
 *.njsproj
 *.sln
 
-package.json
 .idea
 
 

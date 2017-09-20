@@ -14,7 +14,7 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 
 let pages = utils.getEntry(config.common.entranceHtml)
 let plugin = [
-  new webpack.optimize.ModuleConcatenationPlugin(),
+  // new webpack.optimize.ModuleConcatenationPlugin(),
   new webpack.DefinePlugin({
     'process.env': config.dev.env
   }),

@@ -1,52 +1,74 @@
 <style lang="scss" scoped>
-    .login {
-        &-container {
-            width: 100%;
-            height: 100vh;
-            min-height: 100%;
-        }
+    @import "scss/index";
+</style>
+<style lang="scss">
+    .ivu-input {
+        padding: 8px 7px;
+        height: auto;
+        font-size: 16px;
+        // 图标左对齐时添加
+        /* padding-left: 30px; */
     }
-
-    footer {
-        a {
-            color: inherit;
-        }
+    .ivu-input-icon {
+        // 图标左对齐时添加
+        /* left: 0; */
+        height: 100%;
+        line-height: 42px;
     }
 </style>
 <template lang="pug">
     aside.login-container
-        main
-            h5.login-form-title {{title}}
+        main.login-active
+            h3.login-form-title {{title}}
             Form(ref="loginForm", :model="loginForm", :rules="ruleValidate")
                 FormItem(prop="username")
                     Input(placeholder="账号", v-model="loginForm.username", icon="android-person")
                 FormItem(prop="password")
-                    Input(placeholder="密码", v-model="loginForm.password", icon="ios-locked-outline")
+                    Input(placeholder="密码", v-model="loginForm.password", icon="ios-locked-outline", type="password")
                 FormItem
-                    Button(type="success") 提交
-        footer
+                    Button(type="success", @click="handleSubmit('loginForm')", long) 提交
+        footer(v-if="show")
             p 版权所有 @ 深圳市比一比网络科技有限公司
             p 增值电信业务经营许可证:粤B2-20110200
                 a(href="http://www.miibeian.gov.cn/") 粤ICP备08129733号
 </template>
 <script>
+  import axios from '../../api/http'
+
   export default {
     name: 'login',
     data () {
       return {
         title: '新零售大数据',
+        show: false,
         loginForm: {
           username: '',
           password: ''
         },
         ruleValidate: {
           username: [
-            {required: true, message: '账号不能为空', trigger: 'blur'}
+            {message: '账号不能为空', trigger: 'blur', required: true}
           ],
           password: [
-            {required: true, message: '密码不能为空', trigger: 'blur'}
+            {message: '密码不能为空', trigger: 'blur', required: true}
           ]
         }
+      }
+    },
+    methods: {
+      handleSubmit (name) {
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            axios.get('/user/login', {
+              username: this.loginForm.username.trim(),
+              password: this.loginForm.password
+            }).then(response => {
+              console.log(response)
+            })
+          } else {
+            this.$Message.error('表单验证失败')
+          }
+        })
       }
     }
   }
