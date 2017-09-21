@@ -33,7 +33,7 @@
                 a(href="http://www.miibeian.gov.cn/") 粤ICP备08129733号
 </template>
 <script>
-  import axios from '../../api/http'
+  import {fetch} from '../../api/http'
 
   export default {
     name: 'login',
@@ -59,9 +59,12 @@
       handleSubmit (name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
-            axios.get('/user/login', {
-              username: this.loginForm.username.trim(),
-              password: this.loginForm.password
+            fetch('/user/login', {
+              method:'post',
+              data: {
+                username: this.loginForm.username.trim(),
+                password: this.loginForm.password
+              }
             }).then(response => {
               console.log(response)
             })

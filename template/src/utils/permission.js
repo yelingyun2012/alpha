@@ -4,11 +4,33 @@
  * NProgress 进度条组件
  */
 import router from '../router'
-import store from '../store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import store from '../store'
 
-const whiteList=['/login']
-router.beforeEach((to,from,next)=> {
+const whiteList = ['/login']
+router.beforeEach((to, from, next) => {
   NProgress.start()
+  if (to.matched.some(record => record.meta.requireAuth)) {
+    if (store.state.user.token) {
+      if (to.path === '/login') {
+        next('/')
+      } else {
+
+      }
+    } else {
+      if (whiteList.indexOf(to.path) !== -1) {
+        next()
+      } else {
+        next('/login')
+        NProgress.done()
+      }
+    }
+  } else {
+    next()
+  }
+})
+
+router.afterEach(() => {
+  NProgress.done()
 })

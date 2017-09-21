@@ -1,35 +1,51 @@
 import axios from 'axios'
 import qs from 'qs'
+import router from '../router'
 
 /**
- * axios 默认配置
- * @type {string} baseURL 默认请求地址
+ * axios 默认参数配置
  */
 axios.defaults.baseURL = `http://o2o.beyebe.com:8089/o2o_beyebe/api`
 axios.defaults.timeout = 30000
+
 /**
- * 请求拦截
+ * axios 请求拦截
+ * 当请求方式为'post','put','delete'时,进行参数序列化
+ * 当 token 存在时,请求header中添加 token
  */
 axios.interceptors.request.use(
   config => {
+    if (config.method === 'post' || config.method === 'put' || config.method === 'delete') {
+      config.data = qs.stringify(config.data)
+    }
+    if (localStorage.token) {
+      config.headers.Authorization = localStorage.token
+    }
+    console.log(config)
     return config
   },
   error => {
-    return Promise.reject(error)
+    return Promise.reject(error.data.error.message)
   }
 )
 /**
- * 响应拦截
+ * axios 响应拦截
  */
 axios.interceptors.response.use(
-  response => response,
-  error => Promise.resolve(error)
+  response => {
+    return response
+  },
+  error => {
+    return Promise.resolve(error.response)
+  }
 )
 
 /**
- * 处理响应状态,需根据文档进行对应的修改
- * @param response
- * @returns {*}
+ * 处理返回状态
+ * 当返回状态为 200 或 304 时,直接返回响应数据
+ * 其他状态则统一返回构造数据
+ * @param {any} response
+ * @returns
  */
 function checkStatus (response) {
   if (response.status === 200 || response.status === 304) {
@@ -38,37 +54,65 @@ function checkStatus (response) {
   return {
     data: {
       code: '404',
-      message: response.statusText,
-      data: response.statusText
+      message: response.statusText
     }
   }
 }
 
 /**
- * 处理接口返回 code 码
- * @param response
- * @returns {*}
+ * 处理返回code
+ * 具体项目具体配置
+ * @param {any} response
+ * @returns
  */
 function checkCode (response) {
-  if (response.data.code !== '0') {
-    alert(response.data.response)
+  if (response.data.code) {
+    if (response.data.code !== '0') {
+      alert(response.data.message)
+    }
+    return response
+  } else {
+    router.push('/login')
   }
-  return response
 }
 
-export default {
-  post (url, params) {
-    return axios({
-      method: 'post',
-      url,
-      data: qs.stringify(params)
-    }).then(checkStatus).then(checkCode)
-  },
-  get (url, params) {
-    return axios({
-      method: 'get',
-      url,
-      params
-    }).then(checkStatus).then(checkCode)
-  }
+/**
+ * 请求函数封装
+ * method 请求方式
+ * params 请求方式为 get 时, 需定义的参数
+ * data 请求方式为 post 时, 需定义的参数
+ * responseType 服务器返回响应类型
+ * @param url
+ * @param options
+ * @returns {Promise.<TResult>}
+ */
+export function fetch (url, options) {
+  let opt = options || {}
+  return axios({
+    method: opt.method || 'get',
+    url,
+    params: opt.params || undefined,
+    data: opt.data || undefined,
+    responseType: opt.responseType || 'json',
+  }).then(checkStatus).then(checkCode)
 }
+
+/**
+ * 代替方案
+ */
+// export default {
+//   get (url, params) {
+//     return axios({
+//       method: 'get',
+//       url,
+//       params
+//     }).then(checkStatus).then(checkCode)
+//   },
+//   post (url, data) {
+//     return axios({
+//       method: 'post',
+//       url,
+//       data
+//     }).then(checkStatus).then(checkCode)
+//   }
+// }

@@ -9,13 +9,11 @@ import Vue from 'vue'
 import router from '../../router'
 import store from '../../store'
 import App from '../../component/App.vue'
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
 /**
  * 1.引入在线bug检测
  * 2.引入iview组件按需加载
  */
-// import '../../utils/fundebug'
+import '../../utils/fundebug'
 import '../../utils/iview'
 
 /**
