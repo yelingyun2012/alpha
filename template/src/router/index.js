@@ -29,6 +29,16 @@ export const constantRouterMap = [
       requireAuth: true
     },
     component: _import('dashboard/index')
+  },
+  {
+    path: '/error',
+    name: 'error',
+    component: _import('error/index')
+  },
+  {
+    path: '*',
+    redirect: '/error',
+    hide: true
   }
 ]
 /**
@@ -36,6 +46,6 @@ export const constantRouterMap = [
  */
 export default new Router({
   // mode: 'history',
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({y: 0}),
   routes: constantRouterMap
 })

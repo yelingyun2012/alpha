@@ -16,7 +16,8 @@ router.beforeEach((to, from, next) => {
       if (to.path === '/login') {
         next('/')
       } else {
-
+        store.dispatch('permission/GenerateRoutes')
+        next()
       }
     } else {
       if (whiteList.indexOf(to.path) !== -1) {
