@@ -13,8 +13,9 @@ import App from '../../component/App.vue'
  * 1.引入在线bug检测
  * 2.引入iview组件按需加载
  */
-import '../../utils/fundebug'
+// import '../../utils/fundebug'
 import '../../utils/iview'
+import '../../utils/permission'
 
 /**
  * 实例化 Vue 对象

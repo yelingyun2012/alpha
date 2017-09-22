@@ -1,11 +1,13 @@
 import axios from 'axios'
 import qs from 'qs'
 import router from '../router'
+import { removeToken } from '../utils/token'
+import store from '../store'
 
 /**
  * axios 默认参数配置
  */
-axios.defaults.baseURL = `http://o2o.beyebe.com:8089/o2o_beyebe/api`
+axios.defaults.baseURL = `http://o2o.beyebe.com:8089/o2o_beyebe/api567`
 axios.defaults.timeout = 30000
 
 /**
@@ -21,7 +23,6 @@ axios.interceptors.request.use(
     if (localStorage.token) {
       config.headers.Authorization = localStorage.token
     }
-    console.log(config)
     return config
   },
   error => {
@@ -67,10 +68,24 @@ function checkStatus (response) {
  */
 function checkCode (response) {
   if (response.data.code) {
-    if (response.data.code !== '0') {
-      alert(response.data.message)
+    switch (response.data.code) {
+      case '0':
+        return response
+        break
+      case '3001':
+        router.push('/login')
+        removeToken('Token')
+        store.commit('user/SET_TOKEN', '')
+        return Promise.reject(response.data.message)
+        break
+      case '404':
+        console.log('123')
+        router.push('/404')
+        removeToken('Token')
+        store.commit('user/SET_TOKEN', '')
+        return Promise.reject('')
+        break
     }
-    return response
   } else {
     router.push('/login')
   }

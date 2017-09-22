@@ -33,7 +33,8 @@
                 a(href="http://www.miibeian.gov.cn/") 粤ICP备08129733号
 </template>
 <script>
-  import {fetch} from '../../api/http'
+  import { mapActions } from 'vuex'
+  import { fetch } from '../../api/http'
 
   export default {
     name: 'login',
@@ -56,20 +57,15 @@
       }
     },
     methods: {
+      ...mapActions({
+        Login: 'user/LoginByUserName'
+      }),
       handleSubmit (name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
-            fetch('/user/login', {
-              method:'post',
-              data: {
-                username: this.loginForm.username.trim(),
-                password: this.loginForm.password
-              }
-            }).then(response => {
+            this.Login(this.loginForm).then(response => {
               console.log(response)
             })
-          } else {
-            this.$Message.error('表单验证失败')
           }
         })
       }
