@@ -1,53 +1,37 @@
-.dash{
-  &-sidebar{
-    width: 230px;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #323949;
-    header{
-      height: 50px;
-      line-height: 50px;
-      color: #ffffff;
-      font-size: 16px;
-      margin-left: 10px;
-    }
-  }
-  &-main{
-    margin-left: 230px;
-    header{
-      height: 60px;
-      line-height: 60px;
-      background-color: #323949;
+.title{
+  font-size: 16px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #323949;
+  color: #ffffff;
+}
+aside{
+  background-color: #ffffff;
+  margin: 10px;
+}
+.test{
+  &-area{
+    width: 100%;
+    button{
+      margin-left: 20px;
     }
   }
   &-action{
-    padding: 20px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #cccccc;
   }
-  &-form{
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 5px;
-    button:nth-of-type(1){
-      margin-right: 15px;
-    }
+}
+.form{
+  &-group{
+    margin-top: 10px;
   }
-  &-list{
-    width: 300px;
-    display: inline-block;
-    label{
-      font-size: 14px;
-      margin-right: 5px;
-    }
-  }
-  &-board{
-    margin-top: 15px;
-    font-size: 14px;
-    p{
-      margin-left: 10px;}
-    button{
-      margin: 10px 0;
-    }
-  }
+}
+.ivu-form-item{
+  margin-bottom: 15px;
+}
+.showPanel{
+  width: 428px;
+  height: auto;
+  background-color:mediumaquamarine;
 }

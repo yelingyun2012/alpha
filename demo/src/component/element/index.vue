@@ -40,6 +40,9 @@
                                     el-option(v-for="item of panelData", :key="item.key", :label="item.name", :value="item.key")
                         el-table-column(prop="name", label="字段名")
                         el-table-column(prop="age", label="查询字段")
+                Button(type="primary",  @click="modal = true") 显示对话框
+                Modal(v-model="modal", title="对话框标题", :loading="loading",  @on-ok="asyncOK")
+                    p 击确定后，对话框将在 2秒 后关闭
 
 </template>
 <script>
@@ -49,6 +52,8 @@
     name: 'element',
     data () {
       return {
+        modal:false,
+        loading: true,
         treeData: [],
         count: 2,
         defaultProps: {
@@ -71,6 +76,11 @@
       }
     },
     methods: {
+      asyncOK () {
+        setTimeout(() => {
+          this.modal = false;
+        }, 2000);
+      },
       handleNodeClick (data) {
         console.log(data)
       },
