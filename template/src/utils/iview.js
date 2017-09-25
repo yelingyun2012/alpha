@@ -11,6 +11,8 @@ import Form from 'iview/src/components/form'
 import Input from 'iview/src/components/input'
 import Button from 'iview/src/components/button'
 import Message from 'iview/src/components/message'
+import Dropdown from 'iview/src/components/dropdown'
+import Icon from 'iview/src/components/icon'
 
 /**
  * 导入 iview 组件,并注入实例
@@ -20,7 +22,11 @@ const components = {
   Form,
   FormItem: Form.Item,
   Input,
-  Button
+  Button,
+  Dropdown,
+  DropdownItem: Dropdown.Item,
+  DropdownMenu: Dropdown.Menu,
+  Icon
 }
 
 const install = function (Vue) {

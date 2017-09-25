@@ -24,7 +24,7 @@
                 FormItem(prop="username")
                     Input(placeholder="账号", v-model="loginForm.username", icon="android-person")
                 FormItem(prop="password")
-                    Input(placeholder="密码", v-model="loginForm.password", icon="ios-locked-outline", type="password")
+                    Input(placeholder="密码", v-model="loginForm.password", icon="ios-locked-outline", type="password", @keyup.enter.native="handleSubmit('loginForm')")
                 FormItem
                     Button(type="success", @click="handleSubmit('loginForm')", long) 提交
         footer(v-if="show")
