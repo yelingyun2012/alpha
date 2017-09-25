@@ -7,7 +7,7 @@ import store from '../store'
 /**
  * axios 默认参数配置
  */
-axios.defaults.baseURL = `http://o2o.beyebe.com:8089/o2o_beyebe/api567`
+axios.defaults.baseURL = `http://o2o.beyebe.com:8089/o2o_beyebe/api`
 axios.defaults.timeout = 30000
 
 /**
@@ -55,7 +55,8 @@ function checkStatus (response) {
   return {
     data: {
       code: '404',
-      message: response.statusText
+      message: response.statusText,
+      data: ''
     }
   }
 }
@@ -79,11 +80,9 @@ function checkCode (response) {
         return Promise.reject(response.data.message)
         break
       case '404':
-        console.log('123')
-        router.push('/404')
+        router.push('/error')
         removeToken('Token')
         store.commit('user/SET_TOKEN', '')
-        return Promise.reject('')
         break
     }
   } else {

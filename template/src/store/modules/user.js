@@ -1,4 +1,5 @@
 import { fetch } from '../../api/http'
+import { setToken } from '../../utils/token'
 
 const state = {
   token: ''
@@ -15,8 +16,11 @@ const actions = {
           password: userInfo.password
         }
       }).then(response => {
-        commit('SET_TOKEN', response.data.response[0].token)
-        resolve(response)
+        if (response) {
+          setToken('Token', response.data.response[0].token)
+          commit('SET_TOKEN', response.data.response[0].token)
+          resolve(response)
+        }
       }).catch(error => {
         reject(error)
       })

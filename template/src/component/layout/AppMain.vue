@@ -1,8 +1,9 @@
 <template lang="pug">
-    p qwewq
+    section
+        router-view
 </template>
 <script>
   export default {
-    name: 'dashboard'
+    name: 'AppMain'
   }
 </script>

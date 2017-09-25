@@ -64,7 +64,9 @@
         this.$refs[name].validate((valid) => {
           if (valid) {
             this.Login(this.loginForm).then(response => {
-              console.log(response)
+              this.$router.push('/')
+            }).catch(error => {
+              this.$Message.error(error)
             })
           }
         })

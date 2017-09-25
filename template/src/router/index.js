@@ -24,11 +24,12 @@ export const constantRouterMap = [
   },
   {
     path: '',
-    name: 'dashboard',
-    meta: {
-      requireAuth: true
-    },
-    component: _import('dashboard/index')
+    name: 'home',
+    redirect: '/dashboard',
+    meta: {requireAuth: true},
+    hidden: true,
+    component: _import('layout/index'),
+    children: [{path: 'dashboard', component: _import('dashboard/index')}]
   },
   {
     path: '/error',
@@ -45,7 +46,7 @@ export const constantRouterMap = [
  * 实例化路由
  */
 export default new Router({
-  // mode: 'history',
+  mode: 'history',
   scrollBehavior: () => ({y: 0}),
   routes: constantRouterMap
 })

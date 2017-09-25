@@ -1,37 +1,44 @@
-.title{
+.title {
   font-size: 16px;
   height: 40px;
   line-height: 40px;
   background-color: #323949;
   color: #ffffff;
 }
-aside{
+aside {
   background-color: #ffffff;
   margin: 10px;
 }
-.test{
-  &-area{
+.test {
+  &-area {
     width: 100%;
-    button{
+    button {
       margin-left: 20px;
     }
   }
-  &-action{
+  &-action {
     margin-top: 10px;
     padding: 10px;
     border: 1px solid #cccccc;
   }
 }
-.form{
-  &-group{
+.form {
+  &-group {
     margin-top: 10px;
   }
 }
-.ivu-form-item{
+.ivu-form-item {
   margin-bottom: 15px;
 }
-.showPanel{
+.showPanel {
   width: 428px;
   height: auto;
-  background-color:mediumaquamarine;
+  background-color: mediumaquamarine;
+}
+.action {
+  &-group {
+    background-color: #ffffff;
+    height: auto;
+    width: 100%;
+  }
 }
