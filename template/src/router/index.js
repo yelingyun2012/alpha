@@ -23,6 +23,11 @@ export const constantRouterMap = [
     component: _import('login/login')
   },
   {
+    path: '/register',
+    name: 'register',
+    component: _import('register/index')
+  },
+  {
     path: '',
     name: 'home',
     redirect: '/dashboard',

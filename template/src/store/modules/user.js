@@ -12,7 +12,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       fetch('/user/login', {
         params: {
-          username: userInfo.username.trim(),
+          userName: userInfo.username.trim(),
           password: userInfo.password
         }
       }).then(response => {

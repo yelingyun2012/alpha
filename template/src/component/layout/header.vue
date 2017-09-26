@@ -8,8 +8,6 @@
                     Icon(type="arrow-down-b")
                 DropdownMenu(slot="list")
                     DropdownItem 退出登录
-
-
 </template>
 <script>
   export default {
@@ -21,6 +19,8 @@
         &-header {
             height: 55px;
             line-height: 39px;
+            position: fixed;
+            width: 100%;
             background-color: mediumaquamarine;
         }
     }

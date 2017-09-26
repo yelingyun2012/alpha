@@ -13,6 +13,7 @@ import Button from 'iview/src/components/button'
 import Message from 'iview/src/components/message'
 import Dropdown from 'iview/src/components/dropdown'
 import Icon from 'iview/src/components/icon'
+import Breadcrumb from 'iview/src/components/breadcrumb'
 
 /**
  * 导入 iview 组件,并注入实例
@@ -26,7 +27,9 @@ const components = {
   Dropdown,
   DropdownItem: Dropdown.Item,
   DropdownMenu: Dropdown.Menu,
-  Icon
+  Icon,
+  Breadcrumb,
+  BreadcrumbItem: Breadcrumb.Item
 }
 
 const install = function (Vue) {

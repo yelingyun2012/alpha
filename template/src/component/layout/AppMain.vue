@@ -1,5 +1,5 @@
 <template lang="pug">
-    section
+    main.app-content
         router-view
 </template>
 <script>
@@ -7,3 +7,10 @@
     name: 'AppMain'
   }
 </script>
+<style lang="scss" scoped>
+    .app {
+        &-content {
+            margin-left: 200px;
+        }
+    }
+</style>
