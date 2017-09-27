@@ -6,6 +6,7 @@
     body {
         background-color: #e9edf2;
     }
+
     .test {
         margin-left: 10px;
     }
@@ -49,7 +50,6 @@
           propertyGroup: '顶级',
           name: ''
         },
-        rank: 1,
         ruleValidate: {
           name: [
             {required: true, message: '名称不能为空', trigger: 'blur'}
@@ -58,10 +58,10 @@
         properList: [
           {
             value: '顶级',
-            rank: 1,
             label: '顶级'
           }
         ],
+        test: [],
         formDynamic: {
           items: [
             {
@@ -113,7 +113,7 @@
             this.showModal = false
             // html 模板
             let propertyTemplate = `
-              <div data-id="${this.formValidate.name}" class="property-item">
+              <div data-id="${this.property + this.formValidate.name}" class="property-item">
                   <div class="property-top">
                     <label>属性${this.formValidate.name}</label>
                     <select>
@@ -125,7 +125,7 @@
               </div>`
 
             let propertyGroupTemplate = `
-             <div data-id="${this.formValidate.name}" class="property-item">
+             <div data-id="${this.property + this.formValidate.name}" class="property-item">
                   <div class="property-top">
                     <label>属性组${this.formValidate.name}</label>
                     <select>
@@ -137,7 +137,7 @@
               </div>`
 
             let property = `
-               <div class="property-children test" data-id="${this.formValidate.name}">
+               <div class="property-children test" data-id="${this.property + this.formValidate.name}">
                     <label>属性${this.formValidate.name}</label>
                     <select>
                       <option value="xpath">xpath</option>
@@ -147,7 +147,7 @@
                 </div>`
 
             let propertyGroup = `
-                <div class="property-children test" data-id="${this.formValidate.name}">
+                <div class="property-children test" data-id="${this.property + this.formValidate.name}">
                       <label>属性组${this.formValidate.name}</label>
                       <select>
                         <option value="xpath">xpath</option>
@@ -155,28 +155,47 @@
                       </select>
                       <input type="text">
                 </div>`
-
-            if (this.formValidate.propertyGroup === '顶级') {
-              if (this.property === '属性') {
-                $('.action-group').append(propertyTemplate)
-              } else {
-                this.properList.push({value: this.formValidate.name, label: this.formValidate.name})
-                $('.action-group').append(propertyGroupTemplate)
-              }
-            } else {
-              let a = $('.action-group div')
-              a.each(item => {
-                let b = a.eq(item).attr('data-id')
-                if (b === this.formValidate.propertyGroup) {
-                  if (this.property === '属性') {
-                    $('.action-group div[data-id=' + b + ']').append(property)
-                  } else {
-                    this.properList.push({value: this.formValidate.name, label: this.formValidate.name})
-                    $('.action-group div[data-id=' + b + ']').append(propertyGroup)
-                  }
+            if (!this.test.includes(this.property + this.formValidate.name)) {
+              console.log(this.test)
+              if (this.formValidate.propertyGroup === '顶级') {
+                if (this.property === '属性') {
+                  this.test.push(this.property + this.formValidate.name)
+                  $('.action-group').append(propertyTemplate)
                 }
-              })
+                else {
+                  this.test.push(this.property + this.formValidate.name)
+                  this.properList.push({value: this.property +this.formValidate.name, label: this.property +this.formValidate.name})
+                  $('.action-group').append(propertyGroupTemplate)
+                }
+              }
+              else {
+                let a = $('.action-group div.property-item')
+                a.each(item => {
+                  let b = a.eq(item).attr('data-id')
+                  console.log(b)
+                })
+              }
             }
+            else {
+              this.$Message.warning('属性名已存在')
+            }
+
+//            if (this.formValidate.propertyGroup === '顶级' && !this.test.includes(this.formValidate.name)) {
+//              if (this.property === '属性') {
+//                this.test.push(this.formValidate.name)
+//                $('.action-group').append(propertyTemplate)
+//              } else {
+//                this.test.push(this.formValidate.name)
+//                this.properList.push({value: this.formValidate.name, label: this.formValidate.name})
+//                $('.action-group').append(propertyGroupTemplate)
+//              }
+//            } else {
+//              let a = $('.action-group div')
+//              a.each(item => {
+//                let b = a.eq(item).attr('data-id')
+//                console.log(b)
+//              })
+//            }
           } else {
             this.showModal = true
             this.$Message.error('表单验证失败!')
