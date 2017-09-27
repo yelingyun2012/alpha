@@ -2,8 +2,7 @@
     @import "scss/index";
 </style>
 <style lang="scss">
-    html,
-    body {
+    html, body {
         background-color: #e9edf2;
     }
     .test {
@@ -18,7 +17,7 @@
                 Input(placeholder="测试", v-model="testValue", style="width:80%")
                 Button(type="primary", @click="modal = true") 测试
             section.test-action
-                .action-group(ref="test")
+                ul.action-group(ref="test")
                 Button(type="primary", @click="addElement") 添加属性或属性组
                 Button(@click="handleSubmit", style="margin-left:50px") 提交
                 Modal(title="属性/属性组", v-model="showModal", :mask-closable="false")
@@ -70,9 +69,7 @@
               name: ''
             }
           ]
-        },
-        treeData: [],
-        treeData1: []
+        }
       }
     },
     methods: {
@@ -82,30 +79,8 @@
         this.formValidate.propertyGroup = '顶级'
         this.formValidate.name = ''
       },
-      handleSubmit () {
-        let a = $('.action-group .property-item')
-        a.each(item => {
-          let b = a.eq(item).children('.property-top')
-          this.treeData.push({
-            name: b.find('label').text(),
-            select: b.find('select').val(),
-            input: b.find('input').val()
-          })
-          let c = a.eq(item).children('.property-children')
-          if (c.length !== 0) {
-            c.map(item => {
-              this.treeData1.push({
-                name: c.eq(item).children('label').text(),
-                select: c.eq(item).children('select').val(),
-                input: c.eq(item).children('input').val()
-              })
-            })
-          } else {
-            console.log('2')
-          }
-        })
-        console.log(this.treeData)
-        console.log(this.treeData1)
+      handleSubmit(){
+        console.log('123')
       },
       pushElement (name) {
         this.$refs[name].validate((valid) => {
@@ -113,48 +88,47 @@
             this.showModal = false
             // html 模板
             let propertyTemplate = `
-              <div data-id="${this.formValidate.name}" class="property-item">
-                  <div class="property-top">
-                    <label>属性${this.formValidate.name}</label>
-                    <select>
-                      <option value="xpath">xpath</option>
-                      <option value="正则表达式">正则表达式</option>
-                    </select>
-                    <input type="text">
-                  </div>
-              </div>`
-
-            let propertyGroupTemplate = `
-             <div data-id="${this.formValidate.name}" class="property-item">
-                  <div class="property-top">
-                    <label>属性组${this.formValidate.name}</label>
-                    <select>
-                      <option value="xpath">xpath</option>
-                      <option value="正则表达式">正则表达式</option>
-                    </select>
-                    <input type="text">
-                  </div>
-              </div>`
-
-            let property = `
-               <div class="property-children test" data-id="${this.formValidate.name}">
-                    <label>属性${this.formValidate.name}</label>
-                    <select>
-                      <option value="xpath">xpath</option>
-                      <option value="正则表达式">正则表达式</option>
-                    </select>
-                    <input type="text">
-                </div>`
-
-            let propertyGroup = `
-                <div class="property-children test" data-id="${this.formValidate.name}">
-                      <label>属性组${this.formValidate.name}</label>
-                      <select>
+                <div data-name="${this.formValidate.name}">
+                    属性${this.formValidate.name}
+                    <select name="" id="">
                         <option value="xpath">xpath</option>
                         <option value="正则表达式">正则表达式</option>
-                      </select>
-                      <input type="text">
-                </div>`
+                        <option value="css">css</option>
+                    </select>
+                    <input type="text">
+                </div>`.trim(),
+
+              propertyGroupTemplate = `
+                <div data-name="${this.formValidate.name}">
+                    属性组${this.formValidate.name}
+                    <select name="" id="">
+                        <option value="xpath">xpath</option>
+                        <option value="正则表达式">正则表达式</option>
+                        <option value="css">css</option>
+                    </select>
+                    <input type="text">
+                </div>`.trim(),
+
+              property = `
+                <div data-name="${this.formValidate.name}" class="test">
+                    属性${this.formValidate.name}
+                    <select name="" id="">
+                        <option value="xpath">xpath</option>
+                        <option value="正则表达式">正则表达式</option>
+                        <option value="css">css</option>
+                    </select>
+                    <input type="text">
+                </div>`.trim(),
+              propertyGroup = `
+                <div data-name="${this.formValidate.name}" class="test">
+                   属性组${this.formValidate.name}
+                   <select name="" id="">
+                        <option value="xpath">xpath</option>
+                        <option value="正则表达式">正则表达式</option>
+                        <option value="css">css</option>
+                    </select>
+                    <input type="text">
+               </div>`.trim()
 
             if (this.formValidate.propertyGroup === '顶级') {
               if (this.property === '属性') {
@@ -166,13 +140,13 @@
             } else {
               let a = $('.action-group div')
               a.each(item => {
-                let b = a.eq(item).attr('data-id')
+                let b = a.eq(item).attr('data-name')
                 if (b === this.formValidate.propertyGroup) {
                   if (this.property === '属性') {
-                    $('.action-group div[data-id=' + b + ']').append(property)
+                    $('.action-group div[data-name=' + b + ']').append(property)
                   } else {
                     this.properList.push({value: this.formValidate.name, label: this.formValidate.name})
-                    $('.action-group div[data-id=' + b + ']').append(propertyGroup)
+                    $('.action-group div[data-name=' + b + ']').append(propertyGroup)
                   }
                 }
               })
