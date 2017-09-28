@@ -3,8 +3,9 @@
         AppHeader
         aside.app-main
             Sidebar
-            Breadcrumb
-            AppMain
+            .app-container
+                Breadcrumb
+                AppMain
 </template>
 <script>
   import AppHeader from './header.vue'
@@ -26,8 +27,7 @@
     .app {
         &-main {
             width: 100%;
-            margin-top: 55px;
-            position: fixed;
+            padding-top: 55px;
         }
     }
 </style>

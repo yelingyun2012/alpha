@@ -13,6 +13,7 @@
 <style lang="scss" scoped>
     .app{
         &-breadcrumb{
+            z-index:99;
             margin-left: 200px;
             /*width: 100%;*/
             height: 46px;

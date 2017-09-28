@@ -3,7 +3,7 @@
  * 项目配置参数
  * @type {string}
  */
-const projectName = 'demo'
+const projectName = 'template'
 const filenameExtension = 'pug'
 const port = 8030
 

@@ -12,12 +12,12 @@
         &-sidebar {
             position: fixed;
             width: 200px;
-            height: 100%;
+            height: calc(100vh - 55px);
             background-color: teal;
         }
     }
-    .sidebar{
-        &-title{
+    .sidebar {
+        &-title {
             height: 45px;
             color: #ffffff;
             font-size: 14px;

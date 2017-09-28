@@ -7,7 +7,8 @@ import store from '../store'
 /**
  * axios 默认参数配置
  */
-axios.defaults.baseURL = `http://192.168.10.173:8080/jinDao_report/api/`
+// axios.defaults.baseURL = `http://192.168.10.173:8080/jinDao_report/api/`
+axios.defaults.baseURL = `http://o2o.beyebe.com:8089/o2o_beyebe/api/`
 axios.defaults.timeout = 30000
 
 /**

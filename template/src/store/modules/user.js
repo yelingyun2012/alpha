@@ -1,5 +1,5 @@
 import { fetch } from '../../api/http'
-import { setToken } from '../../utils/token'
+import { getToken, removeToken, setToken } from '../../utils/token'
 
 const state = {
   token: ''
@@ -12,7 +12,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       fetch('/user/login', {
         params: {
-          userName: userInfo.username.trim(),
+          // userName: userInfo.username.trim(),
+          // password: userInfo.password
+          username: userInfo.username.trim(),
           password: userInfo.password
         }
       }).then(response => {
@@ -20,6 +22,22 @@ const actions = {
           setToken('Token', response.data.response[0].token)
           commit('SET_TOKEN', response.data.response[0].token)
           resolve(response)
+        }
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  LoginOut ({commit}) {
+    return new Promise((resolve, reject) => {
+      fetch('user/logout', {
+        params: {
+          token: getToken('Token')
+        }
+      }).then(response => {
+        if (response) {
+          removeToken('Token')
+          commit('SET_TOKEN', '')
         }
       }).catch(error => {
         reject(error)
