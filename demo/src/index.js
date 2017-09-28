@@ -1,72 +1,34 @@
-// $(function () {
-//   $('#handelSubmit').click(() => {
-//     let a = $('.action-group .property-item')
-//     let treeData = []
-//     let treeData1 = []
-//     a.each(item => {
-//       let b = a.eq(item).find('.property-top')
-//       treeData.push({
-//         name: b.find('label').text(),
-//         select: b.find('select').val(),
-//         input: b.find('input').val()
-//       })
-//       let c = a.eq(item).children('.property-children')
-//       if (c.length !== 0) {
-//         c.map(item => {
-//           console.log(c.eq(item).children('label').text())
-//           treeData1.push({
-//             name: c.eq(item).children('label').text(),
-//             select: c.eq(item).children('select').val(),
-//             input: c.eq(item).children('input').val()
-//           })
-//         })
-//       } else {
-//         console.log('2')
-//       }
-//       let d = a.eq(item).children('.property-children').children('.property-children')
-//       if (d.length !== 0) {
-//         // console.log(d)
-//       } else {
-//         console.log('2')
-//       }
-//     })
-//     // console.log(treeData)
-//     console.log(treeData1)
-//   })
-// })
+$(function () {
+  let arr = []
 
-var tree = {
-  name: 'root',
-  children: [{
-    name: 'child1',
-    children: [{
-      name: 'child1_1',
-      children: [{
-        name: 'child1_1_1'
-      }]
-    }]
-  }, {
-    name: 'child2',
-    children: [{
-      name: 'child2_1'
-    }]
-  }, {
-    name: 'child3'
-  }]
-}
-
-function traverseTree (node) {
-  let child = node.children,
-    arr = []
-
-  arr.push({name: node.name})
-  if (child) {
-    child.forEach(function (node) {
-      arr = arr.concat(traverseTree(node))
+  $('#handelSubmit').click(() => {
+    let propertyItem = $('.action-group .property-item')
+    propertyItem.each(item => {
+      traverseTree(propertyItem.eq(item))
     })
-  }
-  console.log(arr)
-  return arr
-}
+    console.log(arr)
+  })
 
-traverseTree(tree)
+  function traverseTree (node) {
+    let top = node.children('.property-top'),
+      child = node.children('.property-children')
+
+    if (top.length !== 0) {
+      arr.push({
+        name: top.children('label').text(),
+        select: top.children('select').val(),
+        input: top.children('input').val()
+      })
+    }
+    if (child.length !== 0) {
+      child.each(item => {
+        arr.push({
+          name: child.eq(item).children('label').text(),
+          select: child.eq(item).children('select').val(),
+          input: child.eq(item).children('input').val()
+        })
+        traverseTree(child.eq(item))
+      })
+    }
+  }
+})
