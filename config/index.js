@@ -3,7 +3,7 @@
  * 项目配置参数
  * @type {string}
  */
-const projectName = 'template'
+const projectName = 'saiku'
 const filenameExtension = 'pug'
 const port = 8030
 
@@ -40,7 +40,7 @@ module.exports = {
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
     // bundleAnalyzerReport: process.env.npm_config_report
-    bundleAnalyzerReport: true
+    bundleAnalyzerReport: false
   },
   dev: {
     env: require('./dev.env'),

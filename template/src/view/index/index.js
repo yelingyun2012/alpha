@@ -5,7 +5,6 @@ import App from '../../component/App.vue'
 // 引入按需加载组件
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
-
 Vue.use(iView)
 
 /**

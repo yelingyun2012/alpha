@@ -1,14 +1,26 @@
 <template lang="pug">
     section
         p qwewq
+        input(v-model="parentMsg")
+        input(v-model="todo.name")
+        Message(:my-message="parentMsg", v-bind="todo", @increment="incrementTotal")
 </template>
 <script>
+  import Message from './children/message.vue'
+
   export default {
-    name: 'dashboard'
+    name: 'dashboard',
+    data () {
+      return {
+        parentMsg: 'haha',
+        todo: {
+          name: 'beyebe',
+          value: 'haha1'
+        }
+      }
+    },
+    components: {
+      Message
+    }
   }
 </script>
-<style lang="scss" scoped>
-    p{
-        height:2000px;
-    }
-</style>
