@@ -174,7 +174,7 @@
           this.$Message.error('生成报表名称不能为空')
         } else {
           this.searchShow = true
-          let templateTr = document.querySelector('.dash-template').querySelectorAll('tr')
+          let templateTr = document.querySelector('.dash-saiku').querySelectorAll('tr')
           let templateEachData = []
           let fieldArray = []
 

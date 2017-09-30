@@ -1,33 +1,31 @@
 <template lang="pug">
     section
-        AppHeader
-        aside.app-main
-            Sidebar
-            .app-container
-                Breadcrumb
-                AppMain
+        Form
+            FormItem
+                Input(placeholder="测试")
+        span {{token}}
+        span {{count}}
+        button(@click="test") 测试
 </template>
 <script>
-  import AppHeader from './header.vue'
-  import Breadcrumb from './breadcrumb.vue'
-  import Sidebar from './sidebar.vue'
-  import AppMain from './AppMain.vue'
+import { mapState, mapGetters } from 'vuex'
 
-  export default {
+export default {
     name: 'layout',
-    components: {
-      AppHeader,
-      Breadcrumb,
-      Sidebar,
-      AppMain
-    }
-  }
-</script>
-<style lang="scss" scoped>
-    .app {
-        &-main {
-            width: 100%;
-            padding-top: 55px;
+    methods: {
+        test() {
+            console.log(this.$store)
+            this.$Message.info('haha')
         }
+    },
+    computed: {
+        ...mapState({
+            token: state => state.user.token
+        }),
+        ...mapGetters({
+            count: 'user/countToken'
+        })
     }
-</style>
+}
+</script>
+
