@@ -6,26 +6,34 @@
         p {{token}}
         p {{count}}
         button(@click="test") 测试
+        p {{msg}}
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
+  import { mapState, mapGetters, mapMutations } from 'vuex'
 
-export default {
+  export default {
     name: 'layout',
+    data(){
+      return {
+        msg:'测试热加载'
+      }
+    },
     methods: {
-        test() {
-            console.log(this.$store)
-            this.$Message.info('haha')
-        }
+      ...mapMutations({
+        setToken: 'user/SET_TOKEN'
+      }),
+      test () {
+        console.log(this.$store)
+      }
     },
     computed: {
-        ...mapState({
-            token: state => state.user.token
-        }),
-        ...mapGetters({
-            count: 'user/countToken'
-        })
+      ...mapState({
+        token: state => state.user.token
+      }),
+      ...mapGetters({
+        count: 'user/countToken'
+      })
     }
-}
+  }
 </script>
 

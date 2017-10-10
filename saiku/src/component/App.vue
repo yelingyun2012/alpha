@@ -13,6 +13,7 @@
         width: 100vw;
         min-height: 100vh;
         overflow: hidden;
+        background-color: #eef0f3;
     }
     #app {
         min-height: 100vh;
