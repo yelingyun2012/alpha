@@ -2,6 +2,7 @@ import Vue from 'vue'
 import router from '../../router'
 import store from '../../store'
 import App from '../../component/App.vue'
+
 // 引入按需加载组件
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'

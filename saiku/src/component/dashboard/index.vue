@@ -21,6 +21,9 @@
     },
     components: {
       Message
+    },
+    mounted(){
+
     }
   }
 </script>

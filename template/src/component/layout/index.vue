@@ -3,8 +3,8 @@
         Form
             FormItem
                 Input(placeholder="测试")
-        span {{token}}
-        span {{count}}
+        p {{token}}
+        p {{count}}
         button(@click="test") 测试
 </template>
 <script>
