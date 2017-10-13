@@ -11,9 +11,6 @@
 </template>
 <script>
   import echarts from 'echarts'
-  //  import tooltip from 'echarts/lib/component/tooltip'
-  //  import title from 'echarts/lib/component/title'
-  //  import line from 'echarts/lib/chart/line'
   import { fetch } from '../../../api/http'
 
   export default {
@@ -30,15 +27,11 @@
               color: '#999',
               width: 2,
               type: 'solid'
+            },
+            shadowStyle: {
+              color: 'rgba(200,200,200,0.1)'
             }
           },
-          backgroundColor: 'rgba(0,0,0,.6)',
-          borderColor: '#000',
-          padding: [6, 10],
-          extraCssText: 'border-radius: 5px',
-          textStyle: {
-            fontSize: 12
-          }
         },
         legend: {
           icon: 'circle',
@@ -71,11 +64,11 @@
         series: []
       })
       fetch('https://www.easy-mock.com/mock/59dc75661de3d46fa94d2035/echarts/details').then(response => {
-        let a = [],
-          b = []
+        let legendData = [],
+          seriesData = []
         response.data.app_data.series.map(item => {
-          a.push(item.names[0])
-          b.push({
+          legendData.push(item.names[0])
+          seriesData.push({
             name: item.names[0],
             type: 'line',
             symbol: 'circle',
@@ -85,12 +78,12 @@
         })
         myChart.setOption({
           legend: {
-            data: a
+            data: legendData
           },
           xAxis: {
             data: response.data.app_data.x_axis
           },
-          series: b
+          series: seriesData
         })
       })
     }
