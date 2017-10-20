@@ -17,12 +17,6 @@
                                 Radio(v-for="list of items", :label="list.siteId", :disabled="dis", :key="list.siteId")
                                     span {{list.siteName}}
                         TabPane(label="基本属性")
-                            <!-- p.sitename2  页面名称：-->
-                                <!--span.buttonalls-->
-                                    <!--Input(type="text" v-model="pagename",:disabled="dis" placeholder="请输入页面名称"  style="width:22%;height:36px")-->
-                                    <!--Button(type="success",@click='checkOut',style="margin-left: 20%;") 签出-->
-                                    <!--Button(type="success",@click='checkIn',style="margin-left: 17px;") 签入-->
-                                    <!--Button(type="text"  style="border:1px solid  #17BB9C ;color: #fff;background: #2D8CF0;",@click="back") 返回-->
                             p.BaseAttribute(style="font-size: 14px;color: #323232;")
                                 span.BaseAttribute(style="font-size: 14px;color: #323232;padding:10px")  模型类型： &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
                                     Select(v-model="modelvalue",:disabled="dis" style="width:200px")

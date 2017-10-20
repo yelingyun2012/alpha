@@ -8,10 +8,14 @@ const _import = require(`./_import-${process.env.NODE_ENV}`)
 
 // 路由常量
 export const constantRouterMap = [
-
+  {
+    path: '',
+    name: 'Login',
+    component: _import('login/Login')
+  }
 ]
 
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   routes: constantRouterMap
 })
