@@ -50,7 +50,7 @@
                     loginName: this.loginForm.username,
                     pwd: md5(this.loginForm.password)
                 })
-                axios.post('elise/login', params).then(response => {
+                axios.post('last/login', params).then(response => {
 
                   console.log("denglu")
                     console.log(response)

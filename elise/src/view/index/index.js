@@ -1,40 +1,30 @@
 import Vue from 'vue'
-import iView from 'iview'
-import 'iview/dist/styles/iview.css'
 import router from '../../router'
 import store from '../../store'
 import App from '../../component/App.vue'
-import 'nprogress/nprogress.css'
-import { getToken } from '../../utils/token'
 
+// 引入按需加载组件
+import iView from 'iview'
+import 'iview/dist/styles/iview.css'
 Vue.use(iView)
 
-Vue.config.devtools = true
-Vue.config.productionTip = false
-
-const whiteList = ['/login']
-router.beforeEach((to, from, next) => {
-  if (getToken('Token')) {
-  //   if(true){
-    if(to.path==='/login'){
-      next('/')
-    }else{
-      store.dispatch('permission/GenerateRoutes')
-      next()
-    }
-  } else {
-    if (whiteList.indexOf(to.path) !== -1) {
-      next()
-    } else {
-      next('/login')
-    }
-  }
-})
-
+/**
+ * 实例化Vue对象
+ */
 new Vue({
   el: '#app',
   router,
   store,
-  template: '<App/>',
-  components: {App}
+  render: h => h(App)
 })
+
+/**
+ * vue 开发环境配置
+ * @param {Boolean} devtools 开启开发插件
+ * @param {Boolean} productionTip 生产环境提示
+ */
+Vue.config.devtools = true
+Vue.config.productionTip = false
+
+// 引入在线bug监控
+// import '../../utils/fundebug'
