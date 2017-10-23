@@ -43,13 +43,13 @@ axios.interceptors.response.use(
  * @param {Number} response 接口返回对象
  */
 function checkStatus(response) {
-  const Status = ['200', '304']
+  const Status = [200, 304]
   if (Status.includes(response.status)) {
     return response
   }
   return {
     data: {
-      code: 404,
+      code: '404',
       message: response.statusText,
       data: ''
     }
@@ -64,16 +64,16 @@ function checkCode(response) {
   // code码存在时,对相应的Code码进行处理
   if (response.data.code) {
     switch (response.data.code) {
-      case 0:
+      case '0':
         return response
         break
-      case 3001:
+      case '3001':
         router.push('/login')
         removeCookie('token')
         store.commit('user/SET_TOKEN', '')
         return Promise.reject(response.data.message)
         break
-      case 404:
+      case '404':
         router.push('/error')
         removeCookie('token')
         store.commit('user/SET_TOKEN', payload)
@@ -91,11 +91,11 @@ function checkCode(response) {
  * @param {String} options 请求具体参数
  * @returns {Object} 接口请求返回对象
  */
-export default function fetch(url, options) {
+export function fetch(url, options) {
   let opt = options || {}
   return axios({
-    method: opt.method || 'get',
     url,
+    method: opt.method || 'get',
     params: opt.params || undefined,
     data: opt.data || undefined,
     responseType: opt.responseType || 'json'

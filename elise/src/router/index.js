@@ -12,6 +12,26 @@ export const constantRouterMap = [
     path: '',
     name: 'Login',
     component: _import('login/Login')
+  },
+  {
+    path: '/404',
+    name: 'error_404',
+    component: _import('error/404')
+  },
+  {
+    path: '/401',
+    name: 'error_401',
+    component: _import('error/401')
+  },
+  {
+    path: '/500',
+    name: 'error_500',
+    component: _import('error/500')
+  },
+  {
+    path: '*',
+    name: 'error_404',
+    component: _import('error/404')
   }
 ]
 
