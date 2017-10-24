@@ -4,10 +4,10 @@ import store from '../../store'
 import App from '../../component/App.vue'
 
 // 引入按需加载组件
-import iView from 'iview'
-import 'iview/dist/styles/iview.css'
-Vue.use(iView)
+import '../../utils/iview'
 
+// 引入路由配置
+import '../../config/permission'
 /**
  * 实例化Vue对象
  */
