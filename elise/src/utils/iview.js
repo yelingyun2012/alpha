@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import 'iview/dist/styles/iview.css'
-
 // 引入依赖组件
 import Button from 'iview/src/components/button'
 import Card from 'iview/src/components/card'
@@ -9,6 +8,8 @@ import Icon from 'iview/src/components/icon'
 import Input from 'iview/src/components/input'
 import LoadingBar from 'iview/src/components/loading-bar'
 import Message from 'iview/src/components/message'
+import Menu from 'iview/src/components/menu'
+import {Row, Col} from 'iview/src/components/grid';
 // 组件组
 const components = {
   Button,
@@ -18,7 +19,15 @@ const components = {
   Icon,
   Input,
   Card,
-  LoadingBar
+  LoadingBar,
+  Menu,
+  iMenu: Menu,
+  MenuGroup: Menu.Group,
+  MenuItem: Menu.Item,
+  Submenu: Menu.Sub,
+  Col,
+  iCol: Col,
+  Row
 }
 // 实例化组件组
 const install = function (Vue) {

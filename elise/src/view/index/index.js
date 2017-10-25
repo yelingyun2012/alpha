@@ -15,7 +15,10 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  mounted(){
+    this.$store.commit('permission/updateMenuList')
+  }
 })
 
 /**
