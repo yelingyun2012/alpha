@@ -1,6 +1,8 @@
 <template lang="pug">
   section.error404
     .error404-body
+      Select(v-model="test")
+        Option(v-for="item of webList", :value="item.value", :key="item.value") {{item.label}}
       Card
         .error404-body-title
           | 4
@@ -15,6 +17,37 @@
 <script>
   export default {
     name: 'Error404',
+    data () {
+      return {
+        test: 2,
+        webList: [
+          {
+            value: 2,
+            label: '对标天猫'
+          },
+          {
+            value: 3,
+            label: '对标京东'
+          },
+          {
+            value: 4,
+            label: '对标一号店'
+          },
+          {
+            value: 5,
+            label: '对标华润'
+          },
+          {
+            value: 7,
+            label: '对标沃尔玛'
+          },
+          {
+            value: 9,
+            label: '对标永辉'
+          }
+        ]
+      }
+    },
     methods: {
       backPage () {
         this.$router.go(-1)

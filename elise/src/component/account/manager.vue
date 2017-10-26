@@ -1,8 +1,8 @@
 <template lang="pug">
-  p access_test
+  p manager
 </template>
 <script>
   export default {
-    name:'access_test'
+    name:'Manager'
   }
 </script>

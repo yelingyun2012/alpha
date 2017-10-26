@@ -1,8 +1,8 @@
 <template lang="pug">
-  p editor
+  p runLog
 </template>
 <script>
   export default {
-    name:'editor'
+    name:'RunLog'
   }
 </script>

@@ -34,13 +34,49 @@ export const constantRouterMap = [
 
 export const appRouter = [
   {
+    path: '/basic',
+    icon: 'key',
+    name: 'basic',
+    title: '基本配置',
+    component: Main,
+    children: [
+      {
+        path: 'taskManager',
+        icon: 'compose',
+        title: '任务管理',
+        name: 'taskManager',
+        component: _import('basic/taskManager')
+      },
+      {path: 'pageManager', icon: 'pound', title: '页面模型', name: 'pageManager', component: _import('basic/pageManager')},
+      {path: 'siteManager', icon: 'crop', title: '站点管理', name: 'siteManager', component: _import('basic/siteManager')},
+      {
+        path: 'agentManager',
+        icon: 'arrow-move',
+        title: '代理管理',
+        name: 'agentManager',
+        component: _import('basic/agentManager')
+      },
+    ]
+  },
+  {
+    path: 'log',
+    icon: 'android-checkbox',
+    name: 'log',
+    title: '日志查询',
+    component: Main,
+    children: [
+      {path: 'runLog', icon: 'compose', title: '运行日志', name: 'runLog', component: _import('log/runLog')},
+      {path: 'logStats', icon: 'arrow-swap', title: '日志统计', name: 'logStats', component: _import('log/logStats')}
+    ]
+  },
+  {
     path: '/access',
     icon: 'key',
     name: 'access',
     title: '权限管理',
     component: Main,
     children: [
-      {path: 'index', title: '权限管理', name: 'access_index', component:_import('layout/access')}
+      {path: 'index', title: '权限管理', name: 'access_index', component: _import('layout/access')}
     ]
   },
   {
@@ -51,7 +87,7 @@ export const appRouter = [
     access: 0,
     component: Main,
     children: [
-      {path: 'index', title: '权限测试页', name: 'accesstest_index',component:_import('layout/access_test')}
+      {path: 'index', title: '权限测试页', name: 'accesstest_index', component: _import('layout/access_test')}
     ]
   },
   {
@@ -66,7 +102,7 @@ export const appRouter = [
         icon: 'compose',
         name: 'text-editor',
         title: '富文本编辑器',
-        component:_import('layout/editor')
+        component: _import('layout/editor')
       },
       {
         path: 'md-editor',

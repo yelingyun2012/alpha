@@ -4,7 +4,7 @@ import md5 from 'js-md5'
 /**
  * 用户登陆
  */
-export const Login = (loginForm) => fetch('user/login', {
+export const Login = (loginForm) => fetch('account/login', {
   method: 'post',
   data: {
     username: loginForm.account,
@@ -14,7 +14,7 @@ export const Login = (loginForm) => fetch('user/login', {
 /**
  * 用户退出
  */
-export const LoginOut = (token) => fetch('user/logout', {
+export const LoginOut = (token) => fetch('account/logout', {
   method:'post',
   data:{
     token

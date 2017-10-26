@@ -1,8 +1,8 @@
 <template lang="pug">
-  p haha
+  p siteManager
 </template>
 <script>
   export default {
-    name:'access'
+    name:'SiteManager'
   }
 </script>

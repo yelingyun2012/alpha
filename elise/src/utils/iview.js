@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import 'iview/dist/styles/iview.css'
+import 'core-js/fn/array/find'
+import 'core-js/fn/array/find-index'
 // 引入依赖组件
 import Button from 'iview/src/components/button'
 import Card from 'iview/src/components/card'
@@ -9,7 +11,8 @@ import Input from 'iview/src/components/input'
 import LoadingBar from 'iview/src/components/loading-bar'
 import Message from 'iview/src/components/message'
 import Menu from 'iview/src/components/menu'
-import {Row, Col} from 'iview/src/components/grid';
+import { Col, Row } from 'iview/src/components/grid'
+import { Option, OptionGroup, Select } from 'iview/src/components/select'
 // 组件组
 const components = {
   Button,
@@ -27,7 +30,12 @@ const components = {
   Submenu: Menu.Sub,
   Col,
   iCol: Col,
-  Row
+  Row,
+  Select,
+  iSelect: Select,
+  Option: Option,
+  iOption: Option,
+  OptionGroup,
 }
 // 实例化组件组
 const install = function (Vue) {
