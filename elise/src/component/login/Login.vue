@@ -19,6 +19,7 @@
 </template>
 <script>
   import { mapState, mapActions } from 'vuex'
+  import md5 from 'js-md5'
 
   export default {
     name: 'Login',
@@ -49,8 +50,9 @@
         })
         this.$refs[name].validate((valid) => {
           if (valid) {
+            this.loginForm.password = md5(this.loginForm.password)
             this.Login(this.loginForm).then(() => {
-              this.$router.push({path: '/'})
+              this.$router.push({path: '/basic'})
             }).catch(error => {
               this.$Message.error(error)
             })

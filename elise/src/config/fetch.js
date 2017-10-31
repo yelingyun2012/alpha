@@ -3,7 +3,7 @@ import qs from 'qs'
 import router from '../router'
 
 // axios 配置参数
-const baseURL = `http://o2o.beyebe.com:8089/o2o_beyebe/api/`
+const baseURL = `http://192.168.10.93:8282/`
 axios.defaults.baseURL = baseURL
 axios.defaults.timeout = 30000
 
@@ -61,7 +61,7 @@ function checkStatus (response) {
 function checkCode (response) {
   // code码存在时,对相应的Code码进行处理
   if (response.data.respCode) {
-    let CodeArr = ['0', '2001', '2002', '2003', '2004', '2005', '2006', '3001', '4002']
+    let CodeArr = ['0', '2001', '2002', '2003', '2004', '2005', '2006', '3001', '4002','1001','1000']
     if (CodeArr.includes(response.data.respCode)) {
       return response
     } else {

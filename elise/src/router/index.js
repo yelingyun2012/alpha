@@ -28,8 +28,7 @@ export const constantRouterMap = [
     path: '*',
     name: 'error_404',
     component: _import('error/404')
-  },
-
+  }
 ]
 
 export const appRouter = [
@@ -56,6 +55,7 @@ export const appRouter = [
         name: 'agentManager',
         component: _import('basic/agentManager')
       },
+      {path:'taskManagerChild/:id',name:'taskManagerChild',title:'任务操作',component:_import('basic/child/taskManagerChild')}
     ]
   },
   {

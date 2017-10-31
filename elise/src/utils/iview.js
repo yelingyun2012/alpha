@@ -13,6 +13,8 @@ import Message from 'iview/src/components/message'
 import Menu from 'iview/src/components/menu'
 import { Col, Row } from 'iview/src/components/grid'
 import { Option, OptionGroup, Select } from 'iview/src/components/select'
+import Table from 'iview/src/components/table'
+import Page from 'iview/src/components/page'
 // 组件组
 const components = {
   Button,
@@ -36,6 +38,9 @@ const components = {
   Option: Option,
   iOption: Option,
   OptionGroup,
+  iTable: Table,
+  Table,
+  Page
 }
 // 实例化组件组
 const install = function (Vue) {

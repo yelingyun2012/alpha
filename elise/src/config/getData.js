@@ -4,11 +4,11 @@ import md5 from 'js-md5'
 /**
  * 用户登陆
  */
-export const Login = (loginForm) => fetch('account/login', {
+export const Login = (loginForm) => fetch('elise/login', {
   method: 'post',
   data: {
-    username: loginForm.account,
-    password: loginForm.password
+    loginName: loginForm.account,
+    pwd: loginForm.password
   }
 })
 /**

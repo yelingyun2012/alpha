@@ -14,8 +14,8 @@ const actions = {
   handleLogin({ commit }, loginForm) {
     return new Promise((resolve, reject) => {
       Login(loginForm).then(response => {
-        setCookie('token', response.data.response[0].token)
-        commit('SET_TOKEN', response.data.response[0].token)
+        setCookie('token', response.data.data.token)
+        commit('SET_TOKEN', response.data.data.token)
       })
       resolve()
     }).catch(err => {

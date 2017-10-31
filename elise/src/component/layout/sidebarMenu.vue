@@ -1,5 +1,5 @@
 <template>
-  <Menu ref="sideMenu" :active-name="currentPageName" theme="dark" width="auto" @on-select="changeMenu">
+  <Menu ref="sideMenu" :active-name="currentPageName" theme="dark" width="200px" @on-select="changeMenu">
     <template v-for="item in menuList">
       <MenuItem v-if="item.children.length<=1" :name="item.children[0].name" :key="item.path">
         <Icon :type="item.icon" :key="item.path"></Icon>
