@@ -15,6 +15,9 @@ import { Col, Row } from 'iview/src/components/grid'
 import { Option, OptionGroup, Select } from 'iview/src/components/select'
 import Table from 'iview/src/components/table'
 import Page from 'iview/src/components/page'
+import Tabs from 'iview/src/components/tabs'
+import Checkbox from 'iview/src/components/checkbox'
+import DatePicker from 'iview/src/components/date-picker';
 // 组件组
 const components = {
   Button,
@@ -40,7 +43,12 @@ const components = {
   OptionGroup,
   iTable: Table,
   Table,
-  Page
+  Page,
+  Tabs: Tabs,
+  TabPane: Tabs.Pane,
+  Checkbox,
+  CheckboxGroup: Checkbox.Group,
+  DatePicker
 }
 // 实例化组件组
 const install = function (Vue) {

@@ -7,10 +7,11 @@
       Button(@click="handleAdd") 新增
     aside.task-minute
       header.task-site
-        span.task-site-active 全部
-        span 百度外卖 深圳(10)
+        template(v-for="(item,index) of siteList")
+          span(:class="{'task-site-active':activeIndex===index}", :key="item.siteName", @click="handleCut(index)") {{item.siteName}}
+            i(style='font-style: inherit;', v-if='item.siteName!=="全部"') ({{item.siteCount}})
       section.task-mission
-        Table(:columns="taskColumns")
+        Table(:columns="taskColumns",:data="taskData")
         Page(:total="100", show-elevator, show-total)
 </template>
 <script>
@@ -18,25 +19,76 @@
     name: 'TaskManager',
     data () {
       return {
+        activeIndex: 0,
+        siteList: [
+          {
+            siteName: '全部',
+          },
+          {
+            siteName: '百度外卖 深圳',
+            siteCount: '10'
+          },
+          {
+            siteName: '天猫',
+            siteCount: '12'
+          },
+          {
+            siteName: '百度外卖 广州',
+            siteCount: '50'
+          },
+          {
+            siteName: '美团外卖',
+            siteCount: '30'
+          },
+        ],
         taskColumns: [
-          {title: 'ID'},
-          {title: '任务名称'},
-          {title: '有效时间'},
-          {title: '创建时间'},
-          {title: '创建人'},
-          {title: '优先级'},
-          {title: '签出状态'},
-          {title: '签出时间'},
-          {title: '当前状态'},
-          {title: '进度'},
-          {title: '抽取率'},
-          {title: '操作'}
+          {title: 'ID', key: 'id'},
+          {
+            title: '任务名称',
+            key: 'taskName',
+            render: (h, params) => {
+              return h('router-link',{
+                props:{
+                  to:'taskManagerChild/alter'
+                }
+              },params.row.taskName)
+            }
+          },
+          {title: '有效时间', key: 'validTime'},
+          {title: '创建时间', key: 'createdTime'},
+          {title: '创建人', key: 'createPeople'},
+          {title: '优先级', key: 'priority'},
+          {title: '签出状态', key: 'checkOutTheStatus'},
+          {title: '签出时间', key: 'checkOutTime'},
+          {title: '当前状态', key: 'currentState'},
+          {title: '进度', key: 'plan'},
+          {title: '抽取率', key: 'extractionRate'},
+          {title: '操作', key: 'operate'}
+        ],
+        taskData: [
+          {
+            id: 123,
+            taskName: 'Haas的',
+            validTime: '2017-05-06',
+            createdTime: '2017-08-09',
+            createPeople: '哈哈',
+            priority: 1,
+            checkOutTheStatus: true,
+            checkOutTime: '2018-06-04',
+            currentState: false,
+            plan: '20%',
+            extractionRate: '20%',
+            operate: 'asdad'
+          }
         ]
       }
     },
     methods: {
       handleAdd () {
-        this.$router.push('/basic/taskManagerChild/add')
+        this.$router.push('taskManagerChild/add')
+      },
+      handleCut (subscript) {
+        this.activeIndex = subscript
       }
     }
   }
