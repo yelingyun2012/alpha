@@ -17,7 +17,9 @@ import Table from 'iview/src/components/table'
 import Page from 'iview/src/components/page'
 import Tabs from 'iview/src/components/tabs'
 import Checkbox from 'iview/src/components/checkbox'
-import DatePicker from 'iview/src/components/date-picker';
+import DatePicker from 'iview/src/components/date-picker'
+import Modal from 'iview/src/components/modal'
+import Poptip from 'iview/src/components/poptip';
 // 组件组
 const components = {
   Button,
@@ -48,7 +50,9 @@ const components = {
   TabPane: Tabs.Pane,
   Checkbox,
   CheckboxGroup: Checkbox.Group,
-  DatePicker
+  DatePicker,
+  Modal,
+  Poptip
 }
 // 实例化组件组
 const install = function (Vue) {

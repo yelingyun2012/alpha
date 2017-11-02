@@ -46,8 +46,20 @@ export const appRouter = [
         name: 'taskManager',
         component: _import('basic/taskManager')
       },
-      {path: 'pageManager', icon: 'pound', title: '页面模型', name: 'pageManager', component: _import('basic/pageManager')},
-      {path: 'siteManager', icon: 'crop', title: '站点管理', name: 'siteManager', component: _import('basic/siteManager')},
+      {
+        path: 'pageManager',
+        icon: 'pound',
+        title: '页面模型',
+        name: 'pageManager',
+        component: _import('basic/pageManager')
+      },
+      {
+        path: 'siteManager',
+        icon: 'crop',
+        title: '站点管理',
+        name: 'siteManager',
+        component: _import('basic/siteManager')
+      },
       {
         path: 'agentManager',
         icon: 'arrow-move',
@@ -55,7 +67,22 @@ export const appRouter = [
         name: 'agentManager',
         component: _import('basic/agentManager')
       },
-      {path:'taskManagerChild/:id',name:'taskManagerChild',title:'任务操作',component:_import('basic/child/taskManagerChild')}
+      {
+        path: 'taskManagerChild/:id',
+        name: 'taskManagerChild',
+        title: '任务操作',
+        component: _import('basic/child/taskManagerChild')
+      }
+    ]
+  },
+  {
+    path: '/account',
+    icon: 'social-buffer',
+    title: '用户管理',
+    name: 'userManager',
+    component: Main,
+    children: [
+      {path: 'manager', title: '账户管理', name: 'accountManager', component: _import('account/manager')}
     ]
   },
   {

@@ -107,7 +107,7 @@
         color #323232
       .typeIn
         margin-right 30px
-        margin-left 3px
+        margin-left 4px
       .ivu-btn
         padding 6px 23px
         font-size 14px
@@ -146,4 +146,5 @@
 <style lang="stylus">
   .ivu-input
     font-size 14px
+    height 36px
 </style>
