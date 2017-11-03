@@ -86,6 +86,16 @@ export const appRouter = [
     ]
   },
   {
+    path:'/pageModel',
+    icon:'social-buffer',
+    title:'页面模型',
+    name:'pageModel',
+    component:Main,
+    children:[
+      {path:'index',title:'页面模型测试',name:'pageModelTest',component:_import('pageModel/index')}
+    ]
+  },
+  {
     path: 'log',
     icon: 'android-checkbox',
     name: 'log',
