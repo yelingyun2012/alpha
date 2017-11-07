@@ -4,7 +4,7 @@
  * 项目配置参数
  * @type {string}
  */
-const projectName = 'elise'
+const projectName = 'bread'
 const filenameExtension = 'pug'
 
 /**

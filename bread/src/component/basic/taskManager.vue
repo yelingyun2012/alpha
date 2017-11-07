@@ -36,7 +36,7 @@
             render: (h, params) => {
               return h('router-link', {
                 props: {
-                  to: 'taskManagerChild/alter'
+                  to: '/taskManagerChild/alter'
                 }
               }, params.row.taskName)
             }
@@ -91,7 +91,7 @@
 
       },
       handleAdd () {
-        this.$router.push('taskManagerChild/add')
+        this.$router.push('/taskManagerChild/add')
       },
       handleCut (subscript) {
         this.activeIndex = subscript
