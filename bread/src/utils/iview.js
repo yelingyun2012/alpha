@@ -21,6 +21,8 @@ import DatePicker from 'iview/src/components/date-picker'
 import Modal from 'iview/src/components/modal'
 import Poptip from 'iview/src/components/poptip'
 import Radio from 'iview/src/components/radio'
+import Dropdown from 'iview/src/components/dropdown'
+
 // 组件组
 const components = {
   Button,
@@ -55,8 +57,12 @@ const components = {
   Modal,
   Poptip,
   Radio,
-  RadioGroup: Radio.Group
+  RadioGroup: Radio.Group,
+  Dropdown,
+  DropdownItem: Dropdown.Item,
+  DropdownMenu: Dropdown.Menu
 }
+
 // 实例化组件组
 const install = function (Vue) {
   Object.keys(components).forEach(key => Vue.component(key, components[key]))

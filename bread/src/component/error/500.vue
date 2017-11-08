@@ -88,8 +88,6 @@
           &:last-child
             width 200px
             margin-left 40px
-            background-color #dc9a35
-            border-color #dc9a35
 </style>
 
 

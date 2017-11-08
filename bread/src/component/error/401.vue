@@ -90,8 +90,6 @@
           &:last-child
             width 200px
             margin-left 40px
-            background-color #dc9a35
-            border-color #dc9a35
     &-key
       &-span
         display inline-block
@@ -108,7 +106,6 @@
           transform translate(-50%, -50%)
           transform-origin center bottom
           animation error401animation 2.8s ease 0s infinite
-
 </style>
 
 

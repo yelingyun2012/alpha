@@ -1,20 +1,20 @@
 <template>
-  <Menu ref="sideMenu" :active-name="currentPageName" theme="dark" width="200px" @on-select="changeMenu">
+  <Menu ref="sideMenu" :active-name="$route.name" :open-names="openedSubmenuArr" theme="dark" width="200px" @on-select="changeMenu">
     <template v-for="item in menuList">
       <MenuItem v-if="item.children.length<=1" :name="item.children[0].name" :key="item.path">
-        <Icon :type="item.icon" :key="item.path"></Icon>
-        <span class="layout-text" :key="item.path">{{ item.title }}</span>
+        <Icon v-if="item.icon" :type="item.icon"></Icon>
+        <span class="layout-text">{{ item.title }}</span>
       </MenuItem>
 
       <Submenu v-if="item.children.length>1" :name="item.name" :key="item.path">
         <template slot="title">
-          <Icon :type="item.icon"></Icon>
+          <Icon v-if="item.icon" :type="item.icon"></Icon>
           <span class="layout-text">{{ item.title }}</span>
         </template>
         <template v-for="child in item.children">
           <MenuItem :name="child.name" :key="child.name">
-            <Icon :type="child.icon" :key="child.name"></Icon>
-            <span class="layout-text" :key="child.name">{{ child.title }}</span>
+            <Icon v-if="child.icon" :type="child.icon"></Icon>
+            <span class="layout-text">{{ child.title }}</span>
           </MenuItem>
         </template>
       </Submenu>
@@ -24,13 +24,12 @@
 
 <script>
   export default {
+    name: 'sidebarMenu',
     data () {
       return {
-        currentPageName: this.$route.name,
         openedSubmenuArr: this.$store.state.openedSubmenuArr
       }
     },
-    name: 'sidebarMenu',
     props: {
       menuList: Array
     },
