@@ -7,25 +7,27 @@
       router-view
 </template>
 <script>
+  import { mapState, mapMutations } from 'vuex'
   import headerView from '../component/layout/header.vue'
   import sidebarMenu from '../component/layout/sidebarMenu.vue'
 
   export default {
-    name: 'mainTest',
+    name: 'Main',
     components: {
       headerView,
       sidebarMenu
     },
     computed: {
-      menuList () {
-        return this.$store.state.permission.menuList
-      }
+      ...mapState({
+        menuList: state => state.permission.menuList
+      })
     },
     methods: {
+      ...mapMutations({
+        addOpenSubmenu: 'permission/addOpenSubmenu'
+      }),
       init () {
-        console.log(this.$route.name)
-        console.log(this.$route.fullPath)
-        console.log(this.$route.path)
+        this.addOpenSubmenu('basic')
       }
     },
     mounted () {

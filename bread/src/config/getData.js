@@ -16,21 +16,26 @@ export const Login = (loginForm) => fetch('elise/login', {
  */
 export const LoginOut = (token) => fetch('account/logout', {
   method: 'post',
-  data: {token}
+  data: { token }
 })
 
 /**
  * 统计站点
  */
-export const siteNum = (token) => fetch('site/sitenum', {
+export const siteNum = (params) => fetch('site/sitenum', {
   method: 'post',
-  data: token
+  data: params
 })
 
 /**
  * 模型列表
  */
-export const pageModelList = (params) => fetch('pagemodel/list', {
+// export const pageModelList = (params) => fetch('pagemodel/list', {
+//   method: 'post',
+//   data: params
+// })
+
+export const taskList = (params) => fetch('task/list', {
   method: 'post',
-  data: {params}
-})
+  data: params
+}) 
