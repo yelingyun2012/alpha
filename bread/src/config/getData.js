@@ -16,7 +16,7 @@ export const Login = (loginForm) => fetch('elise/login', {
  */
 export const LoginOut = (token) => fetch('account/logout', {
   method: 'post',
-  data: { token }
+  data: {token}
 })
 
 /**
@@ -35,7 +35,59 @@ export const siteNum = (params) => fetch('site/sitenum', {
 //   data: params
 // })
 
+/**
+ * 任务列表
+ */
 export const taskList = (params) => fetch('task/list', {
   method: 'post',
   data: params
-}) 
+})
+/**
+ * 字典类型
+ */
+export const queryType = params => fetch('pagemodel/querytype', {
+  method: 'post',
+  data: params
+})
+/**
+ * 站点加载
+ */
+export const listSiteName = params => fetch('site/listsitename', {
+  method: 'post',
+  data: params
+})
+/**
+ * 任务签出
+ */
+export const taskCheckout = params => fetch('task/checkout', {
+  method: 'post',
+  data: params
+})
+/**
+ * 任务添加
+ */
+export const taskAdd = params => fetch('task/add', {
+  method: 'post',
+  data: params
+})
+/***
+ * 任务匹配
+ */
+export const matchingModel = params => fetch('task/matchingModel', {
+  method: 'post',
+  data: params
+})
+/***
+ * 任务操控
+ */
+export const queryCollectionHistory = params => fetch('task/queryCollectionHistory', {
+  method: 'post',
+  data: params
+})
+/***
+ * 任务签入
+ */
+export const taskCheckin = params => fetch('task/checkin', {
+  method: 'post',
+  data: params
+})

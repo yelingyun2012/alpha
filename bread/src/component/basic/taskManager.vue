@@ -2,7 +2,7 @@
   section
     aside.task-name
       span.explain 任务名称 :
-      Input(v-model='searchName', placeholder='请输入任务名称', style="width: 20%;max-width:300px").typeIn
+      Input(v-model='taskName', placeholder='请输入任务名称', style="width: 20%;max-width:300px").typeIn
       Button(type="success", @click="handleSearch") 查询
       Button(@click="handleAdd") 新增
     aside.task-minute
@@ -11,11 +11,11 @@
           span(:class="{'task-site-active':activeIndex===index}", :key="item.number", @click="handleCut(index,item.siteId)") {{item.siteName}}
             i(style='font-style: inherit;', v-if='item.siteName!=="全部"') ({{item.number}})
       section.task-mission
-        Table(:columns="taskColumns",:data="taskData")
-        Page(:total="pageTotal", show-elevator, show-total, @on-change="handlePage")
+        Table(:columns="taskColumns", :data="taskData", border)
+        Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
 </template>
 <script>
-  import { siteNum, taskList } from '../../config/getData'
+  import { siteNum, taskList, queryCollectionHistory } from '../../config/getData'
   import { getCookie } from '../../utils/cookie'
 
   export default {
@@ -44,10 +44,18 @@
                 'router-link',
                 {
                   props: {
-                    to: '/taskManagerChild/alter'
+                    to: {
+                      path: '/taskManagerChild/alter',
+                      query: {
+                        checkType: `${params.row.checkType}`,
+                        taskId: `${params.row.taskId}`,
+                        updatePersonId: `${params.row.updatePersonId}`,
+                        status: `${params.row.status}`
+                      }
+                    }
                   }
                 },
-                params.row.strategyName
+                params.row.taskName
               )
             }
           },
@@ -58,8 +66,16 @@
                 return `${params.row.startTime} ~ ${params.row.endTime}`
             }
           },
-          {title: '创建时间', key: 'createTimes'},
-          {title: '上次更新时间', key: 'lastCrawlTime'},
+          {
+            title: '创建时间',
+            width: 150,
+            key: 'createTimes'
+          },
+          {
+            title: '上次更新时间',
+            width: 150,
+            key: 'lastCrawlTime'
+          },
           {title: '创建人', key: 'createName'},
           {
             title: '优先级',
@@ -85,12 +101,16 @@
                   return `未签出`
                   break
                 case 1:
-                  return `签出`
+                  return `已签出`
                   break
               }
             }
           },
-          {title: '签出时间', key: 'updateTimes'},
+          {
+            title: '签出时间',
+            width: 150,
+            key: 'updateTimes'
+          },
           {
             title: '当前状态',
             render: (h, params) => {
@@ -115,27 +135,208 @@
           },
           {title: '进度', key: 'speedOfProgress'},
           {title: '抽取率', key: 'extractionRate'},
-          {title: '操作', key: 'operate'}
-        ],
-        taskData: [
           {
-            id: 123,
-            taskName: 'Haas的',
-            validTime: '2017-05-06',
-            createdTime: '2017-08-09',
-            createPeople: '哈哈',
-            priority: 1,
-            checkOutTheStatus: true,
-            checkOutTime: '2018-06-04',
-            currentState: false,
-            plan: '20%',
-            extractionRate: '20%',
-            operate: 'asdad'
+            title: '操作',
+            key: 'operate',
+            render: (h, params) => {
+              let a
+              switch (params.row.status) {
+                case 0:
+                  return a = [
+                    h('span', {
+                      on: {
+                        click: (event) => {
+                          queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 1,
+                            token: getCookie('token')
+                          }).then(response => {
+                            if (response.data.respCode !== '0') {
+                              this.$Message.warning(response.data.respMsg)
+                            } else {
+                              params.row.status = 1
+                            }
+                          })
+                        }
+                      }
+                    }, '启动'),
+                    h('span', {
+                      on: {
+                        click: (event) => {
+                          let _this = this
+                          queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 3,
+                            token: getCookie('token')
+                          }).then(response => {
+                            if (response.data.respCode !== '0') {
+                              this.$Message.warning(response.data.respMsg)
+                            } else {
+                              this.remove(params.index)
+                            }
+                          })
+                        }
+                      }
+                    }, '删除')]
+                  break
+                case 1:
+                  return a = [
+                    h('span',{
+                      on: {
+                        click: (event) => {
+                          queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 0,
+                            token: getCookie('token')
+                          }).then(response => {
+                            if (response.data.respCode !== '0') {
+                              this.$Message.warning(response.data.respMsg)
+                            } else {
+                              params.row.status = 0
+                            }
+                          })
+                        }
+                      }
+                    } ,'停止'),
+                    h('span', {
+                      on: {
+                        click: (event) => {
+                          queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 2,
+                            token: getCookie('token')
+                          }).then(response => {
+                            if (response.data.respCode !== '0') {
+                              this.$Message.warning(response.data.respMsg)
+                            } else {
+                              params.row.status = 2
+                            }
+                          })
+                        }
+                      }
+                    },'暂停'),
+                    h('span', {
+                      on: {
+                        click: (event) => {
+                          queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 3,
+                            token: getCookie('token')
+                          }).then(response => {
+                            if (response.data.respCode !== '0') {
+                              this.$Message.warning(response.data.respMsg)
+                            } else {
+                              this.remove(params.index)
+                            }
+                          })
+                        }
+                      }
+                    }, '删除')]
+                  break
+                case 2:
+                  return a = [
+                    h('span', {
+                      on: {
+                        click: (event) => {
+                          queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 0,
+                            token: getCookie('token')
+                          }).then(response => {
+                            if (response.data.respCode !== '0') {
+                              this.$Message.warning(response.data.respMsg)
+                            } else {
+                              params.row.status = 0
+                            }
+                          })
+                        }
+                      }
+                    },'停止'),
+                    h('span', {
+                      on: {
+                        click: (event) => {
+                          queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 1,
+                            token: getCookie('token')
+                          }).then(response => {
+                            if (response.data.respCode !== '0') {
+                              this.$Message.warning(response.data.respMsg)
+                            } else {
+                              params.row.status = 1
+                            }
+                          })
+                        }
+                      }
+                    },'启动'),
+                    h('span', {
+                      on: {
+                        click: (event) => {
+                          queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 3,
+                            token: getCookie('token')
+                          }).then(response => {
+                            if (response.data.respCode !== '0') {
+                              this.$Message.warning(response.data.respMsg)
+                            } else {
+                              this.remove(params.index)
+                            }
+                          })
+                        }
+                      }
+                    }, '删除')]
+                  break
+                case 4:
+                  return a = [
+                    h('span', '13'),
+                    h('span',{
+                      on: {
+                        click: (event) => {
+                          queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 1,
+                            token: getCookie('token')
+                          }).then(response => {
+                            if (response.data.respCode !== '0') {
+                              this.$Message.warning(response.data.respMsg)
+                            } else {
+                              params.row.status = 1
+                            }
+                          })
+                        }
+                      }
+                    } ,'启动'),
+                    h('span', {
+                      on: {
+                        click: (event) => {
+                          queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 3,
+                            token: getCookie('token')
+                          }).then(response => {
+                            if (response.data.respCode !== '0') {
+                              this.$Message.warning(response.data.respMsg)
+                            } else {
+                              this.remove(params.index)
+                            }
+                          })
+                        }
+                      }
+                    }, '删除')]
+                  break
+              }
+              return h('div', a)
+            }
           }
-        ]
+        ],
+        taskData: []
       }
     },
     methods: {
+      remove (index) {
+        this.taskData.splice(index, 1)
+      },
       initSite () {
         // 统计站点
         siteNum({
@@ -145,18 +346,13 @@
           this.siteList = this.siteList.concat(response.data.data)
         })
       },
-      initTaskList ({
-                      taskName = this.taskName,
-                      siteId = this.siteId,
-                      pageSize = this.pageSize,
-                      pageIndex = this.pageIndex
-                    }) {
+      initTaskList () {
         // 模型列表
         taskList({
-          taskname: taskName,
-          siteId: siteId,
-          pageSize: pageSize,
-          pageIndex: pageIndex,
+          taskname: this.taskName,
+          siteId: this.siteId,
+          pageSize: this.pageSize,
+          pageIndex: this.pageIndex,
           token: getCookie('token')
         }).then(response => {
           this.pageTotal = response.data.data.recordCount
@@ -164,7 +360,10 @@
         })
       },
       handleSearch () {
-        this.initTaskList({taskName: this.searchName})
+        this.activeIndex = 0
+        this.pageIndex = 1
+        this.siteId = ''
+        this.initTaskList()
       },
       handleAdd () {
         this.$router.push('/taskManagerChild/add')
@@ -172,16 +371,16 @@
       handleCut (subscript, siteId) {
         this.activeIndex = subscript
         this.siteId = siteId
-        this.initTaskList({siteId: this.siteId})
+        this.initTaskList()
       },
       handlePage (pageIndex) {
         this.pageIndex = pageIndex
-        this.initTaskList({})
+        this.initTaskList()
       }
     },
     created () {
       this.initSite()
-      this.initTaskList({})
+      this.initTaskList()
     }
   }
 </script>
@@ -265,81 +464,8 @@
   }
 </style>
 <style lang="stylus">
-  // 公共函数
-  taskWrapper(top, right, bottom, left) {
-    background-color: #fff;
-    padding: top right bottom left;
-  }
-  .task {
-    &-name { // 任务名称
-      taskWrapper: 30px 20px 30px 20px;
-      margin-bottom: 20px;
-
-      .explain {
-        font-size: 14px;
-        color: #323232;
-      }
-
-      .typeIn {
-        margin-right: 30px;
-        margin-left: 4px;
-      }
-
-      .ivu-btn {
-        padding: 6px 23px;
-        font-size: 14px;
-
-        &-success {
-          background-color: rgba(23, 187, 156, 1);
-
-          &:hover {
-            background-color: rgba(23, 187, 156, 0.8);
-          }
-        }
-
-        &:last-child {
-          margin-left: 10px;
-          color: #17BB9C;
-          border-color: #17BB9C;
-
-          &:hover {
-            color: #57a3f3;
-            border-color: #57a3f3;
-          }
-        }
-      }
-    }
-
-    &-minute { // 任务详细
-      taskWrapper: 20px 20px 20px 20px;
-    }
-
-    &-site {
-      padding-bottom: 10px;
-      border-bottom: 1px dashed #B7B7B7;
-
-      span {
-        font-size: 14px;
-        color: #589BEE;
-        display: inline-block;
-        padding: 6px 15px;
-
-        &.task-site-active {
-          background-color: #2D8CF0;
-          color: #fff;
-          border-radius: 4px;
-        }
-      }
-    }
-
-    &-mission {
-      margin-top: 20px;
-
-      .ivu-page {
-        margin-top: 20px;
-        margin-right: 20px;
-        text-align: right;
-      }
-    }
-  }
+  .ivu-input
+    padding 7px 7px
+    height auto
+    font-size 14px
 </style>

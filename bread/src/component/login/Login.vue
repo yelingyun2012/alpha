@@ -7,7 +7,7 @@
         h5.login-form-head 比一比大数据平台
         Form(ref="loginForm", :model='loginForm', :rules="ruleValidate")
           FormItem(prop="account")
-            Input(placeholder='账号', icon="android-person", v-model='loginForm.account')
+            Input(placeholder='账号', icon="android-person", v-model='loginForm.account').login-form-con
           FormItem(prop='password')
             Input(placeholder='密码', icon="ios-locked-outline", v-model='loginForm.password', type="password", @keyup.enter.native='handleSubmit("loginForm")')
           FormItem

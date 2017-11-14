@@ -63,7 +63,7 @@ function checkStatus (response) {
 function checkCode (response) {
   // code码存在时,对相应的Code码进行处理
   if (response.data.respCode) {
-    let CodeArr = ['0', '2001', '2002', '2003', '2004', '2005', '2006', '3001', '4002','1001','100']
+    let CodeArr = ['0', '201', '202', '203', '204', '205', '206', '101','100']
     if (CodeArr.includes(response.data.respCode)) {
       return response
     } else {
