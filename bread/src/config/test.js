@@ -3,11 +3,11 @@ const otherRouter = {
   name: 'otherRouter',
   component: Main,
   children: [
-    {path: 'home', title: '首页', name: 'home_index'},
-    {path: 'ownspace', title: '个人中心', name: 'ownspace_index'},
-    {path: 'order/:order_id', title: '订单详情', name: 'order_info'},  // 用于展示动态路由
-    {path: 'shopping', title: '购物详情', name: 'shopping'},  // 用于展示带参路由
-    {path: 'message', title: '消息中心', name: 'message_index'}
+    { path: 'home', title: '首页', name: 'home_index' },
+    { path: 'ownspace', title: '个人中心', name: 'ownspace_index' },
+    { path: 'order/:order_id', title: '订单详情', name: 'order_info' },  // 用于展示动态路由
+    { path: 'shopping', title: '购物详情', name: 'shopping' },  // 用于展示带参路由
+    { path: 'message', title: '消息中心', name: 'message_index' }
   ]
 }
 
@@ -20,7 +20,7 @@ const appRouter = [
     title: '权限管理',
     component: Main,
     children: [
-      {path: 'index', title: '权限管理', name: 'access_index'}
+      { path: 'index', title: '权限管理', name: 'access_index' }
     ]
   },
   {
@@ -31,7 +31,7 @@ const appRouter = [
     access: 0,
     component: Main,
     children: [
-      {path: 'index', title: '权限测试页', name: 'accesstest_index'}
+      { path: 'index', title: '权限测试页', name: 'accesstest_index' }
     ]
   },
   {
@@ -86,8 +86,8 @@ const appRouter = [
     title: '表单编辑',
     component: Main,
     children: [
-      {path: 'artical-publish', title: '文章发布', name: 'artical-publish', icon: 'compose'},
-      {path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-swap'}
+      { path: 'artical-publish', title: '文章发布', name: 'artical-publish', icon: 'compose' },
+      { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-swap' }
 
     ]
   },
@@ -98,10 +98,10 @@ const appRouter = [
     title: '表格',
     component: Main,
     children: [
-      {path: 'dragableTable', title: '可拖拽排序', name: 'dragable-table', icon: 'arrow-move'},
-      {path: 'editableTable', title: '可编辑表格', name: 'editable-table', icon: 'edit'},
-      {path: 'exportableTable', title: '表格导出数据', name: 'exportable-table', icon: 'code-download'},
-      {path: 'table2image', title: '表格转图片', name: 'table-to-image', icon: 'images'}
+      { path: 'dragableTable', title: '可拖拽排序', name: 'dragable-table', icon: 'arrow-move' },
+      { path: 'editableTable', title: '可编辑表格', name: 'editable-table', icon: 'edit' },
+      { path: 'exportableTable', title: '表格导出数据', name: 'exportable-table', icon: 'code-download' },
+      { path: 'table2image', title: '表格转图片', name: 'table-to-image', icon: 'images' }
     ]
   },
   {
@@ -111,8 +111,8 @@ const appRouter = [
     title: '高级路由',
     component: Main,
     children: [
-      {path: 'mutative-router', title: '动态路由', name: 'mutative-router', icon: 'link'},
-      {path: 'argument-page', title: '带参页面', name: 'argument-page', icon: 'android-send'}
+      { path: 'mutative-router', title: '动态路由', name: 'mutative-router', icon: 'link' },
+      { path: 'argument-page', title: '带参页面', name: 'argument-page', icon: 'android-send' }
     ]
   },
   {
@@ -122,12 +122,12 @@ const appRouter = [
     name: 'errorpage',
     component: Main,
     children: [
-      {path: 'index', title: '错误页面', name: 'errorpage_index'}
+      { path: 'index', title: '错误页面', name: 'errorpage_index' }
     ]
   }
 ]
 
-function getRouterObjByName (routers, name) {
+function getRouterObjByName(routers, name) {
   let routerObj = {}
   routers.forEach(item => {
     if (item.name === 'otherRouter') {
@@ -153,7 +153,7 @@ function getRouterObjByName (routers, name) {
   return routerObj
 }
 
-function toDefaultPage (routers, name, route, next) {
+function toDefaultPage(routers, name, route, next) {
   let len = routers.length
   let i = 0
   let notHandle = true

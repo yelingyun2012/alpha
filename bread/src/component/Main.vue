@@ -7,45 +7,46 @@
       router-view
 </template>
 <script>
-  import { mapState, mapMutations } from 'vuex'
-  import headerView from '../component/layout/header.vue'
-  import sidebarMenu from '../component/layout/sidebarMenu.vue'
+import { mapState, mapMutations } from "vuex";
+import headerView from "../component/layout/header.vue";
+import sidebarMenu from "../component/layout/sidebarMenu.vue";
 
-  export default {
-    name: 'Main',
-    components: {
-      headerView,
-      sidebarMenu
-    },
-    computed: {
-      ...mapState({
-        menuList: state => state.permission.menuList
-      })
-    },
-    methods: {
-      ...mapMutations({
-        addOpenSubmenu: 'permission/addOpenSubmenu'
-      }),
-      init () {
-        this.addOpenSubmenu('basic')
-      }
-    },
-    mounted () {
-      this.init()
+export default {
+  name: "Main",
+  components: {
+    headerView,
+    sidebarMenu
+  },
+  computed: {
+    ...mapState({
+      menuList: state => state.permission.menuList
+    })
+  },
+  methods: {
+    ...mapMutations({
+      addOpenSubmenu: "permission/addOpenSubmenu"
+    }),
+    init() {
+      this.addOpenSubmenu("basic");
     }
+  },
+  mounted() {
+    this.init();
   }
+};
 </script>
 <style lang="stylus">
-  .sidebar
-    &-con
-      position fixed
-      left 10px
-      bottom 0
-      top 80px
-      height 100%
-      background-color #495060
-  .main
-    &-con
-      margin-left 210px
-      padding 20px
+.sidebar
+  &-con
+    position fixed
+    top 85px
+    bottom 0
+    height 100%
+    background-color #fff
+.main
+  &-con
+    margin-left 200px
+    padding 10px
+    padding-top 85px
+    padding-left 20px
 </style>

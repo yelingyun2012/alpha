@@ -2,7 +2,7 @@
   p runLog
 </template>
 <script>
-  export default {
-    name:'RunLog'
-  }
+export default {
+  name: "RunLog"
+};
 </script>

@@ -18,104 +18,127 @@
         a(href="http://www.miibeian.gov.cn/") 粤ICP备08129733号
 </template>
 <script>
-  import { mapState, mapActions } from 'vuex'
-  import md5 from 'js-md5'
+import { mapState, mapActions } from "vuex"
+import md5 from "js-md5"
 
-  export default {
-    name: 'Login',
-    data () {
-      return {
-        loginForm: {
-          account: '',
-          password: ''
-        },
-        ruleValidate: {
-          account: [
-            {required: true, message: '账号不能为空', trigger: 'blur'}
-          ],
-          password: [
-            {required: true, message: '账号不能为空', trigger: 'blur'}
-          ]
-        }
-      }
-    },
-    methods: {
-      ...mapActions({
-        Login: 'user/handleLogin'
-      }),
-      handleSubmit (name) {
-        this.$Message.config({
-          top: 30,
-          duration: 2.5
-        })
-        this.$refs[name].validate((valid) => {
-          if (valid) {
-            this.loginForm.password = md5(this.loginForm.password)
-            this.Login(this.loginForm).then(() => {
-              this.$router.push({path: '/basic'})
-            }).catch(error => {
-              this.$Message.error(error)
-            })
-          }
-        })
+export default {
+  name: "Login",
+  data() {
+    return {
+      loginForm: {
+        account: "",
+        password: ""
+      },
+      ruleValidate: {
+        account: [{ required: true, message: "账号不能为空", trigger: "blur" }],
+        password: [{ required: true, message: "账号不能为空", trigger: "blur" }]
       }
     }
+  },
+  methods: {
+    ...mapActions({
+      Login: "user/handleLogin"
+    }),
+    handleSubmit(name) {
+      this.$Message.config({
+        top: 30,
+        duration: 2.5
+      })
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.loginForm.password = md5(this.loginForm.password)
+          this.Login(this.loginForm)
+            .then(() => {
+              this.$router.push({ path: "/basic" })
+            })
+            .catch(error => {
+              this.$Message.error(error)
+            })
+        }
+      })
+    }
   }
+}
 </script>
 <style lang="stylus" scoped>
-  .login
-    &-con
-      width 100%
-      height 100%
-      background-image url(../../assets/images/login.jpg)
-      background-size cover
-    &-wrapper
-      width 100%
+.login
+  &-con
+    width 100%
+    height 100%
+    background-image url('../../assets/images/login.jpg')
+    background-size cover
+  &-wrapper
+    position absolute
+    top 40%
+    width 100%
+    transform translateY(-50%)
+    .ivu-card
+      margin 0 auto
+      padding 20px
+      width 350px
+      background-color transparent
+      .ivu-btn-success
+        padding 8px 15px
+        letter-spacing 10px
+        font-size 16px
+.login
+  &-form
+    &-logo
+      text-align center
+    &-head
+      margin-bottom 19px
+      color hsla(0,0%,100%,1)
+      text-align center
+      font-size 22px
+    &-footer
       position absolute
-      top 40%
-      transform translateY(-50%)
-      .ivu-card
-        width 350px
-        margin 0 auto
-        padding 20px
-        background-color transparent
-        .ivu-btn-success
-          padding: 8px 15px;
-          font-size: 16px;
-          letter-spacing: 10px;
-  .login
-    &-form
-      &-logo
-        text-align center
-      &-head
-        font-size 22px
-        color hsla(0, 0%, 100%, 1)
-        text-align center
-        margin-bottom 19px
-      &-footer
-        text-align center
-        width 100%
-        position absolute
-        bottom 1%
-        color hsla(0, 0%, 100%, 1)
-        a
-          margin-left 10px
-          color hsla(0, 0%, 100%, 1)
+      bottom 1%
+      width 100%
+      color hsla(0,0%,100%,1)
+      text-align center
+      a
+        margin-left 10px
+        color hsla(0,0%,100%,1)
 </style>
 <style lang="stylus">
-  .ivu-card
-    &:hover
-      box-shadow none
-  .ivu-input
-    padding 7px 7px
-    height auto
-    font-size 16px
-    padding-left 30px
-  .ivu-icon-android-person,
-  .ivu-icon-ios-locked-outline
-    left 0
-    height auto
-    line-height 40px
+.login
+  &-con
+    width 100%
+    height 100%
+    background-image url('../../assets/images/login.jpg')
+    background-size cover
+  &-wrapper
+    position absolute
+    top 40%
+    width 100%
+    transform translateY(-50%)
+    .ivu-card
+      margin 0 auto
+      padding 20px
+      width 350px
+      background-color transparent
+      .ivu-btn-success
+        padding 8px 15px
+        letter-spacing 10px
+        font-size 16px
+.login
+  &-form
+    &-logo
+      text-align center
+    &-head
+      margin-bottom 19px
+      color hsla(0,0%,100%,1)
+      text-align center
+      font-size 22px
+    &-footer
+      position absolute
+      bottom 1%
+      width 100%
+      color hsla(0,0%,100%,1)
+      text-align center
+      a
+        margin-left 10px
+        color hsla(0,0%,100%,1)
 </style>
 
 

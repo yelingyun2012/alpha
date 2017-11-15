@@ -2,7 +2,7 @@
   p agentManager
 </template>
 <script>
-  export default {
-    name:'AgentManager'
-  }
+export default {
+  name: "AgentManager"
+};
 </script>

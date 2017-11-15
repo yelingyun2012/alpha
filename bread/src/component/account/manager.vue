@@ -14,29 +14,33 @@
     data () {
       return {
         accountColumns: [
-          {title: 'ID', key: 'id'},
+          {title: '用户ID', key: 'id'},
           {title: '用户名', key: 'name'},
           {title: '用户类型', key: 'userType'},
           {title: '在线状态', key: 'status'},
-          {title: '联系电话', key: 'phone'},
+          {title: '联系方式', key: 'phone'},
           {title: '创建时间', key: 'createTime'},
           {title: '启用状态', key: 'initiateMode'},
-          {title: '有效时长', key: 'theEffectiveTime'},
-          {title: '上次登陆时间', key: 'lastLoginTime'},
+          {title: '有效时间', key: 'theEffectiveTime'},
+          {title: '上次登录时间', key: 'lastLoginTime'},
           {
             title: '操作',
             render: (h, params) => {
-              return h('span', {
-                style:{
-                  color:'#2d8cf0',
-                  cursor:'pointer'
-                },
-                on: {
-                  click: (event) => {
-                    console.log(123)
+              return h(
+                'span',
+                {
+                  style: {
+                    color: '#2d8cf0',
+                    cursor: 'pointer'
+                  },
+                  on: {
+                    click: event => {
+                      console.log(123)
+                    }
                   }
-                }
-              }, '删除')
+                },
+                '删除'
+              )
             }
           }
         ],
@@ -60,15 +64,15 @@
 <style lang="stylus">
   // 公共函数
   taskWrapper(top, right, bottom, left)
-    background-color #fff
     padding top right bottom left
+    background-color #fff
   .account
     &-name
-      taskWrapper 30px 20px 30px 20px
       margin-bottom 20px
+      taskWrapper 30px 20px 30px 20px
       .explain
-        font-size 14px
         color #323232
+        font-size 14px
       .typeIn
         margin-right 30px
         margin-left 4px
@@ -83,7 +87,27 @@
         text-align right
 </style>
 <style lang="stylus">
-  .ivu-input
-    font-size 14px
-    height 36px
+  // 公共函数
+  taskWrapper(top, right, bottom, left)
+    padding top right bottom left
+    background-color #fff
+  .account
+    &-name
+      margin-bottom 20px
+      taskWrapper 30px 20px 30px 20px
+      .explain
+        color #323232
+        font-size 14px
+      .typeIn
+        margin-right 30px
+        margin-left 4px
+      .ivu-btn
+        padding 6px 23px
+        font-size 14px
+    &-minute
+      taskWrapper 20px 20px 20px 20px
+      .ivu-page
+        margin-top 20px
+        margin-right 20px
+        text-align right
 </style>

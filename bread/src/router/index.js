@@ -53,7 +53,7 @@ export const appRouter = [
   {
     path: '/basic',
     name: 'basic',
-    icon: 'social-buffer',
+    icon: 'android-settings',
     title: '基本配置',
     component: Main,
     children: [

@@ -2,7 +2,7 @@
   p pageModel
 </template>
 <script>
-  export default {
-    name:'PageModel'
-  }
+export default {
+  name: "PageModel"
+};
 </script>

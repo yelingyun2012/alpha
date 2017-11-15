@@ -42,7 +42,7 @@ axios.interceptors.response.use(
  * 处理接口返回状态
  * @param {Number} response 接口返回对象
  */
-function checkStatus (response) {
+function checkStatus(response) {
   const Status = [200, 304]
   if (Status.includes(response.status)) {
     return response
@@ -60,10 +60,10 @@ function checkStatus (response) {
  * 处理接口返回参数
  * @param {Object} response 接口返回对象
  */
-function checkCode (response) {
+function checkCode(response) {
   // code码存在时,对相应的Code码进行处理
   if (response.data.respCode) {
-    let CodeArr = ['0', '201', '202', '203', '204', '205', '206', '101','100']
+    let CodeArr = ['0', '201', '202', '203', '204', '205', '206', '101', '100']
     if (CodeArr.includes(response.data.respCode)) {
       return response
     } else {
@@ -114,7 +114,7 @@ function checkCode (response) {
  * @param {String} options 请求具体参数
  * @returns {Object} 接口请求返回对象
  */
-export function fetch (url, options) {
+export function fetch(url, options) {
   let opt = options || {}
   return axios({
     url,

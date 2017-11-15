@@ -16,7 +16,7 @@ export const Login = (loginForm) => fetch('elise/login', {
  */
 export const LoginOut = (token) => fetch('account/logout', {
   method: 'post',
-  data: {token}
+  data: { token }
 })
 
 /**
