@@ -43,7 +43,13 @@ export const otherRouter = [
         name: 'taskManagerChild',
         title: '任务操作',
         component: _import('basic/child/taskManagerChild')
-      } // 展示任务添加与详情路由
+      }, // 展示任务添加与详情路由
+      {
+        path: 'alterUser/:operate',
+        name: 'alterUser',
+        title: '用户操作',
+        component: _import('account/child/alterUser')
+      }
     ]
   }
 ]

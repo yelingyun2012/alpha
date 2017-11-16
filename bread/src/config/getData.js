@@ -16,7 +16,7 @@ export const Login = (loginForm) => fetch('elise/login', {
  */
 export const LoginOut = (token) => fetch('account/logout', {
   method: 'post',
-  data: { token }
+  data: {token}
 })
 
 /**
@@ -88,6 +88,48 @@ export const queryCollectionHistory = params => fetch('task/queryCollectionHisto
  * 任务签入
  */
 export const taskCheckin = params => fetch('task/checkin', {
+  method: 'post',
+  data: params
+})
+/***
+ * 用户列表
+ */
+export const userList = params => fetch('user/list', {
+  method: 'post',
+  data: params
+})
+/***
+ * 用户删除
+ */
+export const userDelete = params => fetch('user/delete', {
+  method: 'post',
+  data: params
+})
+/***
+ * 用户状态更改
+ */
+export const userUpdateEnableds = params => fetch('user/updateEnableds', {
+  method: 'post',
+  data: params
+})
+/**
+ * 用户添加
+ */
+export const userAdd = params => fetch('user/add', {
+  method: 'post',
+  data: params
+})
+/***
+ * 用户详情
+ */
+export const userGet = params => fetch('user/get', {
+  method: 'post',
+  data: params
+})
+/***
+ * 用户信息修改
+ */
+export const userUpdate = params => fetch('user/update', {
   method: 'post',
   data: params
 })

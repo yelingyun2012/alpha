@@ -18,7 +18,7 @@ export default {
 html, body
   width 100%
   height 100%
-  background-color #f0f0f0
+  background-color #f0f0f0!important
 body
   overflow hidden
   min-height 100vh

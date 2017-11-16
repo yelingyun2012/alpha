@@ -6,7 +6,6 @@ import App from '../../component/App.vue'
 import '../../utils/iview'
 // 引入路由配置
 import '../../config/permission'
-
 /**
  * 实例化Vue对象
  */
