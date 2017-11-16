@@ -48,9 +48,8 @@
       span
         font-size 16px
         cursor pointer
-  .ivu-select-dropdown
-    top 40px !important
-  .ivu-icon
+  .ivu-icon-arrow-down-b
     margin-left 5px
-
+  .ivu-select-dropdown
+    top 45px !important
 </style>

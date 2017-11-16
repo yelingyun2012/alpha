@@ -498,69 +498,25 @@ export default {
   }
 }
 </script>
-<style lang="stylus" scoped>
-// 公共函数
-taskWrapper(top,right,bottom,left)
-  padding top right bottom left
-  background-color #fff
-.task
-  &-name // 任务名称
-    margin-bottom 20px
-    taskWrapper 30px 20px 30px 20px
-    .explain
-      color #323232
-      font-size 14px
-    .typeIn
-      margin-right 30px
-      margin-left 4px
-    .ivu-btn
-      padding 6px 23px
-      font-size 14px
-      &-success
-        background-color rgba(23,187,156,1)
-        &:hover
-          background-color rgba(23,187,156,.8)
-      &:last-child
-        margin-left 10px
-        border-color #17BB9C
-        color #17BB9C
-        &:hover
-          border-color #57a3f3
-          color #57a3f3
-  &-minute // 任务详细
-    taskWrapper 20px 20px 20px 20px
-  &-site
-    padding-bottom 10px
-    border-bottom 1px dashed #B7B7B7
-    span
-      display inline-block
-      padding 6px 15px
-      color #589BEE
-      font-size 14px
-      &.task-site-active
-        border-radius 4px
-        background-color #2D8CF0
-        color #fff
-  &-mission
-    margin-top 20px
-    .ivu-page
-      margin-top 20px
-      margin-right 20px
-      text-align right
-.ivu-input
-  padding 7px 7px !important
-  height auto !important
-  font-size 14px !important
-</style>
 <style lang="stylus">
 // 公共函数
 taskWrapper(top,right,bottom,left)
   padding top right bottom left
   background-color #fff
+
+tableDefault()
+  .ivu-table-cell
+    padding-right 10px
+    padding-left 10px
+
 .task
   &-name // 任务名称
     margin-bottom 20px
     taskWrapper 30px 20px 30px 20px
+    .ivu-input
+      padding 7px 7px
+      height auto
+      font-size 14px
     .explain
       color #323232
       font-size 14px
@@ -601,8 +557,21 @@ taskWrapper(top,right,bottom,left)
       margin-top 20px
       margin-right 20px
       text-align right
-.ivu-input
-  padding 7px 7px !important
-  height auto !important
-  font-size 14px !important
+    .ivu-table-header
+      tr
+        th 
+          tableDefault()
+    .ivu-table-body
+      tr
+        td
+          tableDefault()
 </style>
+
+
+
+
+
+
+
+
+

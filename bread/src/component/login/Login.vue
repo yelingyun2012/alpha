@@ -60,46 +60,6 @@ export default {
   }
 }
 </script>
-<style lang="stylus" scoped>
-.login
-  &-con
-    width 100%
-    height 100%
-    background-image url('../../assets/images/login.jpg')
-    background-size cover
-  &-wrapper
-    position absolute
-    top 40%
-    width 100%
-    transform translateY(-50%)
-    .ivu-card
-      margin 0 auto
-      padding 20px
-      width 350px
-      background-color transparent
-      .ivu-btn-success
-        padding 8px 15px
-        letter-spacing 10px
-        font-size 16px
-.login
-  &-form
-    &-logo
-      text-align center
-    &-head
-      margin-bottom 19px
-      color hsla(0,0%,100%,1)
-      text-align center
-      font-size 22px
-    &-footer
-      position absolute
-      bottom 1%
-      width 100%
-      color hsla(0,0%,100%,1)
-      text-align center
-      a
-        margin-left 10px
-        color hsla(0,0%,100%,1)
-</style>
 <style lang="stylus">
 .login
   &-con
@@ -117,6 +77,15 @@ export default {
       padding 20px
       width 350px
       background-color transparent
+      &:hover
+        box-shadow none
+      .ivu-input-icon
+        left 0
+        line-height 40px
+      .ivu-input
+        padding 7px 7px 7px 30px
+        height auto
+        font-size 16px
       .ivu-btn-success
         padding 8px 15px
         letter-spacing 10px
@@ -140,6 +109,5 @@ export default {
         margin-left 10px
         color hsla(0,0%,100%,1)
 </style>
-
 
 

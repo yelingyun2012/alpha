@@ -24,9 +24,10 @@ body
   min-height 100vh
   width 100vw
 #app
-  overflow-y scroll
+  // overflow-y scroll
   width 100%
   height 100%
+  overflow auto
   /* min-height 100vh */
 </style>
 

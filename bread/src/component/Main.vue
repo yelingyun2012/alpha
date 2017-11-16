@@ -7,9 +7,9 @@
       router-view
 </template>
 <script>
-import { mapState, mapMutations } from "vuex";
-import headerView from "../component/layout/header.vue";
-import sidebarMenu from "../component/layout/sidebarMenu.vue";
+import { mapState, mapMutations } from "vuex"
+import headerView from "../component/layout/header.vue"
+import sidebarMenu from "../component/layout/sidebarMenu.vue"
 
 export default {
   name: "Main",
@@ -27,13 +27,13 @@ export default {
       addOpenSubmenu: "permission/addOpenSubmenu"
     }),
     init() {
-      this.addOpenSubmenu("basic");
+      this.addOpenSubmenu("basic")
     }
   },
   mounted() {
-    this.init();
+    this.init()
   }
-};
+}
 </script>
 <style lang="stylus">
 .sidebar

@@ -86,28 +86,3 @@
         margin-right 20px
         text-align right
 </style>
-<style lang="stylus">
-  // 公共函数
-  taskWrapper(top, right, bottom, left)
-    padding top right bottom left
-    background-color #fff
-  .account
-    &-name
-      margin-bottom 20px
-      taskWrapper 30px 20px 30px 20px
-      .explain
-        color #323232
-        font-size 14px
-      .typeIn
-        margin-right 30px
-        margin-left 4px
-      .ivu-btn
-        padding 6px 23px
-        font-size 14px
-    &-minute
-      taskWrapper 20px 20px 20px 20px
-      .ivu-page
-        margin-top 20px
-        margin-right 20px
-        text-align right
-</style>
