@@ -1,6 +1,6 @@
 <template lang="pug">
   section
-    aside.task-name
+    aside.logStatis-name
       Row
         Col(span="24")
           span.title 时间：
@@ -21,15 +21,28 @@
           Input(v-model='search.creatorName', placeholder='请输入任务创建者').inputText
       Row.btn
         Col(span="24")
-          Button(type="success", @click="handleSearch") 查询
-          Button(type="text" @click="searchToggle") {{ searchToggleState? '收起' : '高级' }}
-            Icon(:type=" searchToggleState ? 'chevron-up' : 'chevron-down' ")
-    aside.task-minute
+          Button(type="primary", @click="handleSearch") 查询
+          Button(type="text" @click="searchToggle") 
+            | {{ searchToggleState? '收起' : '高级' }}
+            Icon(:type=" searchToggleState ? 'chevron-up' : 'chevron-down' " style="margin-left:5px;")
+    aside.logStatis-minute
       Table(:columns="logColumns", :data="logData", border)
       Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
+      Modal(v-model="pieShow", title="采集详情", width="1000",class-name="vertical-center-modal")
+        div.pieDiv
+            div(id="myPie")
+            div(id="dateList")
+              ul
+                li(v-for="item in pieData")
+                  i
+                  span {{ item.pieName }}
+                  span.name {{ item.name }}
+        div(slot="footer")
 </template>
 
 <script>
+import echarts from "echarts";
+
 export default {
   name: "logStatis",
   data() {
@@ -98,7 +111,7 @@ export default {
           align: "center"
         },
         {
-          title: "新增抓取的URL数量",
+          title: "新增抓取URL数量",
           key: "extractedUrlNum",
           align: "center"
         },
@@ -138,17 +151,41 @@ export default {
           creatorName: "2",
           taskName: "3",
           siteName: "4",
-          successUrl: "5",
-          errorUrl: "6",
-          errDownUrl: "7",
-          errUrl: "8",
-          extractedUrlNum: "9"
+          successUrl: 5,
+          errorUrl: 6,
+          errDownUrl: 7,
+          errUrl: 8,
+          extractedUrlNum: 9
         }
       ],
       //页码
       pageTotal: 0,
       pageSize: 10,
-      pageIndex: 1
+      pageIndex: 1,
+
+      pieShow: false, //显示饼图
+      pieData: [
+        {
+          value: 0,
+          pieName: "采集成功",
+          name: "0%"
+        },
+        {
+          value: 0,
+          pieName: "下载失败",
+          name: "0%"
+        },
+        {
+          value: 0,
+          pieName: "抽取失败",
+          name: "0%"
+        },
+        {
+          value: 0,
+          pieName: "其他",
+          name: "0%"
+        }
+      ]
     };
   },
   methods: {
@@ -207,20 +244,62 @@ export default {
     },
     //详情
     goDetail(val) {
-      console.log(val);
+      let success = val.successUrl, //采集成功
+        downErr = val.errDownUrl, //下载失败
+        extractErr = val.errUrl, //抽取失败
+        other = val.errorUrl + val.extractedUrlNum; //其他
+      let sum = success + downErr + extractErr + other; //总和
+      let arr = [success, downErr, extractErr, other];
+      let sumPie = 100;
+
+      let pieData = this.pieData;
+      for (let i = 0; i < pieData.length; i++) {
+        pieData[i].value = arr[i];
+        let val = (arr[i] / sum * 100).toFixed(2);
+        pieData[i].name = val + "%";
+        if (i !== 0) {
+          sumPie -= val;
+        }
+      }
+      this.pieData[0].name = sumPie.toFixed(2) + "%";
+
+      let myPie = echarts.init(document.getElementById("myPie"));
+      let option = {
+        series: [
+          {
+            type: "pie",
+            color: ["#4FC1E9", "#AC92EC", "#A0D468", "#FC6E51"],
+            label: {
+              normal: {
+                position: "inner",
+                textStyle: {
+                  color: "#fff",
+                  fontWeight: "bold",
+                  fontSize: 14
+                }
+              }
+            },
+            data: this.pieData
+          }
+        ]
+      };
+      if (option && typeof option === "object") {
+        myPie.setOption(option, true);
+      }
+      this.pieShow = true;
     }
   }
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 // 公共函数
 taskWrapper(top, right, bottom, left) {
   background-color: #fff;
   padding: top right bottom left;
 }
 
-.task {
+.logStatis {
   &-name { // 任务名称
     taskWrapper: 30px 20px 30px 20px;
     margin-bottom: 20px;
@@ -251,9 +330,9 @@ taskWrapper(top, right, bottom, left) {
       text-align: right;
 
       button {
-        width: 60px;
+        min-width: 60px;
         height: 35px;
-        margin: 0 5px;
+        font-size: 14px;
       }
     }
   }
@@ -265,6 +344,90 @@ taskWrapper(top, right, bottom, left) {
       margin-top: 20px;
       margin-right: 20px;
       text-align: right;
+    }
+  }
+}
+
+.vertical-center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .ivu-modal {
+    top: 0;
+  }
+
+  .ivu-modal-footer {
+    display: none;
+  }
+
+  .pieDiv {
+    width: 800px;
+    margin-left: 20px;
+    overflow: hidden;
+
+    div {
+      float: left;
+      height: 400px;
+
+      &#myPie {
+        width: 500px;
+      }
+
+      &#dateList {
+        display: flex;
+        align-items: center;
+        width: 300px;
+
+        ul {
+          width: 100%;
+
+          li {
+            border-bottom: 1px solid #453937;
+            height: 50px;
+            line-height: 50px;
+            font-size: 16px;
+            color: #453937;
+
+            i {
+              width: 8px;
+              height: 8px;
+              display: inline-block;
+              margin-right: 20px;
+              border-radius: 50%;
+            }
+
+            &:nth-child(1) {
+              i {
+                background: #4FC1E9;
+              }
+            }
+
+            &:nth-child(2) {
+              i {
+                background: #AC92EC;
+              }
+            }
+
+            &:nth-child(3) {
+              i {
+                background: #A0D468;
+              }
+            }
+
+            &:nth-child(4) {
+              i {
+                background: #FC6E51;
+              }
+            }
+
+            span.name {
+              float: right;
+              margin-right: 20px;
+            }
+          }
+        }
+      }
     }
   }
 }

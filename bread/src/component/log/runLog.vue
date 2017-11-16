@@ -1,6 +1,6 @@
 <template lang="pug">
   section
-    aside.task-name
+    aside.log-name
       Row
         Col(span="24")
           span.title 时间：
@@ -22,8 +22,8 @@
           Input(v-model='search.creatorName', placeholder='请输入任务创建者').inputText
       Row
         Col(span="24").btn
-          Button(type="success", @click="handleSearch") 查询
-    aside.task-minute
+          Button(type="primary", @click="handleSearch") 查询
+    aside.log-minute
       Table(:columns="logColumns", :data="logData", border)
       Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
 </template>
@@ -170,14 +170,14 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 // 公共函数
 taskWrapper(top, right, bottom, left) {
   background-color: #fff;
   padding: top right bottom left;
 }
 
-.task {
+.log {
   &-name { // 任务名称
     taskWrapper: 30px 20px 30px 20px;
     margin-bottom: 20px;
@@ -204,6 +204,7 @@ taskWrapper(top, right, bottom, left) {
       button {
         width: 60px;
         height: 35px;
+        font-size: 14px;
       }
     }
   }
