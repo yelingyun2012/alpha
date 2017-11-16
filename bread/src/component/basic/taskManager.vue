@@ -525,7 +525,7 @@ tableDefault()
       margin-left 4px
     .ivu-btn
       padding 6px 23px
-      font-size 14px
+      font-size 16px
       &-success
         background-color rgba(23,187,156,1)
         &:hover
