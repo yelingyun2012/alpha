@@ -90,6 +90,7 @@ export default {
         switch (response.data.respCode) {
           case "0":
             this.$Message.success("用户添加成功")
+            this.$router.push('/account/index')
             break
           default:
             this.$Message.warning(response.data.respMsg)
@@ -110,6 +111,7 @@ export default {
         switch (response.data.respCode) {
           case "0":
             this.$Message.success("用户修改成功")
+            this.$router.push('/account/index')
             break
           default:
             this.$Message.warning(response.data.respMsg)

@@ -168,9 +168,6 @@
       }
     },
     methods: {
-      test () {
-        console.log(12)
-      },
       confirm (userId, index) {
         this.$Modal.confirm({
           content: '<p>是否确定删除该用户</p>',
@@ -181,7 +178,7 @@
             }).then(response => {
               switch (response.data.respCode) {
                 case '0':
-                  this.accountData.splice(index)
+                  this.accountData.splice(index,1)
                   this.$Message.success('删除成功')
                   break
                 case '204':
