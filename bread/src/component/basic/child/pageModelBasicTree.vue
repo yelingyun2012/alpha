@@ -8,6 +8,11 @@
           <Option v-for="(val,index) in httpCon" :key="index" :value="val.itemType">{{val.itemName}}</Option>
         </Select>
         <Input v-model="item.matchExpression" style="width: 300px"></Input>
+        是否为URL属性：
+        <RadioGroup v-model="item.urlPropertyExtract">
+          <Radio :label="1">是</Radio>
+          <Radio :label="0">否</Radio>
+        </RadioGroup>
         <Button type="error" @click.stop="$emit('remove')">删除</Button>
       </div>
       <ul v-if="isFolder">

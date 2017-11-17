@@ -4,11 +4,11 @@
       Row
         Col(span="24")
           span.title 时间：
-          DatePicker(:value="search.startDate", type="datetime", placeholder="请选择时间" @on-change="startDateFn")
+          DatePicker(:value="search.startTime", type="datetime", placeholder="请选择时间" @on-change="startTimeFn")
           span  - 
-          DatePicker(:value="search.endDate", type="datetime", placeholder="请选择时间" @on-change="endDateFn")
-          Select(v-model="search.count").select
-            Option(v-for="item in countList", :value="item.value", :key="item.value") {{item.label}}
+          DatePicker(:value="search.endTime", type="datetime", placeholder="请选择时间" @on-change="endTimeFn")
+          Select(v-model="search.period").select
+            Option(v-for="item in periodList", :value="item.value", :key="item.value") {{item.label}}
       Row(v-show="searchToggleState").rowCenter
         Col(span="8")
           span.title 任务名称：
@@ -42,6 +42,8 @@
 
 <script>
 import echarts from "echarts";
+import { exceptionTaskList } from '../../config/getData'
+import { getCookie } from '../../utils/cookie'
 
 export default {
   name: "logStatis",
@@ -50,7 +52,7 @@ export default {
       //搜索高级&简易切换
       searchToggleState: false,
       //统计
-      countList: [
+      periodList: [
         {
           value: 0,
           label: "默认"
@@ -70,20 +72,21 @@ export default {
       ],
       //查询
       search: {
-        startDate: "", //开始时间
-        endDate: "", //结束时间
-        count: 0, //统计
+        startTime: "", //开始时间
+        endTime: "", //结束时间
+        period: 0, //统计
         taskName: "", //任务名称
         siteName: "", //站点名称
         creatorName: "", //任务创建者
         pageIndex: 1, //页码
-        pageSize: 10 //每页最大条数
+        pageSize: 10, //每页最大条数
+        token: getCookie("token")
       },
       //日志配置
       logColumns: [
         {
           title: "运行时间段",
-          key: "date"
+          key: "startTime"
         },
         {
           title: "任务创建者",
@@ -92,27 +95,27 @@ export default {
         },
         {
           title: "采集成功URL数量",
-          key: "successUrl",
+          key: "successCount",
           align: "center"
         },
         {
           title: "采集失败URL数量",
-          key: "errorUrl",
+          key: "failedCount",
           align: "center"
         },
         {
           title: "下载失败URL数量",
-          key: "errDownUrl",
+          key: "downLoadFailedCount",
           align: "center"
         },
         {
           title: "抽取失败URL数量",
-          key: "errUrl",
+          key: "extractionFailedCount",
           align: "center"
         },
         {
           title: "新增抓取URL数量",
-          key: "extractedUrlNum",
+          key: "addedCount",
           align: "center"
         },
         {
@@ -147,15 +150,15 @@ export default {
       //日志数据
       logData: [
         {
-          date: "1",
+          startTime: "1",
           creatorName: "2",
           taskName: "3",
           siteName: "4",
-          successUrl: 55,
-          errorUrl: 66,
-          errDownUrl: 7,
-          errUrl: 8,
-          extractedUrlNum: 9
+          successCount: 55,
+          failedCount: 66,
+          downLoadFailedCount: 7,
+          extractionFailedCount: 8,
+          addedCount: 9
         }
       ],
       //页码
@@ -188,13 +191,18 @@ export default {
       ]
     };
   },
+  mounted(){
+    this.$nextTick(()=>{
+      this.getDate();
+    })
+  },
   methods: {
     //查询
     handleSearch() {
       this.pageIndex = 1;
       this.search.pageIndex = 1;
       let con = this.search;
-      if (con.startDate > con.endDate) {
+      if (con.startTime > con.endTime) {
         this.$Message.error({
           content: "结束时间不能小于开始时间！",
           duration: 3,
@@ -205,12 +213,12 @@ export default {
       }
     },
     //开始时间
-    startDateFn(val) {
-      this.search.startDate = val;
+    startTimeFn(val) {
+      this.search.startTime = val;
     },
     //结束时间
-    endDateFn(val) {
-      this.search.endDate = val;
+    endTimeFn(val) {
+      this.search.endTime = val;
     },
     //分页
     handlePage(pageIndex) {
@@ -220,7 +228,9 @@ export default {
     },
     //获取数据
     getDate() {
-      console.log(this.search);
+      // exceptionTaskList(this.search).then(res=>{
+      //   console.log(res)
+      // })
     },
     //搜索高级&简易切换
     searchToggle() {
@@ -244,11 +254,11 @@ export default {
     },
     //详情
     goDetail(val) {
-      let success = val.successUrl, //采集成功
-        downErr = val.errDownUrl, //下载失败
-        extractErr = val.errUrl, //抽取失败
-        errSum = val.errorUrl, //错误总数
-        other = errSum - val.errDownUrl - val.errUrl; //其他
+      let success = val.successCount, //采集成功
+        downErr = val.downLoadFailedCount, //下载失败
+        extractErr = val.extractionFailedCount, //抽取失败
+        errSum = val.failedCount, //错误总数
+        other = errSum - val.downLoadFailedCount - val.extractionFailedCount; //其他
       let sum = success + errSum; //总和
       let arr = [success, downErr, extractErr, other];
       let sumPie = 100;

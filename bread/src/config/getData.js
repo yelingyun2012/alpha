@@ -161,3 +161,10 @@ export const taskLog = params => fetch('taskLog/exceptionTaskList', {
   method: 'post',
   data: params
 })
+/***
+ * 任务抓取统计
+ */
+export const exceptionTaskList = params => fetch('taskLog/exceptionTaskList', {
+  method: 'post',
+  data: params
+})

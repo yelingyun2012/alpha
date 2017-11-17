@@ -174,27 +174,28 @@ export default {
       }
     },
     //删除children
-    deleteChildren(arr){
+    deleteChildren(arr) {
       for (let i in arr) {
+        arr[i].sortedId = i-0+1;
         if (arr[i].children) {
           delete arr[i].children;
         }
       }
     },
     //验证内容是否为空
-    validateCon(arr){
-      for(let i in arr){
-        if(arr[i].matchExpression === ""){
+    validateCon(arr) {
+      for (let i in arr) {
+        if (arr[i].matchExpression === "") {
           this.$Message.error("页面模型内容不能为空！");
           let f = false;
-          this.$emit("modelErr",f);
+          this.$emit("modelErr", f);
           break;
-        }else{
-          if(i == arr.length-1){
+        } else {
+          if (i == arr.length - 1) {
             let jsonData = JSON.stringify(this.postData);
             let f = true;
-            this.$emit("modelErr",f);
-            this.$emit("modelData",jsonData);
+            this.$emit("modelErr", f);
+            this.$emit("modelData", jsonData);
           }
         }
       }
@@ -228,30 +229,36 @@ export default {
 </script>
 
 <style lang="stylus">
-.pageModelBasic{
-  .pageModelTree{
-    margin-bottom 24px;
+.pageModelBasic {
+  .pageModelTree {
+    margin-bottom: 24px;
     background: #F7F7F7;
-    padding:0 20px;
-    & > .pageModelBasicTree{
-      &:last-child{
-        border:0;
+    padding: 0 20px;
+
+    & > .pageModelBasicTree {
+      &:last-child {
+        border: 0;
       }
-      border-bottom:1px solid #d9d9d9;
-      & > ul{
-        padding:0;
+
+      border-bottom: 1px solid #d9d9d9;
+
+      & > ul {
+        padding: 0;
       }
     }
   }
 }
+
 .vertical-center-modal {
   display: flex;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
+
   .ivu-modal {
     top: 0;
   }
-  .ivu-modal-footer{
+
+  .ivu-modal-footer {
     display: none;
   }
 }
