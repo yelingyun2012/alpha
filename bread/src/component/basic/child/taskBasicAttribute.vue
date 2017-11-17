@@ -52,10 +52,10 @@
       Row
         Col(span="8")
           FormItem(label="采集开始时间:")
-            DatePicker(type="date", placeholder="选择日期", style="width: 300px", @on-change="collectStart")
+            DatePicker(type="date", placeholder="选择日期", style="width: 300px", @on-change="collectStart", @on-open-change="setAttr")
         Col(span="8")
           FormItem(label="采集结束时间:")
-            DatePicker(type="date", placeholder="选择日期", style="width: 300px", @on-change="collectEnd")
+            DatePicker(type="date", placeholder="选择日期", style="width: 300px", @on-change="collectEnd", @on-open-change="setAttr")
       FormItem(label="用户代理:")
         Input(style="width:58%", v-model="userAgentVal")
 </template>
@@ -269,6 +269,10 @@ export default {
     };
   },
   methods: {
+    setAttr(){
+      document.querySelectorAll('.ivu-input')[1].setAttribute('readonly', true)
+      document.querySelectorAll('.ivu-input')[2].setAttribute('readonly', true)
+    },
     initQueryType(typeId) {
       return new Promise((resolve, reject) => {
         queryType({ typeId: typeId, token: getCookie("token") })

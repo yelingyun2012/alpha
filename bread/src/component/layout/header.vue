@@ -4,15 +4,32 @@
       img(src='../../assets/images/logo.png')
       span Welcome to elise
     .userInfo-con
-      Dropdown(trigger="click")
-        span 用户名
+      Dropdown(trigger="click", @on-click="handleOut")
+        span {{userName}}
           Icon(type="arrow-down-b")
         DropdownMenu(slot="list")
-          DropdownItem 退出登录
+          DropdownItem(name="logout") 退出登录
 </template>
 <script>
+
+  import { getCookie, removeCookie } from '../../utils/cookie'
+
   export default {
-    name: 'Header'
+    name: 'Header',
+    data () {
+      return {
+        userName: JSON.parse(getCookie('userInfo')).userName
+      }
+    },
+    methods: {
+      handleOut (name) {
+        if (name === 'logout') {
+          removeCookie('token')
+          removeCookie('userInfo')
+          this.$router.push('/login')
+        }
+      }
+    }
   }
 </script>
 <style lang="stylus">

@@ -20,6 +20,8 @@
 <script>
 import { mapState, mapActions } from "vuex"
 import md5 from "js-md5"
+import { Login } from '../../config/getData'
+import { setCookie } from '../../utils/cookie'
 
 export default {
   name: "Login",
@@ -47,12 +49,15 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           this.loginForm.password = md5(this.loginForm.password)
-          this.Login(this.loginForm)
-            .then(() => {
-              this.$router.push({ path: "/basic" })
-            })
-            .catch(error => {
-              this.$Message.error(error)
+            Login(this.loginForm).then(response => {
+              if(response.data.respCode==='101'){
+                this.$router.push('/login')
+                this.$Message.error(response.data.respMsg)
+              }else{
+                setCookie('token', response.data.data.token)
+                setCookie('userInfo', response.data.data)
+                this.$router.push({ path: "/basic" })
+              }
             })
         }
       })

@@ -462,10 +462,7 @@ export default {
         pageIndex: this.pageIndex,
         token: getCookie("token")
       }).then(response => {
-        if (
-          response.data.data.length !== 0 ||
-          response.data.data.length !== null
-        ) {
+        if (response.data.data !== null) {
           this.pageTotal = response.data.data.recordCount
           this.taskData = response.data.data.result
         } else {
@@ -547,6 +544,7 @@ tableDefault()
       padding 6px 15px
       color #589BEE
       font-size 14px
+      cursor pointer
       &.task-site-active
         border-radius 4px
         background-color #2D8CF0

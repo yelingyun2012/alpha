@@ -35,6 +35,7 @@ export const constantRouterMap = [
 export const otherRouter = [
   {
     path: '/',
+    redirect:'/basic',
     name: 'otherRouter',
     component: Main,
     children: [
@@ -50,6 +51,12 @@ export const otherRouter = [
         title: '页面模型新建',
         component: _import('basic/child/pageManager')
       },
+      {
+        path: 'alterUser/:operate',
+        name: 'alterUser',
+        title: '用户操作',
+        component: _import('account/child/alterUser')
+      }
     ]
   }
 ]
@@ -59,6 +66,7 @@ export const appRouter = [
   {
     path: '/basic',
     name: 'basic',
+    redirect:'/basic/taskManager',
     icon: 'android-settings',
     title: '基本配置',
     component: Main,

@@ -31,10 +31,6 @@ export default {
       this.$router.push({ name: active })
     }
   },
-  updated() {
-    this.$nextTick(() => {
-      this.$refs.sidebarMenu.updateOpened()
-    })
-  }
+  updated() {}
 }
 </script>
