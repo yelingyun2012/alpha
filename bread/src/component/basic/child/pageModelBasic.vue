@@ -53,7 +53,7 @@ export default {
         par: [{ required: true, message: "请选择", trigger: "change" }],
         name: [{ required: true, message: "请输入名称", trigger: "blur" }]
       },
-      groupType: [{ id: 0, name: "属性" }, { id: 1, name: "属性树" }],
+      groupType: [{ id: 0, name: "属性" }, { id: 1, name: "属性组" }],
       items: [],
       postData: []
     };
@@ -176,7 +176,7 @@ export default {
     //删除children
     deleteChildren(arr) {
       for (let i in arr) {
-        arr[i].sortedId = i-0+1;
+        arr[i].sortedId = i - 0 + 1;
         if (arr[i].children) {
           delete arr[i].children;
         }
