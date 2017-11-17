@@ -151,8 +151,8 @@ export default {
           creatorName: "2",
           taskName: "3",
           siteName: "4",
-          successUrl: 5,
-          errorUrl: 6,
+          successUrl: 55,
+          errorUrl: 66,
           errDownUrl: 7,
           errUrl: 8,
           extractedUrlNum: 9
@@ -247,8 +247,9 @@ export default {
       let success = val.successUrl, //采集成功
         downErr = val.errDownUrl, //下载失败
         extractErr = val.errUrl, //抽取失败
-        other = val.errorUrl + val.extractedUrlNum; //其他
-      let sum = success + downErr + extractErr + other; //总和
+        errSum = val.errorUrl, //错误总数
+        other = errSum - val.errDownUrl - val.errUrl; //其他
+      let sum = success + errSum; //总和
       let arr = [success, downErr, extractErr, other];
       let sumPie = 100;
 

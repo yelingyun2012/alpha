@@ -7,6 +7,8 @@
           DatePicker(:value="search.startDate", type="datetime", placeholder="请选择时间" @on-change="startDateFn")
           span  - 
           DatePicker(:value="search.endDate", type="datetime", placeholder="请选择时间" @on-change="endDateFn")
+          Select(v-model="search.catch").select
+            Option(v-for="item in catchList", :value="item.value", :key="item.value") {{item.label}}
       Row.rowCenter
         Col(span="6")
           span.title 采集url：
@@ -37,6 +39,7 @@ export default {
       search: {
         startDate: "", //开始时间
         endDate: "", //结束时间
+        catch:"0", //异常
         currentUrl: "", //采集url
         taskName: "", //任务名称
         siteName: "", //站点名称
@@ -44,6 +47,21 @@ export default {
         pageIndex: 1, //页码
         pageSize: 10 //每页最大条数
       },
+      //异常列表
+      catchList:[
+        {
+          value: "0",
+          label: "全部"
+        },
+        {
+          value: "1",
+          label: "网络请求异常"
+        },
+        {
+          value: "2",
+          label: "抽取异常"
+        }
+      ],
       //日志配置
       logColumns: [
         {
@@ -183,6 +201,11 @@ taskWrapper(top, right, bottom, left) {
     margin-bottom: 20px;
     font-size: 14px;
     color: #323232;
+
+    .select {
+      margin-left: 10px;
+      width: 160px;
+    }
 
     .rowCenter {
       margin: 20px 0 24px;
