@@ -16,7 +16,7 @@
           Option(v-for="item in userPermissionList", :value="item.value", :key="item.value") {{item.label}}
       FormItem
         Button(type="primary", @click="handleSave('formValidate')") 保存
-        Button() 返回
+        Button(@click="handleBack") 返回
 </template>
 <script>
 import { userAdd, userGet, userUpdate } from "../../../config/getData"
@@ -116,6 +116,9 @@ export default {
             break
         }
       })
+    },
+    handleBack(){
+      this.$router.go(-1)
     }
   },
   created() {

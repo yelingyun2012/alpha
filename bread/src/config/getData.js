@@ -133,3 +133,17 @@ export const userUpdate = params => fetch('user/update', {
   method: 'post',
   data: params
 })
+/***
+ * 模型列表
+ */
+export const pageModelList = params => fetch('pagemodel/list', {
+  method: 'post',
+  data: params
+})
+/***
+ * 模型删除
+ */
+export const pageModelDelete = params => fetch('pagemodel/delete', {
+  method: 'post',
+  data: params
+})

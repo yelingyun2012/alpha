@@ -547,6 +547,7 @@ tableDefault()
       padding 6px 15px
       color #589BEE
       font-size 14px
+      cursor pointer
       &.task-site-active
         border-radius 4px
         background-color #2D8CF0

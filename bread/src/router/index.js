@@ -35,6 +35,7 @@ export const constantRouterMap = [
 export const otherRouter = [
   {
     path: '/',
+    redirect:'/basic',
     name: 'otherRouter',
     component: Main,
     children: [
@@ -59,6 +60,7 @@ export const appRouter = [
   {
     path: '/basic',
     name: 'basic',
+    redirect:'/basic/taskManager',
     icon: 'android-settings',
     title: '基本配置',
     component: Main,

@@ -78,23 +78,31 @@
           {title: '创建时间', key: 'creatTimes'},
           {
             title: '启用状态',
+            align:'center',
             render: (h, params) => {
-              switch (params.row.enabled) {
+              switch (params.row.enabled) { // 被禁用
                 case 0:
                   return h('span', {
-                      on: {
-                        click: event => {
-                          console.log(123)
-                        }
+                    on: {
+                      click: event => {
+                        this.alterUserUpdateEnableds(1, params.row.userId)
+                        params.row.enabled = 1
                       }
-                    }, [
-                      h('Icon', {
-                        attrs: {
-                          type: 'ios-play'
-                        }
-                      })
-                    ],
-                    'asdad')
+                    }
+                  }, [
+                    h('Icon', {
+                      style:{
+                        fontSize: '16px',
+                        padding: '5px 13px',
+                        background: '#F2F2F2',
+                        borderRadius: '4px',
+                        color:'#EE2337'
+                      },
+                      attrs: {
+                        type: this.operateStatus ? 'ios-pause' : 'ios-play'
+                      }
+                    })
+                  ])
                   break
                 case 1:
                   return h(
@@ -102,13 +110,24 @@
                     {
                       on: {
                         click: event => {
-                          this.alterUserUpdateEnableds(1, params.row.userId)
+                          this.alterUserUpdateEnableds(0, params.row.userId)
                           params.row.enabled = 0
                         }
-                      }
-                    },
-                    '启用'
-                  )
+                      },
+                    }, [
+                      h('Icon', {
+                        style:{
+                          fontSize: '16px',
+                          padding: '5px 13px',
+                          background: '#F2F2F2',
+                          borderRadius: '4px',
+                          color:'#108EE9'
+                        },
+                        attrs: {
+                          type: !this.operateStatus ? 'ios-pause' : 'ios-play'
+                        }
+                      })
+                    ])
                   break
               }
             }
@@ -118,21 +137,25 @@
           {
             title: '操作',
             render: (h, params) => {
-              return h(
-                'span',
-                {
-                  style: {
-                    color: '#2d8cf0',
-                    cursor: 'pointer'
-                  },
-                  on: {
-                    click: event => {
-                      this.confirm(params.row.userId, params.index)
-                    }
+              return h('span', {
+                on: {
+                  click: event => {
+                    this.confirm(params.row.userId, params.index)
                   }
+                }
+              }, [h('Icon', {
+                style: {
+                  color: '#F04134',
+                  cursor: 'pointer',
+                  fontSize: '20px',
+                  padding: '7px 20px',
+                  background: '#F2F2F2',
+                  borderRadius: '4px'
                 },
-                '删除'
-              )
+                attrs: {
+                  type: 'trash-a'
+                }
+              })])
             }
           }
         ],
@@ -140,7 +163,8 @@
         pageSize: 10,
         pageIndex: 1,
         pageTotal: 0,
-        userName: ''
+        userName: '',
+        operateStatus: true
       }
     },
     methods: {
