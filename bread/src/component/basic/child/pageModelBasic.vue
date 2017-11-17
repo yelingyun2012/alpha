@@ -124,7 +124,6 @@ export default {
               this.insertArr(items, formData.par, obj);
             }
           }
-          this.$Message.success("提交成功!");
           this.modal = false;
         } else {
           this.$Message.error("请填写!");
@@ -187,10 +186,14 @@ export default {
       for(let i in arr){
         if(arr[i].matchExpression === ""){
           this.$Message.error("页面模型内容不能为空！");
+          let f = false;
+          this.$emit("modelErr",f);
           break;
         }else{
           if(i == arr.length-1){
             let jsonData = JSON.stringify(this.postData);
+            let f = true;
+            this.$emit("modelErr",f);
             this.$emit("modelData",jsonData);
           }
         }

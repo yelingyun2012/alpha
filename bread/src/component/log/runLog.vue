@@ -4,15 +4,15 @@
       Row
         Col(span="24")
           span.title 时间：
-          DatePicker(:value="search.startDate", type="datetime", placeholder="请选择时间" @on-change="startDateFn")
+          DatePicker(:value="search.startTime", type="datetime", placeholder="请选择时间" @on-change="startTimeFn")
           span  - 
-          DatePicker(:value="search.endDate", type="datetime", placeholder="请选择时间" @on-change="endDateFn")
-          Select(v-model="search.catch").select
-            Option(v-for="item in catchList", :value="item.value", :key="item.value") {{item.label}}
+          DatePicker(:value="search.endTime", type="datetime", placeholder="请选择时间" @on-change="endTimeFn")
+          Select(v-model="search.crawlingLogState").select
+            Option(v-for="item in crawlingLogStateList", :value="item.value", :key="item.value") {{item.label}}
       Row.rowCenter
         Col(span="6")
           span.title 采集url：
-          Input(v-model='search.currentUrl', placeholder='请输入采集url').inputText
+          Input(v-model='search.crawlingUrl', placeholder='请输入采集url').inputText
         Col(span="6")
           span.title 任务名称：
           Input(v-model='search.taskName', placeholder='请输入任务名称').inputText
@@ -30,25 +30,29 @@
       Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
 </template>
 
-<script>
+<script>  
+import { taskLog } from '../../config/getData'
+import { getCookie } from '../../utils/cookie'
+
 export default {
   name: "RunLog",
   data() {
     return {
       //查询
       search: {
-        startDate: "", //开始时间
-        endDate: "", //结束时间
-        catch:"0", //异常
-        currentUrl: "", //采集url
+        startTime: "", //开始时间
+        endTime: "", //结束时间
+        crawlingLogState:"0", //异常
+        crawlingUrl: "", //采集url
         taskName: "", //任务名称
         siteName: "", //站点名称
         creatorName: "", //任务创建者
         pageIndex: 1, //页码
-        pageSize: 10 //每页最大条数
+        pageSize: 10, //每页最大条数
+        token: getCookie("token")
       },
       //异常列表
-      catchList:[
+      crawlingLogStateList:[
         {
           value: "0",
           label: "全部"
@@ -96,7 +100,7 @@ export default {
         },
         {
           title: "当前URL",
-          key: "currentUrl"
+          key: "crawlingUrl"
         },
         {
           title: "操作",
@@ -128,23 +132,17 @@ export default {
         }
       ],
       //日志数据
-      logData: [
-        {
-          taskId: 111,
-          taskName: "IT橘子",
-          siteName: "美团外卖",
-          creatorName: "admin",
-          host: "202.232.32.2",
-          state: 0,
-          date: "2017.06.21 10:23:00",
-          currentUrl: "www.baidu.com"
-        }
-      ],
+      logData: [],
       //页码
       pageTotal: 0,
       pageSize: 10,
       pageIndex: 1
     };
+  },
+  mounted(){
+    this.$nextTick(()=>{
+      this.getDate();
+    })
   },
   methods: {
     //查询
@@ -152,7 +150,7 @@ export default {
       this.pageIndex = 1;
       this.search.pageIndex = 1;
       let con = this.search;
-      if (con.startDate > con.endDate) {
+      if (con.startTime > con.endTime) {
         this.$Message.error({
           content: "结束时间不能小于开始时间！",
           duration: 3,
@@ -163,12 +161,12 @@ export default {
       }
     },
     //开始时间
-    startDateFn(val) {
-      this.search.startDate = val;
+    startTimeFn(val) {
+      this.search.startTime = val;
     },
     //结束时间
-    endDateFn(val) {
-      this.search.endDate = val;
+    endTimeFn(val) {
+      this.search.endTime = val;
     },
     //分页
     handlePage(pageIndex) {
@@ -178,7 +176,9 @@ export default {
     },
     //获取数据
     getDate() {
-      console.log(this.search);
+      // taskLog(this.search).then(res=>{
+      //   console.log(res)
+      // })
     },
     //详情
     goDetail(val) {

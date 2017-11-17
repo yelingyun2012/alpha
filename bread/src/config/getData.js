@@ -147,3 +147,17 @@ export const pageModelDelete = params => fetch('pagemodel/delete', {
   method: 'post',
   data: params
 })
+/***
+ * 模型删除
+ */
+export const pageModelAdd = params => fetch('pagemodel/add', {
+  method: 'post',
+  data: params
+})
+/***
+ * 异常任务列表
+ */
+export const taskLog = params => fetch('taskLog/exceptionTaskList', {
+  method: 'post',
+  data: params
+})
