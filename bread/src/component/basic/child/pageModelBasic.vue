@@ -124,8 +124,7 @@ export default {
               this.insertArr(items, formData.par, obj)
             }
           }
-          this.$Message.success("提交成功!")
-          this.modal = false
+          this.modal = false;
         } else {
           this.$Message.error("请填写!")
         }
@@ -177,6 +176,7 @@ export default {
     //删除children
     deleteChildren(arr) {
       for (let i in arr) {
+        arr[i].sortedId = i-0+1;
         if (arr[i].children) {
           delete arr[i].children
         }
@@ -186,12 +186,16 @@ export default {
     validateCon(arr) {
       for (let i in arr) {
         if (arr[i].matchExpression === "") {
-          this.$Message.error("页面模型内容不能为空！")
-          break
+          this.$Message.error("页面模型内容不能为空！");
+          let f = false;
+          this.$emit("modelErr", f);
+          break;
         } else {
           if (i == arr.length - 1) {
-            let jsonData = JSON.stringify(this.postData)
-            this.$emit("modelData", jsonData)
+            let jsonData = JSON.stringify(this.postData);
+            let f = true;
+            this.$emit("modelErr", f);
+            this.$emit("modelData", jsonData);
           }
         }
       }
@@ -225,23 +229,37 @@ export default {
 </script>
 
 <style lang="stylus">
-.pageModelBasic
-  .pageModelTree
-    margin-bottom 24px
-    padding 0 20px
-    background #F7F7F7
-    & > .pageModelBasicTree
-      &:last-child
-        border 0
-      border-bottom 1px solid #d9d9d9
-      & > ul
-        padding 0
-.vertical-center-modal
-  display flex
-  justify-content center
-  align-items center
-  .ivu-modal
-    top 0
-  .ivu-modal-footer
-    display none
+.pageModelBasic {
+  .pageModelTree {
+    margin-bottom: 24px;
+    background: #F7F7F7;
+    padding: 0 20px;
+
+    & > .pageModelBasicTree {
+      &:last-child {
+        border: 0;
+      }
+
+      border-bottom: 1px solid #d9d9d9;
+
+      & > ul {
+        padding: 0;
+      }
+    }
+  }
+}
+
+.vertical-center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .ivu-modal {
+    top: 0;
+  }
+
+  .ivu-modal-footer {
+    display: none;
+  }
+}
 </style>

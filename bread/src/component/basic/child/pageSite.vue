@@ -27,9 +27,9 @@
         })
       },
       //提交
-//      pageSiteSubmit () {
-//        this.$emit('siteData', this.siteId)
-//      }
+     pageSiteSubmit () {
+       this.$emit('siteData', this.siteId)
+     }
     }
   }
 </script>

@@ -2,9 +2,9 @@
   section.task-inform
     header
       .task-header-typeIn
-        Form(ref="formTaskName", :model="formValidate", :rules="ruleValidate", :label-width="120")
-          FormItem(label="页面模型名称：", prop="taskName")
-            Input(v-model="formValidate.taskName", placeholder="", style="max-width:300px")
+        Form(ref="formValidate", :model="formValidate", :rules="ruleValidate", :label-width="120")
+          FormItem(label="页面模型名称：", prop="modelName")
+            Input(v-model="formValidate.modelName", placeholder="", style="max-width:300px")
       .task-header-btn
         Button(type="success", v-if="$route.params.id==='alter'", :disabled='signStatus') 签出
         Button(type="success", v-if="$route.params.id==='alter'", :disabled='!signStatus || signUserStatus',style="margin-left:10px") 签入
@@ -17,12 +17,14 @@
         TabPane(label='基本属性')
           pageBasic(ref="pageBasic",@basicData="basicData")
         TabPane(label='页面模型')
-          pageModelBasic(ref="pageModelBasic",@modelData="modelData")
+          pageModelBasic(ref="pageModelBasic",@modelData="modelData",@modelErr="modelErr")
 </template>
 <script>
-import pageSite from "./pageSite.vue"
-import pageBasic from "./pageBasic.vue"
-import pageModelBasic from "./pageModelBasic.vue"
+import { pageModelAdd } from "../../../config/getData";
+import { getCookie } from "../../../utils/cookie";
+import pageSite from "./pageSite.vue";
+import pageBasic from "./pageBasic.vue";
+import pageModelBasic from "./pageModelBasic.vue";
 
 export default {
   name: "pageManager",
@@ -33,11 +35,12 @@ export default {
       siteList: "", //归属站点数据
       basicList: [], //基本属性数据
       modelList: "", //页面模型数据
+      modelErrState: true,
       formValidate: {
-        taskName: ""
+        modelName: ""
       },
       ruleValidate: {
-        taskName: [{ required: true, message: "页面模型名称不能为空", trigger: "blur" }]
+        modelName: [{ required: true, message: "页面模型名称不能为空", trigger: "blur" }]
       }
     }
   },
@@ -48,23 +51,85 @@ export default {
     },
     //保存
     handleSave() {
-      this.siteList = ""
-      this.basicList = []
+      let name = "formValidate";
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.siteList = "";
+          this.basicList = [];
+          this.modelList = "";
 
-      this.$refs.pageSite.pageSiteSubmit()
-      this.$refs.pageBasic.pageBasicSubmit()
-      this.$refs.pageModelBasic.pageModelBasicSubmit()
+          this.$refs.pageSite.pageSiteSubmit();
+          this.$refs.pageBasic.pageBasicSubmit();
+          this.$refs.pageModelBasic.pageModelBasicSubmit();
 
-      if (this.siteList && this.basicList.length !== 0 && this.modelList) {
-        let objData = this.basicList
-        objData.siteId = this.siteList
-        objData.pageModelProperty = this.modelList
-        console.log(objData)
-      }
+          if (!this.modelErrState) {
+            return false;
+          }
+
+          if (this.siteList && this.basicList.length !== 0) {
+            let objData = this.basicList;
+            objData.siteId = this.siteList;
+            objData.pageModelProperty = this.modelList;
+            objData.modelName = this.formValidate.modelName;
+
+            let postData = {};
+            let pageModelResult = {
+              modelType: objData.modelType,
+              modelName: objData.modelName,
+              browserCrawlable: objData.browserCrawlable,
+              urlExtractable: objData.urlExtractable,
+              urlsAllowCrawlRegex: objData.urlsAllowCrawlRegex,
+              urlsNotAllowCrawlRegex: objData.urlsNotAllowCrawlRegex,
+              siteId: objData.siteId,
+              contentType: objData.contentType,
+              modelRegularExpression: objData.modelRegularExpression,
+              pageTurningable: objData.pageTurningable,
+              urlExtractRule: objData.urlExtractable
+            };
+            postData.pageModelResult = JSON.stringify(pageModelResult);
+            if (objData.pageModelProperty !== "") {
+              postData.pageModelPropertyResult = objData.pageModelProperty;
+            }
+            if (objData.browserCrawlable === 1) {
+              let browserParameter = {
+                refreshable: objData.refreshable,
+                refreshType: objData.refreshType,
+                eleLocateRule: objData.eleLocateRule,
+                maxDropDownNum: objData.maxDropDownNum,
+                refreshWaitTime: objData.refreshWaitTime,
+                loadFinishedDecisionRule: objData.loadFinishedDecisionRule
+              };
+              postData.browserParameter = JSON.stringify(browserParameter);
+            }
+            if (objData.pageTurningable === 1) {
+              let pageTurningParameter = {
+                pageTurningType: objData.pageTurningType,
+                extractType: objData.extractType,
+                extractRule: objData.extractRule,
+                pageDownExpression: objData.pageDownExpression
+              };
+              postData.pageTurningParameter = JSON.stringify(pageTurningParameter);
+            }
+            postData.token = getCookie("token");
+            console.log(postData)
+            this.modelAdd(postData);
+          }
+        } else {
+          this.$Message.error({
+            content: "页面模型名称不能为空！",
+            duration: 3,
+            closable: true
+          });
+        }
+      });
+    },
+    //页面模型错误
+    modelErr(val) {
+      this.modelErrState = val;
     },
     //归属站点数据
     siteData(val) {
-      this.siteList = val
+      this.siteList = val;
     },
     //基本属性数据
     basicData(val) {
@@ -72,7 +137,14 @@ export default {
     },
     //页面模型数据
     modelData(val) {
-      this.modelList = val
+      this.modelList = val;
+    },
+    //添加
+    modelAdd(val) {
+      console.log(val)
+      pageModelAdd(val).then(res => {
+        console.log(res);
+      });
     }
   },
   components: {
