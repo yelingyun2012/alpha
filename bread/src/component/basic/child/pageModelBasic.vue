@@ -162,8 +162,10 @@ export default {
     },
     //获取json格式
     getJson() {
-      this.postData = JSON.parse(JSON.stringify(this.items));
-      this.arrJson(this.postData);
+      this.postData = [];
+      let jsonItems = JSON.parse(JSON.stringify(this.items));
+      this.arrJson(jsonItems);
+      this.deleteChildren(this.postData);
       let jsonData = JSON.stringify(this.postData);
       console.log(jsonData);
       console.log(this.items);
@@ -175,6 +177,12 @@ export default {
         this.postData.push(arr[i]);
         if (arr[i].children) {
           this.arrJson(arr[i].children);
+        }
+      }
+    },
+    deleteChildren(arr){
+      for (let i in arr) {
+        if (arr[i].children) {
           delete arr[i].children;
         }
       }
