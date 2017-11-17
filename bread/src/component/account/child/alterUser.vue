@@ -104,7 +104,7 @@ export default {
         cellPhone: this.userPhone,
         email: this.email,
         userId: this.$route.query.userId,
-        roleId: this.$route.query.userRole,
+        roleId: this.role,
         token: getCookie("token")
       }).then(response => {
         switch (response.data.respCode) {
