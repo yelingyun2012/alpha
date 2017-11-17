@@ -180,6 +180,7 @@ export default {
         }
       }
     },
+    //删除children
     deleteChildren(arr){
       for (let i in arr) {
         if (arr[i].children) {
