@@ -92,8 +92,8 @@
 </template>
 
 <script>
-import { queryType } from "../../../config/getData";
-import { getCookie } from "../../../utils/cookie";
+import { queryType } from "../../../config/getData"
+import { getCookie } from "../../../utils/cookie"
 
 export default {
   name: "pageBasic",
@@ -161,7 +161,9 @@ export default {
         urlsNotAllowCrawlRegex: [
           { required: true, message: "请输入", trigger: "blur" }
         ],
-        urlExtractable: [{type: "number", required: true, message: "请选择", trigger: "change" }],
+        urlExtractable: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
         browserCrawlable: [
           { type: "number", required: true, message: "请选择", trigger: "change" }
         ],
@@ -175,7 +177,9 @@ export default {
           { type: "number", required: true, message: "请选择", trigger: "change" }
         ],
         eleLocateRule: [{ required: true, message: "请输入", trigger: "blur" }],
-        refreshable: [{ type: "number", required: true, message: "请选择", trigger: "change" }],
+        refreshable: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
         refreshWaitTime: [
           { type: "number", required: true, message: "请选择", trigger: "change" }
         ],
@@ -190,18 +194,18 @@ export default {
           { required: true, message: "请输入", trigger: "blur" }
         ]
       }
-    };
+    }
   },
   mounted() {
     this.$nextTick(() => {
       //模型类型
-      const modelTypeList = this.initQueryType(1);
+      const modelTypeList = this.initQueryType(1)
       //内容提供方式
-      const contentTypeList = this.initQueryType(4);
+      const contentTypeList = this.initQueryType(4)
       //刷新方式
-      const refreshTypeList = this.initQueryType(10);
+      const refreshTypeList = this.initQueryType(10)
       //抽取规则
-      const extractTypeList = this.initQueryType(3);
+      const extractTypeList = this.initQueryType(3)
 
       Promise.all([
         modelTypeList,
@@ -209,12 +213,12 @@ export default {
         refreshTypeList,
         extractTypeList
       ]).then(response => {
-        this.modelTypeList = response[0];
-        this.contentTypeList = response[1];
-        this.refreshTypeList = response[2];
-        this.extractTypeList = response[3];
-      });
-    });
+        this.modelTypeList = response[0]
+        this.contentTypeList = response[1]
+        this.refreshTypeList = response[2]
+        this.extractTypeList = response[3]
+      })
+    })
   },
   methods: {
     initQueryType(typeId) {
@@ -222,63 +226,56 @@ export default {
         queryType({ typeId: typeId, token: getCookie("token") })
           .then(response => {
             if (response.data.respCode === "0") {
-              resolve(response.data.data);
+              resolve(response.data.data)
             }
           })
           .catch(err => {
-            reject(err.statusCode);
-          });
-      });
+            reject(err.statusCode)
+          })
+      })
     },
     pageBasicSubmit() {
-      let name = 'basicData';
+      let name = "basicData"
       this.$refs[name].validate(valid => {
         if (valid) {
-          let data = JSON.parse(JSON.stringify(this.basicData));
-          if(data.browserCrawlable === 2){
-            delete data.refreshType;
-            delete data.maxDropDownNum;
-            delete data.eleLocateRule;
-            delete data.refreshable;
-            delete data.refreshWaitTime;
+          let data = JSON.parse(JSON.stringify(this.basicData))
+          if (data.browserCrawlable === 2) {
+            delete data.refreshType
+            delete data.maxDropDownNum
+            delete data.eleLocateRule
+            delete data.refreshable
+            delete data.refreshWaitTime
           }
-          if(data.pageTurningable === 0){
-            delete data.pageTurningType;
-            delete data.extractType;
-            delete data.extractRule;
-            delete data.pageDownExpression;
+          if (data.pageTurningable === 0) {
+            delete data.pageTurningType
+            delete data.extractType
+            delete data.extractRule
+            delete data.pageDownExpression
           }
-          this.$emit("basicData",data);
+          this.$emit("basicData", data)
         } else {
           this.$Message.error({
             content: "基本属性请填写完整！",
             duration: 3,
             closable: true
-          });
+          })
         }
-      });
-    }
-  }
-};
-</script>
-
-<style lang="stylus">
-.pageBasic {
-  padding-bottom: 100px;
-  width: 60%;
-
-  .browserCrawlable {
-    border: 1px solid #dddee1;
-    border-radius: 4px;
-    padding: 20px;
-
-    .ivu-form-item {
-      margin-bottom: 24px !important;
-    }
-
-    .ivu-form-item-content {
-      margin-left: 150px !important;
+      })
     }
   }
 }
+</script>
+
+<style lang="stylus">
+.pageBasic
+  padding-bottom 100px
+  width 60%
+  .browserCrawlable
+    padding 20px
+    border 1px solid #dddee1
+    border-radius 4px
+    .ivu-form-item
+      margin-bottom 24px !important
+    .ivu-form-item-content
+      margin-left 150px !important
 </style>

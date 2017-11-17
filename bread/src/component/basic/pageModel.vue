@@ -37,7 +37,15 @@
           },
           {
             title: '模型名称',
-            key: 'modelName'
+            render:(h,params)=> {
+              return h('router-link',{
+                attrs:{
+                  to:{
+                    path: "/pageManager/alter",
+                  }
+                }
+              },params.row.modelName)
+            }
           },
           {
             title: '站点'
@@ -56,30 +64,30 @@
             render: (h, params) => {
               switch (params.row.checkType) {
                 case 0:
-                  return h("span",{
+                  return h('span', {
                     style: {
-                      color: "#646464",
-                      display: "inline-block",
-                      padding: "4px 10px",
-                      opacity: "0.7",
-                      background: "#EBF8F2",
-                      border: "1px solid #A7E1C4",
-                      borderRadius: "2px"
+                      color: '#646464',
+                      display: 'inline-block',
+                      padding: '4px 10px',
+                      opacity: '0.7',
+                      background: '#EBF8F2',
+                      border: '1px solid #A7E1C4',
+                      borderRadius: '2px'
                     }
-                  },'未签出')
+                  }, '未签出')
                   break
                 case 1:
-                  return h("span",{
+                  return h('span', {
                     style: {
-                      color: "#646464",
-                      display: "inline-block",
-                      padding: "4px 10px",
-                      opacity: "0.7",
-                      background: "#EBF8F2",
-                      border: "1px solid #FABEB9",
-                      borderRadius: "2px"
+                      color: '#646464',
+                      display: 'inline-block',
+                      padding: '4px 10px',
+                      opacity: '0.7',
+                      background: '#EBF8F2',
+                      border: '1px solid #FABEB9',
+                      borderRadius: '2px'
                     }
-                  },`已签出${params.row.checkName}`)
+                  }, `已签出${params.row.checkName}`)
               }
             }
           },
@@ -177,7 +185,9 @@
         this.siteId = ''
         this.initPageModelList()
       },
-      handleAdd () {},
+      handleAdd () {
+        this.$router.push('/pageManager/add')
+      },
       handleCut (subscript, siteId) {
         this.activeIndex = subscript
         this.siteId = siteId

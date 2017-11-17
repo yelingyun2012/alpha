@@ -26,41 +26,38 @@ export default {
   mounted() {
     document.addEventListener("click", e => {
       if (!this.$el.contains(e.target)) {
-        this.$store.dispatch("setToggleId", "-1");
+        this.$store.dispatch("setToggleId", "-1")
       }
-    });
+    })
   },
   computed: {
     isFolder() {
-      return this.item.children && this.item.children.length;
+      return this.item.children && this.item.children.length
     },
     toggleId() {
-      return this.$store.getters.getToggleId;
+      return this.$store.getters.getToggleId
     },
     httpCon() {
-      return this.$store.getters.getHttpCon;
+      return this.$store.getters.getHttpCon
     }
   },
   methods: {
     toggle(id) {
-      this.$store.dispatch("setToggleId", id);
+      this.$store.dispatch("setToggleId", id)
     },
     //删除
     delItem(index) {
-      this.item["children"].splice(index, 1);
+      this.item["children"].splice(index, 1)
     }
   }
-};
+}
 </script>
 
-<style scoped>
-ul {
-  padding-left: 20px;
-}
-
-.w100 {
-  display: inline-block;
-  width: 100px;
-  text-align: right;
-}
+<style lang='stylus' scoped>
+ul
+  padding-left 20px
+.w100
+  display inline-block
+  width 100px
+  text-align right
 </style>

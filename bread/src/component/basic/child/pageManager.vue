@@ -20,9 +20,9 @@
           pageModelBasic(ref="pageModelBasic",@modelData="modelData")
 </template>
 <script>
-import pageSite from "./pageSite.vue";
-import pageBasic from "./pageBasic.vue";
-import pageModelBasic from "./pageModelBasic.vue";
+import pageSite from "./pageSite.vue"
+import pageBasic from "./pageBasic.vue"
+import pageModelBasic from "./pageModelBasic.vue"
 
 export default {
   name: "pageManager",
@@ -30,49 +30,49 @@ export default {
     return {
       signStatus: false,
       signUserStatus: false,
-      siteList:"", //归属站点数据
-      basicList: [],  //基本属性数据
-      modelList: "",  //页面模型数据
+      siteList: "", //归属站点数据
+      basicList: [], //基本属性数据
+      modelList: "", //页面模型数据
       formValidate: {
         taskName: ""
       },
       ruleValidate: {
         taskName: [{ required: true, message: "页面模型名称不能为空", trigger: "blur" }]
       }
-    };
+    }
   },
   methods: {
     //返回
     handleBack() {
-      this.$router.go(-1);
+      this.$router.go(-1)
     },
-    //保存保存
+    //保存
     handleSave() {
-      this.siteList = "";
-      this.basicList = [];
+      this.siteList = ""
+      this.basicList = []
 
-      this.$refs.pageSite.pageSiteSubmit();
-      this.$refs.pageBasic.pageBasicSubmit();
-      this.$refs.pageModelBasic.pageModelBasicSubmit();
+      this.$refs.pageSite.pageSiteSubmit()
+      this.$refs.pageBasic.pageBasicSubmit()
+      this.$refs.pageModelBasic.pageModelBasicSubmit()
 
       if (this.siteList && this.basicList.length !== 0 && this.modelList) {
-        let objData = this.basicList;
-        objData.siteId = this.siteList;
-        objData.pageModelProperty = this.modelList;
+        let objData = this.basicList
+        objData.siteId = this.siteList
+        objData.pageModelProperty = this.modelList
         console.log(objData)
       }
     },
     //归属站点数据
-    siteData(val){
-      this.siteList = val;
+    siteData(val) {
+      this.siteList = val
     },
     //基本属性数据
     basicData(val) {
-      this.basicList = val;
+      this.basicList = val
     },
     //页面模型数据
-    modelData(val){
-      this.modelList = val;
+    modelData(val) {
+      this.modelList = val
     }
   },
   components: {
@@ -80,59 +80,36 @@ export default {
     pageBasic,
     pageModelBasic
   }
-};
+}
 </script>
 <style lang="stylus" scoped>
-.task {
-  &-inform {
-    padding: 30px 20px 20px;
-    background-color: #ffffff;
-
-    .seed-name {
-      color: #323232;
-      font-size: 14px;
-    }
-
-    .typeIn {
-      margin-left: 4px;
-    }
-
-    header {
-      display: flex;
-    }
-  }
-
-  &-header {
-    &-typeIn {
-      display: block;
-      flex-grow: 1;
-      flex-shrink: 1;
-    }
-
-    &-btn, .test {
-      display: block;
-
-      .ivu-btn {
-        padding: 6px 23px;
-        font-size: 14px;
-
-        &:last-child {
-          margin-left: 10px; // asdsa
-        }
-      }
-    }
-  }
-
-  &-section {
-    margin-top: 40px;
-
-    .ivu-tabs-tabpane:first-child {
-      padding-bottom: 300px;
-    }
-  }
-}
-
-.ivu-form-item {
-  margin-bottom: 0;
-}
+.task
+  &-inform
+    padding 30px 20px 20px
+    background-color #ffffff
+    .seed-name
+      color #323232
+      font-size 14px
+    .typeIn
+      margin-left 4px
+    header
+      display flex
+  &-header
+    &-typeIn
+      display block
+      flex-grow 1
+      flex-shrink 1
+    &-btn, .test
+      display block
+      .ivu-btn
+        padding 6px 23px
+        font-size 14px
+        &:last-child
+          margin-left 10px // asdsa
+  &-section
+    margin-top 40px
+    .ivu-tabs-tabpane:first-child
+      padding-bottom 300px
+.ivu-form-item
+  margin-bottom 0
 </style>

@@ -11,7 +11,6 @@
           DropdownItem(name="logout") 退出登录
 </template>
 <script>
-
   import { getCookie, removeCookie } from '../../utils/cookie'
 
   export default {

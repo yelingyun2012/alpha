@@ -2,7 +2,7 @@
   section.user-panel
     Form(:label-width="90", ref="formValidate", :model="formValidate", :rules="ruleValidate")
       FormItem(label="用户名", prop="userName")
-        Input(placeholder="请输入用户名", v-model="formValidate.userName", style="width: 300px")
+        Input(placeholder="请输入用户名", v-model="formValidate.userName", style="width: 300px", :maxlength="50")
       FormItem(:label="$route.params.operate==='add'?'密码':'新密码'", prop="password")
         Input(placeholder="请输入密码", v-model="formValidate.password", style="width: 300px")
       FormItem(label="确认新密码", v-if="$route.params.operate==='alter'", prop="newPassword")

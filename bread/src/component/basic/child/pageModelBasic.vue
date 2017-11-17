@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import { queryType } from "../../../config/getData";
-import { getCookie } from "../../../utils/cookie";
-import pageModelBasicTree from "./pageModelBasicTree";
-import pageModelBasicOption from "./pageModelBasicOption";
+import { queryType } from "../../../config/getData"
+import { getCookie } from "../../../utils/cookie"
+import pageModelBasicTree from "./pageModelBasicTree"
+import pageModelBasicOption from "./pageModelBasicOption"
 
 export default {
   name: "pageModelBasic",
@@ -56,51 +56,51 @@ export default {
       groupType: [{ id: 0, name: "属性" }, { id: 1, name: "属性树" }],
       items: [],
       postData: []
-    };
+    }
   },
   mounted() {
-    this.httpConData();
+    this.httpConData()
   },
   methods: {
     //uuid
     uuid() {
-      let s = [];
-      let hexDigits = "0123456789abcdef";
+      let s = []
+      let hexDigits = "0123456789abcdef"
       for (let i = 0; i < 36; i++) {
-        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
       }
-      s[14] = "4";
-      s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
-      s[8] = s[13] = s[18] = s[23] = "-";
+      s[14] = "4"
+      s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
+      s[8] = s[13] = s[18] = s[23] = "-"
 
-      let uuid = s.join("");
-      return uuid;
+      let uuid = s.join("")
+      return uuid
     },
     //获取parseType
     httpConData() {
       queryType({ typeId: 3, token: getCookie("token") })
         .then(response => {
           if (response.data.respCode === "0") {
-            let httpCon = response.data.data;
-            this.$store.dispatch("setHttpCon", httpCon);
+            let httpCon = response.data.data
+            this.$store.dispatch("setHttpCon", httpCon)
           }
         })
         .catch(err => {
-          console.log(err.statusCode);
-        });
+          console.log(err.statusCode)
+        })
     },
     //添加
     addCon() {
-      this.handleReset("formData");
-      this.modal = true;
+      this.handleReset("formData")
+      this.modal = true
     },
     //确定
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          let formData = this.formData;
-          let items = this.items;
-          let propertyId = this.uuid();
+          let formData = this.formData
+          let items = this.items
+          let propertyId = this.uuid()
           let obj = {
             propertyId: propertyId,
             propertyName: formData.name,
@@ -109,147 +109,139 @@ export default {
             matchExpression: "",
             groupType: formData.radio,
             parentId: "0"
-          };
+          }
           if (formData.radio === 0) {
             if (formData.par === "-1") {
-              items.push(obj);
+              items.push(obj)
             } else {
-              this.insertArr(items, formData.par, obj);
+              this.insertArr(items, formData.par, obj)
             }
           } else {
-            obj.children = [];
+            obj.children = []
             if (formData.par === "-1") {
-              items.push(obj);
+              items.push(obj)
             } else {
-              this.insertArr(items, formData.par, obj);
+              this.insertArr(items, formData.par, obj)
             }
           }
-          this.$Message.success("提交成功!");
-          this.modal = false;
+          this.$Message.success("提交成功!")
+          this.modal = false
         } else {
-          this.$Message.error("请填写!");
+          this.$Message.error("请填写!")
         }
-      });
+      })
     },
     //递归插入数据
     insertArr(arr, id, val) {
-      let result;
+      let result
       for (let i in arr) {
         if (arr[i].propertyId == id) {
-          val.parentId = id;
-          arr[i].children.push(val);
-          break;
+          val.parentId = id
+          arr[i].children.push(val)
+          break
         } else {
-          result = this.insertArr(arr[i].children, id, val);
+          result = this.insertArr(arr[i].children, id, val)
           if (result) {
-            val.parentId = id;
-            arr[i].children.push(val);
-            break;
+            val.parentId = id
+            arr[i].children.push(val)
+            break
           }
         }
       }
     },
     //重置表单
     handleReset(name) {
-      this.$refs[name].resetFields();
+      this.$refs[name].resetFields()
     },
     //删除
     delItem(index) {
-      this.items.splice(index, 1);
+      this.items.splice(index, 1)
     },
     //获取json格式
     pageModelBasicSubmit() {
-      this.postData = [];
-      let jsonItems = JSON.parse(JSON.stringify(this.items));
-      this.arrJson(jsonItems);
-      this.deleteChildren(this.postData);
-      this.validateCon(this.postData);
+      this.postData = []
+      let jsonItems = JSON.parse(JSON.stringify(this.items))
+      this.arrJson(jsonItems)
+      this.deleteChildren(this.postData)
+      this.validateCon(this.postData)
     },
     //数据结构转换
     arrJson(arr) {
       for (let i in arr) {
-        this.postData.push(arr[i]);
+        this.postData.push(arr[i])
         if (arr[i].children) {
-          this.arrJson(arr[i].children);
+          this.arrJson(arr[i].children)
         }
       }
     },
     //删除children
-    deleteChildren(arr){
+    deleteChildren(arr) {
       for (let i in arr) {
         if (arr[i].children) {
-          delete arr[i].children;
+          delete arr[i].children
         }
       }
     },
     //验证内容是否为空
-    validateCon(arr){
-      for(let i in arr){
-        if(arr[i].matchExpression === ""){
-          this.$Message.error("页面模型内容不能为空！");
-          break;
-        }else{
-          if(i == arr.length-1){
-            let jsonData = JSON.stringify(this.postData);
-            this.$emit("modelData",jsonData);
+    validateCon(arr) {
+      for (let i in arr) {
+        if (arr[i].matchExpression === "") {
+          this.$Message.error("页面模型内容不能为空！")
+          break
+        } else {
+          if (i == arr.length - 1) {
+            let jsonData = JSON.stringify(this.postData)
+            this.$emit("modelData", jsonData)
           }
         }
       }
     },
     //回显数据
     returnData() {
-      this.arrFormat(this.postData);
+      this.arrFormat(this.postData)
     },
     arrFormat(arr) {
       for (var i in arr) {
         //插入children
         if (arr[i].type === 1) {
-          arr[i].children = [];
+          arr[i].children = []
         }
         //把数据插入到children
         for (var j in arr) {
           if (arr[i].id === arr[j].parId) {
-            arr[i].children.push(arr[j]);
+            arr[i].children.push(arr[j])
           }
         }
       }
       //删除第一级以外的数据
       for (var i = arr.length - 1; i >= 0; i--) {
         if (arr[i].parId !== "0") {
-          arr.splice(i, 1);
+          arr.splice(i, 1)
         }
       }
     }
   }
-};
+}
 </script>
 
 <style lang="stylus">
-.pageModelBasic{
-  .pageModelTree{
-    margin-bottom 24px;
-    background: #F7F7F7;
-    padding:0 20px;
-    & > .pageModelBasicTree{
-      &:last-child{
-        border:0;
-      }
-      border-bottom:1px solid #d9d9d9;
-      & > ul{
-        padding:0;
-      }
-    }
-  }
-}
-.vertical-center-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center; 
-  .ivu-modal {
-    top: 0;
-  }
-  .ivu-modal-footer{
-    display: none;
-  }
-}
+.pageModelBasic
+  .pageModelTree
+    margin-bottom 24px
+    padding 0 20px
+    background #F7F7F7
+    & > .pageModelBasicTree
+      &:last-child
+        border 0
+      border-bottom 1px solid #d9d9d9
+      & > ul
+        padding 0
+.vertical-center-modal
+  display flex
+  justify-content center
+  align-items center
+  .ivu-modal
+    top 0
+  .ivu-modal-footer
+    display none
 </style>
