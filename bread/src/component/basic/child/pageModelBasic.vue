@@ -26,9 +26,6 @@
       </Form>
       <div slot="footer"></div>
     </Modal>
-
-    <Button type="primary" @click="getJson()">提交</Button>
-
   </div>
 </template>
 
@@ -161,15 +158,12 @@ export default {
       this.items.splice(index, 1);
     },
     //获取json格式
-    getJson() {
+    pageModelBasicSubmit() {
       this.postData = [];
       let jsonItems = JSON.parse(JSON.stringify(this.items));
       this.arrJson(jsonItems);
       this.deleteChildren(this.postData);
-      let jsonData = JSON.stringify(this.postData);
-      console.log(jsonData);
-      console.log(this.items);
-      console.log(this.postData);
+      this.validateCon(this.postData);
     },
     //数据结构转换
     arrJson(arr) {
@@ -185,6 +179,20 @@ export default {
       for (let i in arr) {
         if (arr[i].children) {
           delete arr[i].children;
+        }
+      }
+    },
+    //验证内容是否为空
+    validateCon(arr){
+      for(let i in arr){
+        if(arr[i].matchExpression === ""){
+          this.$Message.error("页面模型内容不能为空！");
+          break;
+        }else{
+          if(i == arr.length-1){
+            let jsonData = JSON.stringify(this.postData);
+            this.$emit("modelData",jsonData);
+          }
         }
       }
     },

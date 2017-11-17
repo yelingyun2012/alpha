@@ -17,7 +17,7 @@
         TabPane(label='基本属性')
           pageBasic(ref="pageBasic",@basicData="basicData")
         TabPane(label='页面模型')
-          pageModelBasic
+          pageModelBasic(ref="pageModelBasic",@modelData="modelData")
 </template>
 <script>
 import pageSite from "./pageSite.vue";
@@ -32,6 +32,7 @@ export default {
       signUserStatus: false,
       siteList:"", //归属站点数据
       basicList: [],  //基本属性数据
+      modelList: "",  //页面模型数据
       formValidate: {
         taskName: ""
       },
@@ -52,10 +53,12 @@ export default {
 
       this.$refs.pageSite.pageSiteSubmit();
       this.$refs.pageBasic.pageBasicSubmit();
+      this.$refs.pageModelBasic.pageModelBasicSubmit();
 
-      if (this.siteList && this.basicList.length !== 0) {
+      if (this.siteList && this.basicList.length !== 0 && this.modelList) {
         let objData = this.basicList;
         objData.siteId = this.siteList;
+        objData.pageModelProperty = this.modelList;
         console.log(objData)
       }
     },
@@ -67,6 +70,10 @@ export default {
     basicData(val) {
       this.basicList = val;
     },
+    //页面模型数据
+    modelData(val){
+      this.modelList = val;
+    }
   },
   components: {
     pageSite,
