@@ -22,17 +22,17 @@
       </FormItem>
       <FormItem label="抽取url：" prop="urlExtractable">
         <RadioGroup v-model="basicData.urlExtractable">
-          <Radio label="1">是</Radio>
-          <Radio label="0">否</Radio>
+          <Radio :label="1">是</Radio>
+          <Radio :label="0">否</Radio>
         </RadioGroup>
       </FormItem>
       <FormItem label="浏览器采集：" prop="browserCrawlable">
         <RadioGroup v-model="basicData.browserCrawlable">
-          <Radio label="1">是</Radio>
-          <Radio label="2">否</Radio>
+          <Radio :label="1">是</Radio>
+          <Radio :label="2">否</Radio>
         </RadioGroup>
       </FormItem>
-      <FormItem label=" " v-if=" basicData.browserCrawlable === '1' ">
+      <FormItem label=" " v-if=" basicData.browserCrawlable === 1 ">
         <div class="browserCrawlable">
           <FormItem label="刷新方式：" prop="refreshType">
             <Select v-model="basicData.refreshType">
@@ -49,8 +49,8 @@
           </FormItem>
           <FormItem label="是否刷新：" prop="refreshable">
             <RadioGroup v-model="basicData.refreshable">
-              <Radio label="1">是</Radio>
-              <Radio label="0">否</Radio>
+              <Radio :label="1">是</Radio>
+              <Radio :label="0">否</Radio>
             </RadioGroup>
           </FormItem>
           <FormItem label="刷新等待时间：" prop="refreshWaitTime">
@@ -62,11 +62,11 @@
       </FormItem>
       <FormItem label="翻页：" prop="pageTurningable">
         <RadioGroup v-model="basicData.pageTurningable">
-          <Radio label="1">是</Radio>
-          <Radio label="0">否</Radio>
+          <Radio :label="1">是</Radio>
+          <Radio :label="0">否</Radio>
         </RadioGroup>
       </FormItem>
-      <FormItem label=" " v-if=" basicData.pageTurningable === '1' ">
+      <FormItem label=" " v-if=" basicData.pageTurningable === 1 ">
         <div class="browserCrawlable">
           <FormItem label="翻页方式：" prop="pageTurningType">
             <Select v-model="basicData.pageTurningType">
@@ -102,7 +102,7 @@ export default {
       modelTypeList: [], //模型类别data
       contentTypeList: [], //内容提供方式data
       refreshTypeList: [], //刷新方式
-      extractTypeList:[], //抽取规则
+      extractTypeList: [], //抽取规则
       //最大下拉次数
       maxDropDownNumList: [
         { itemType: 1, itemName: "1次" },
@@ -130,39 +130,65 @@ export default {
         modelRegularExpression: "", //模型正则表达式
         urlsAllowCrawlRegex: "", //允许爬行URL正则
         urlsNotAllowCrawlRegex: "", //不允许爬行URL正则
-        urlExtractable: "0", //抽取url
-        browserCrawlable: "2", //浏览器采集
-        pageTurningable: "0", //翻页
+        urlExtractable: 0, //抽取url
+        browserCrawlable: 2, //浏览器采集
+        pageTurningable: 0, //翻页
 
         refreshType: 1, //刷新方式
         maxDropDownNum: 1, //最大下拉次数
         eleLocateRule: "", //元素刷新定位规格：（xpath格式）
-        refreshable: "0", //是否刷新
+        refreshable: 0, //是否刷新
         refreshWaitTime: 3, //刷新等待时间
 
-        pageTurningType:1, //翻页方式
-        extractType:1, //抽取规则
-        extractRule:"", //抽取链接或页码的表达式
-        pageDownExpression:"",  //下一个表达式
+        pageTurningType: 1, //翻页方式
+        extractType: 1, //抽取规则
+        extractRule: "", //抽取链接或页码的表达式
+        pageDownExpression: "" //下一个表达式
       },
       ruleValidate: {
-        modelType: [{ type:'number', required: true, message: "请选择", trigger: "change" }],
-        contentType: [{ type:'number', required: true, message: "请选择", trigger: "change" }],
-        modelRegularExpression: [{ required: true, message: "请输入", trigger: "blur" }],
-        urlsAllowCrawlRegex: [{ required: true, message: "请输入", trigger: "blur" }],
-        urlsNotAllowCrawlRegex: [{ required: true, message: "请输入", trigger: "blur" }],
-        urlExtractable: [{ required: true, message: "请选择", trigger: "change" }],
-        browserCrawlable: [{ required: true, message: "请选择", trigger: "change" }],
-        pageTurningable: [{ required: true, message: "请选择", trigger: "change" }],
-        refreshType: [{ type:'number', required: true, message: "请选择", trigger: "change" }],
-        maxDropDownNum: [{ type:'number', required: true, message: "请选择", trigger: "change" }],
+        modelType: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
+        contentType: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
+        modelRegularExpression: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        urlsAllowCrawlRegex: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        urlsNotAllowCrawlRegex: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        urlExtractable: [{type: "number", required: true, message: "请选择", trigger: "change" }],
+        browserCrawlable: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
+        pageTurningable: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
+        refreshType: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
+        maxDropDownNum: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
         eleLocateRule: [{ required: true, message: "请输入", trigger: "blur" }],
-        refreshable: [{ required: true, message: "请选择", trigger: "change" }],
-        refreshWaitTime: [{ type:'number', required: true, message: "请选择", trigger: "change" }],
-        pageTurningType: [{ type:'number', required: true, message: "请选择", trigger: "change" }],
-        extractType: [{ type:'number', required: true, message: "请选择", trigger: "change" }],
+        refreshable: [{ type: "number", required: true, message: "请选择", trigger: "change" }],
+        refreshWaitTime: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
+        pageTurningType: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
+        extractType: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
         extractRule: [{ required: true, message: "请输入", trigger: "blur" }],
-        pageDownExpression: [{ required: true, message: "请输入", trigger: "blur" }],
+        pageDownExpression: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ]
       }
     };
   },
@@ -202,6 +228,34 @@ export default {
           .catch(err => {
             reject(err.statusCode);
           });
+      });
+    },
+    pageBasicSubmit() {
+      let name = 'basicData';
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          let data = JSON.parse(JSON.stringify(this.basicData));
+          if(data.browserCrawlable === 2){
+            delete data.refreshType;
+            delete data.maxDropDownNum;
+            delete data.eleLocateRule;
+            delete data.refreshable;
+            delete data.refreshWaitTime;
+          }
+          if(data.pageTurningable === 0){
+            delete data.pageTurningType;
+            delete data.extractType;
+            delete data.extractRule;
+            delete data.pageDownExpression;
+          }
+          this.$emit("basicData",data);
+        } else {
+          this.$Message.error({
+            content: "基本属性请填写完整！",
+            duration: 3,
+            closable: true
+          });
+        }
       });
     }
   }

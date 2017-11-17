@@ -21,11 +21,16 @@ export default {
 		this.getData();
 	},
   methods: {
+    //获取列表
     getData() {
       listSiteName({ token: getCookie("token") }).then(response => {
         this.siteData = response.data.data;
         this.siteId = this.siteData[0].siteId;
       });
+    },
+    //提交
+    pageSiteSubmit(){
+      this.$emit("siteData",this.siteId);
     }
   }
 };
