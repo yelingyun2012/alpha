@@ -79,7 +79,7 @@
               <Option v-for="(val,index) in extractTypeList" :key="index" :value="val.itemType">{{val.itemName}}</Option>
             </Select>
           </FormItem>
-          <FormItem label=" " prop="extractRule">
+          <FormItem label="抽取规则表达式" prop="extractRule">
             <Input v-model="basicData.extractRule" type="textarea" :autosize="{minRows: 3,maxRows: 5}"></Input>
           </FormItem>
           <FormItem label="下一页表达式：" prop="pageDownExpression">
@@ -133,7 +133,7 @@ export default {
         urlExtractable: 0, //抽取url
         browserCrawlable: 2, //浏览器采集
         pageTurningable: 0, //翻页
-
+        
         refreshType: 1, //刷新方式
         maxDropDownNum: 1, //最大下拉次数
         eleLocateRule: "", //元素刷新定位规格：（xpath格式）

@@ -42,13 +42,19 @@
                 attrs:{
                   to:{
                     path: "/pageManager/alter",
+                    query:{
+                      modelId:`${params.row.modelId}`,
+                      checkType: `${params.row.checkType}`,
+                      updatePersonId:`${params.row.updatePersonId}`
+                    }
                   }
                 }
               },params.row.modelName)
             }
           },
           {
-            title: '站点'
+            title: '站点',
+            key:'siteName'
           },
           {
             title: '创建时间',
@@ -56,7 +62,7 @@
           },
           {
             title: '创建人',
-            key: 'creatorName'
+            key: 'createName'
           },
           {
             title: '签出状态',
@@ -87,7 +93,7 @@
                       border: '1px solid #FABEB9',
                       borderRadius: '2px'
                     }
-                  }, `已签出${params.row.checkName}`)
+                  }, `已签出${params.row.updateName}`)
               }
             }
           },
@@ -141,7 +147,7 @@
             }).then(response => {
               switch (response.data.respCode) {
                 case '0':
-                  this.pageModelData.splice(index)
+                  this.pageModelData.splice(index,1)
                   this.$Message.success('删除成功')
                   break
                 case '204':

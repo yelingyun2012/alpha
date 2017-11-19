@@ -102,6 +102,7 @@ export default {
           let items = this.items
           let propertyId = this.uuid()
           let obj = {
+            modelId: this.$route.query.modelId,
             propertyId: propertyId,
             propertyName: formData.name,
             urlPropertyExtract: 0,

@@ -199,6 +199,10 @@
           userName: this.userName,
           token: getCookie('token')
         }).then(response => {
+          if(response.data.respCode==='205'){
+            this.$router.push('/401')
+            return false
+          }
           if (response.data.data !== null || response.data.data.length !== 0) {
             this.pageTotal = response.data.data.recordCount
             this.accountData = response.data.data.result

@@ -9,7 +9,7 @@
         Col(span="8")
           FormItem(label="编码:")
             Select(style='width:300px', v-model="codingSchemeVal")
-              Option(v-for="code in codingSchemeData", :value="code.itemType", :key="code.itemType") {{code.itemName}}
+              Option(v-for="code in codingSchemeData", :value="code.value", :key="code.value") {{code.label}}
       Row
         Col(span="8")
           FormItem(label="页面请求方式:")
@@ -37,7 +37,7 @@
             Select(style='width:300px', v-model="numberVal")
               Option(v-for="number in numberOfRetriesData", :value="number.value", :key="number.value") {{number.label}}
         Col(span="8")
-          FormItem(label="是否需要代理:")
+          FormItem(label="代理选择:")
             Select(style='width:300px', v-model="agencyVal")
               Option(v-for='agency in agencyData', :value='agency.value', :key='agency.value') {{agency.label}}
       Row
@@ -52,10 +52,10 @@
       Row
         Col(span="8")
           FormItem(label="采集开始时间:")
-            DatePicker(type="date", placeholder="选择日期", style="width: 300px", @on-change="collectStart", @on-open-change="setAttr")
+            DatePicker(type="datetime", :value='startTimeVal' ,placeholder="选择日期", style="width: 300px", @on-change="collectStart", @on-open-change="setAttr")
         Col(span="8")
           FormItem(label="采集结束时间:")
-            DatePicker(type="date", placeholder="选择日期", style="width: 300px", @on-change="collectEnd", @on-open-change="setAttr")
+            DatePicker(type="datetime", :value='endTimeVal' ,placeholder="选择日期", style="width: 300px", @on-change="collectEnd", @on-open-change="setAttr")
       FormItem(label="用户代理:")
         Input(style="width:58%", v-model="userAgentVal")
 </template>
@@ -67,9 +67,11 @@
     name: 'TaskBasicAttribute',
     data () {
       return {
+        startTimeVal:'',
+        endTimeVal:'',
         // input Val
         taskCycleTypeVal: '',
-        codingSchemeVal: '',
+        codingSchemeVal: 'utf-8',
         requestMethodVal: '',
         urlDeWeightVal: false,
         durationVal: 1,
@@ -79,13 +81,15 @@
         taskPriorityVal: '',
         intervalVal: 5,
         userAgentVal: '',
-        collectStartVal: '',
-        collectEndVal: '',
         periodicWeight: true,
         periodicWeightVal: false,
         // input Data
         taskCycleTypeData: [],
-        codingSchemeData: [],
+        codingSchemeData: [
+          {value:'utf-8',label:'utf-8'},
+          {value:'gbk',label:'gbk'},
+          {value:'gb2312',label:'gb2312'}
+        ],
         requestMethodValData: [],
         theRetentionTimeData: [
           {value: 1, label: '1天'},
@@ -115,7 +119,7 @@
         ],
         agencyData: [
           {value: 0, label: '不需要'},
-          {value: 0, label: '境内动态'}
+          {value: 1, label: '境内动态'}
         ],
         taskPriorityValData: [],
         intervalData: [
@@ -160,12 +164,12 @@
       },
       collectStart (start) {
         if (start !== '') {
-          this.collectStartVal = start
+          this.startTimeVal = start
         }
       },
       collectEnd (end) {
         if (end !== '') {
-          this.collectEndVal = end
+          this.endTimeVal = end
         }
       }
     },
@@ -179,8 +183,6 @@
     created () {
       // 任务周期类型
       const taskCycleType = this.initQueryType(5)
-      // 编码方式
-      const codingScheme = this.initQueryType(9)
       // 请求方式
       const requestMethod = this.initQueryType(7)
       // 任务优先级
@@ -188,18 +190,18 @@
 
       Promise.all([
         taskCycleType,
-        codingScheme,
         requestMethod,
         taskPriority
       ]).then(response => {
         this.taskCycleTypeData = response[0].data.data
-        this.taskCycleTypeVal = this.taskCycleTypeData[0].itemType
-        this.codingSchemeData = response[1].data.data
-        this.codingSchemeVal = this.codingSchemeData[0].itemType
-        this.requestMethodValData = response[2].data.data
-        this.requestMethodVal = this.requestMethodValData[0].itemType
-        this.taskPriorityValData = response[3].data.data
-        this.taskPriorityVal = this.taskPriorityValData[0].itemType
+        this.requestMethodValData = response[1].data.data
+        this.taskPriorityValData = response[2].data.data
+        
+        if(this.$route.params.id==='add'){
+          this.taskCycleTypeVal = this.taskCycleTypeData[0].itemType
+          this.requestMethodVal = this.requestMethodValData[0].itemType
+          this.taskPriorityVal = this.taskPriorityValData[0].itemType
+        }
       })
     }
   }

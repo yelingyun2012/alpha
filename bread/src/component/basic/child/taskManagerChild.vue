@@ -20,7 +20,12 @@
 <script>
 import taskBasicAttribute from "./taskBasicAttribute.vue";
 import taskPageModel from "./taskPageModel.vue";
-import { taskCheckout, taskAdd, taskCheckin } from "../../../config/getData";
+import {
+  taskCheckout,
+  taskAdd,
+  taskCheckin,
+  taskQuery
+} from "../../../config/getData";
 import { getCookie } from "../../../utils/cookie";
 
 export default {
@@ -56,8 +61,8 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           if (
-            this.$refs.property.collectStartVal === "" ||
-            this.$refs.property.collectEndVal === ""
+            this.$refs.property.startTimeVal === "" ||
+            this.$refs.property.endTimeVal === ""
           ) {
             this.$Message.warning("采集时间不能为空");
             return false;
@@ -75,14 +80,15 @@ export default {
             deduplicate: this.$refs.property.urlDeWeightVal ? 1 : 0,
             periodicDeduplicate: this.$refs.property.periodicWeightVal ? 1 : 0,
             siteId: this.$refs.model.siteVal,
-            maxDeduplicateTime: this.$refs.property.durationVal * 24 * 60 * 60,
-            connectionTimeout: this.$refs.property.connectionVal,
+            maxDeduplicateTime:
+              this.$refs.property.durationVal * 24 * 60 * 60 * 1000,
+            connectionTimeout: this.$refs.property.connectionVal * 1000,
             maxRetryCount: this.$refs.property.numberVal,
-            proxyId: 0,
+            proxyId: this.$refs.property.agencyVal,
             priority: this.$refs.property.taskPriorityVal,
             userAgent: this.$refs.property.userAgentVal,
-            startTime: new Date(this.$refs.property.collectStartVal).getTime(),
-            endTime: new Date(this.$refs.property.collectEndVal).getTime(),
+            startTime: new Date(this.$refs.property.startTimeVal).getTime(),
+            endTime: new Date(this.$refs.property.endTimeVal).getTime(),
             crawlTimeInterval: this.$refs.property.intervalVal,
             startUrl: this.$refs.model.startAddressVal,
             moreStartUrl: this.$refs.model.moreStartAddressVal,
@@ -93,7 +99,7 @@ export default {
               this.signStatus = false;
               this.$Message.success("签入成功");
             } else {
-              this.$Message.error("任务已签入,不能重复签入同一任务");
+              this.$Message.error(response.data.respMsg);
             }
           });
         }
@@ -119,16 +125,17 @@ export default {
             charSet: this.$refs.property.codingSchemeVal,
             requestType: this.$refs.property.requestMethodVal,
             deduplicate: this.$refs.property.urlDeWeightVal ? 1 : 0,
-            periodicDeduplicate: 0,
+            periodicDeduplicate: this.$refs.property.periodicWeightVal ? 1 : 0,
             siteId: this.$refs.model.siteVal,
-            maxDeduplicateTime: this.$refs.property.durationVal * 24 * 60 * 60,
-            connectionTimeout: this.$refs.property.connectionVal,
+            maxDeduplicateTime:
+              this.$refs.property.durationVal * 24 * 60 * 60 * 1000,
+            connectionTimeout: this.$refs.property.connectionVal * 1000,
             maxRetryCount: this.$refs.property.numberVal,
-            proxyId: 0,
+            proxyId: this.$refs.property.agencyVal,
             priority: this.$refs.property.taskPriorityVal,
             userAgent: this.$refs.property.userAgentVal,
-            startTime: new Date(this.$refs.property.collectStartVal).getTime(),
-            endTime: new Date(this.$refs.property.collectEndVal).getTime(),
+            startTime: new Date(this.$refs.property.startTimeVal).getTime(),
+            endTime: new Date(this.$refs.property.endTimeVal).getTime(),
             crawlTimeInterval: this.$refs.property.intervalVal,
             startUrl: this.$refs.model.startAddressVal,
             moreStartUrl: this.$refs.model.moreStartAddressVal,
@@ -151,6 +158,46 @@ export default {
           return false;
         }
       });
+    },
+    formatDate(time) {
+      let date = new Date(time);
+      let dateMonth =
+        date.getMonth() + 1 < 10
+          ? `0${date.getMonth() + 1}`
+          : `${date.getMonth() + 1}`;
+      return `${date.getFullYear()}-${dateMonth}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    },
+    initTaskQuery() {
+      taskQuery({
+        taskId: this.$route.query.taskId,
+        token: getCookie("token")
+      }).then(response => {
+        let taskQueryData = response.data.data;
+        this.formValidate.taskName = taskQueryData.taskName;
+        this.$refs.property.taskCycleTypeVal = taskQueryData.taskPeriodType;
+        this.$refs.property.codingSchemeVal = taskQueryData.charSet;
+        this.$refs.property.requestMethodVal = taskQueryData.requestType;
+        this.$refs.property.urlDeWeightVal =
+          taskQueryData.deduplicate === 1 ? true : false;
+        this.$refs.property.periodicDeduplicate =
+          taskQueryData.periodicDeduplicate === 1 ? true : false;
+        this.$refs.property.durationVal =
+          taskQueryData.maxDeduplicateTime / (1000 * 24 * 60 * 60);
+        this.$refs.property.connectionVal =
+          taskQueryData.connectionTimeout / 1000;
+        this.$refs.property.numberVal = taskQueryData.maxRetryCount;
+        this.$refs.property.agencyVal = taskQueryData.proxyId;
+        this.$refs.property.taskPriorityVal = taskQueryData.priority;
+        this.$refs.property.intervalVal = taskQueryData.crawlTimeInterval;
+        this.$refs.property.userAgentVal = taskQueryData.userAgent;
+        this.$refs.model.siteVal = taskQueryData.siteId;
+        this.$refs.model.startAddressVal = taskQueryData.startUrl;
+        this.$refs.model.moreStartAddressVal = taskQueryData.moreStartUrl;
+        this.$refs.property.startTimeVal = this.formatDate(
+          taskQueryData.startTime
+        );
+        this.$refs.property.endTimeVal = this.formatDate(taskQueryData.endTime);
+      });
     }
   },
   computed: {
@@ -163,6 +210,9 @@ export default {
     taskPageModel
   },
   created() {
+    if (this.$route.params.id === "alter") {
+      this.initTaskQuery();
+    }
     if (
       this.$route.params.id === "alter" &&
       this.$route.query.checkType === "1"
@@ -181,36 +231,58 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-.task
-  &-inform
-    padding 30px 20px 20px
-    background-color #ffffff
-    .seed-name
-      color #323232
-      font-size 14px
-    .typeIn
-      margin-left 4px
-    header
-      display flex
-  &-header
-    &-typeIn
-      display block
-      flex-grow 1
-      flex-shrink 1
-    &-btn, .test
-      display block
-      .ivu-btn
-        padding 6px 23px
-        font-size 14px
-        &:last-child
-          margin-left 10px // asdsa
-  &-section
-    margin-top 40px
-    .ivu-tabs-tabpane:first-child
-      padding-bottom 300px
-.ivu-form-item
-  margin-bottom 0
-	
+.task {
+  &-inform {
+    padding: 30px 20px 20px;
+    background-color: #ffffff;
+
+    .seed-name {
+      color: #323232;
+      font-size: 14px;
+    }
+
+    .typeIn {
+      margin-left: 4px;
+    }
+
+    header {
+      display: flex;
+    }
+  }
+
+  &-header {
+    &-typeIn {
+      display: block;
+      flex-grow: 1;
+      flex-shrink: 1;
+    }
+
+    &-btn, .test {
+      display: block;
+
+      .ivu-btn {
+        padding: 6px 23px;
+        font-size: 14px;
+
+        &:last-child {
+          margin-left: 10px; // asdsa
+        }
+      }
+    }
+  }
+
+  &-section {
+    margin-top: 40px;
+
+    .ivu-tabs-tabpane:first-child {
+      padding-bottom: 300px;
+    }
+  }
+}
+
+.ivu-form-item {
+  margin-bottom: 0;
+}
 </style>
 
 

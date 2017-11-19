@@ -11,6 +11,7 @@
           DropdownItem(name="logout") 退出登录
 </template>
 <script>
+  import {LoginOut} from '../../config/getData'
   import { getCookie, removeCookie } from '../../utils/cookie'
 
   export default {
@@ -23,9 +24,14 @@
     methods: {
       handleOut (name) {
         if (name === 'logout') {
-          removeCookie('token')
-          removeCookie('userInfo')
-          this.$router.push('/login')
+          LoginOut({
+            userId:JSON.parse(getCookie('userInfo')).userId,
+            token:getCookie('token')
+          }).then(response =>{
+            removeCookie('token')
+            removeCookie('userInfo')
+            this.$router.push('/login')
+          })
         }
       }
     }

@@ -3,7 +3,7 @@ import { fetch } from './fetch'
 /**
  * 用户登陆
  */
-export const Login = (loginForm) => fetch('elise/login', {
+export const Login = loginForm => fetch('elise/login', {
   method: 'post',
   data: {
     loginName: loginForm.account,
@@ -14,9 +14,9 @@ export const Login = (loginForm) => fetch('elise/login', {
 /**
  * 用户退出
  */
-export const LoginOut = (token) => fetch('account/logout', {
+export const LoginOut = params => fetch('sign/signOut', {
   method: 'post',
-  data: {token}
+  data: params
 })
 
 /**
@@ -91,6 +91,14 @@ export const taskCheckin = params => fetch('task/checkin', {
   method: 'post',
   data: params
 })
+/**
+ * 任务详情
+ */
+export const taskQuery = params => fetch('task/query', {
+  method: 'post',
+  data: params
+})
+
 /***
  * 用户列表
  */
@@ -148,7 +156,7 @@ export const pageModelDelete = params => fetch('pagemodel/delete', {
   data: params
 })
 /***
- * 模型删除
+ * 模型添加
  */
 export const pageModelAdd = params => fetch('pagemodel/add', {
   method: 'post',
@@ -165,6 +173,27 @@ export const taskLog = params => fetch('taskLog/exceptionTaskList', {
  * 任务抓取统计
  */
 export const exceptionTaskList = params => fetch('taskLog/exceptionTaskList', {
+  method: 'post',
+  data: params
+})
+/**
+ * 模型详情
+ */
+export const pageModelQuery = params => fetch('pagemodel/query', {
+  method: 'post',
+  data: params
+})
+/**
+ * 模型签出
+ */
+export const pageModelCheckout = params => fetch('pagemodel/checkout', {
+  method: 'post',
+  data: params
+})
+/**
+ * 模型签入
+ */
+export const pageModelCheckIn = params => fetch('pagemodel/checkin', {
   method: 'post',
   data: params
 })

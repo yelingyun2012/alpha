@@ -20,7 +20,7 @@
         this.$router.go(-1)
       },
       goHome () {
-        this.$router.push({name: ' '})
+        this.$router.push('/')
       }
     }
   }
