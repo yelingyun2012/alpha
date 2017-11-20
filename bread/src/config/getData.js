@@ -197,3 +197,10 @@ export const pageModelCheckIn = params => fetch('pagemodel/checkin', {
   method: 'post',
   data: params
 })
+/***
+ * 站点列表
+ */
+export const siteList = params => fetch('site/list', {
+  method: 'post',
+  data: params
+})

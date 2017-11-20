@@ -4,7 +4,8 @@ import router from '../router'
 
 // axios 配置参数
 // const baseURL = `http://192.168.10.93:8282/`
-const baseURL = `http://192.168.10.93:8282/`
+// const baseURL = `http://192.168.10.93:8282/`  // 测试端口
+const baseURL = `http://192.168.10.93:8181/`  // 开发端口
 // const baseURL = `https://www.easy-mock.com/mock/59ffde02a3412760ce86204c/elise/`
 axios.defaults.baseURL = baseURL
 axios.defaults.timeout = 30000

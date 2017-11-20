@@ -1,43 +1,12 @@
+root = true
+
 [*]
-charset=utf-8
-end_of_line=crlf
-insert_final_newline=false
-indent_style=space
-indent_size=4
+indent_style = space
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
 
-[{*.sht,*.html,*.shtm,*.shtml,*.htm}]
-indent_style=space
-indent_size=2
-
-[{.babelrc,.stylelintrc,.eslintrc,jest.config,*.json,*.jsb3,*.jsb2,*.bowerrc}]
-indent_style=space
-indent_size=2
-
-[*.css]
-indent_style=space
-indent_size=2
-
-[{*.applejs,*.js}]
-indent_style=space
-indent_size=2
-
-[{*.ats,*.ts}]
-indent_style=space
-indent_size=2
-
-[*.scss]
-indent_style=space
-indent_size=2
-
-[*.styl]
-indent_style=space
-indent_size=2
-
-[{*.pug,*.jade}]
-indent_style=space
-indent_size=2
-
-[*.vue]
-indent_style=space
-indent_size=2
-
+[*.md]
+trim_trailing_whitespace = false
