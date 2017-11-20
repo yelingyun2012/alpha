@@ -202,9 +202,6 @@ export default {
       }
     },
     //回显数据
-    returnData() {
-      this.arrFormat(this.postData)
-    },
     arrFormat(arr) {
       for (var i in arr) {
         //插入children
