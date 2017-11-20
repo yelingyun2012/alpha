@@ -160,7 +160,10 @@ export default {
         let queryData = response.data.data;
         this.formValidate.modelName = queryData.modelName;
         this.$refs.pageBasic.basicData = queryData;
-        if (queryData.pageTurningConfigureEntity!==null&&queryData.browserRefreshConfigureEntity.length !== 0) {
+        if (
+          queryData.pageTurningConfigureEntity !== null &&
+          queryData.browserRefreshConfigureEntity.length !== 0
+        ) {
           this.$refs.pageBasic.basicData.refreshType =
             queryData.browserRefreshConfigureEntity[0].refreshType;
           this.$refs.pageBasic.basicData.maxDropDownNum =
@@ -172,7 +175,10 @@ export default {
           this.$refs.pageBasic.basicData.refreshWaitTime =
             queryData.browserRefreshConfigureEntity[0].refreshWaitTime;
         }
-        if (queryData.pageTurningConfigureEntity!==null&&queryData.pageTurningConfigureEntity.length !== 0) {
+        if (
+          queryData.pageTurningConfigureEntity !== null &&
+          queryData.pageTurningConfigureEntity.length !== 0
+        ) {
           this.$refs.pageBasic.basicData.pageTurningType =
             queryData.pageTurningConfigureEntity[0].pageTurningType;
           this.$refs.pageBasic.basicData.extractType =
@@ -181,6 +187,10 @@ export default {
             queryData.pageTurningConfigureEntity[0].extractRule;
           this.$refs.pageBasic.basicData.pageDownExpression =
             queryData.pageTurningConfigureEntity[0].pageDownExpression;
+        }
+        if(queryData.pageModelPropertyEntity !== null && queryData.pageModelPropertyEntity.length !== 0){
+          this.$refs.pageModelBasic.postData = queryData.pageModelPropertyEntity;
+          this.$refs.pageModelBasic.returnData();
         }
       });
     },
@@ -206,7 +216,6 @@ export default {
       });
     },
     pageModelSignIn() {
-      console.log(789);
       let name = "formValidate";
       this.$refs[name].validate(valid => {
         if (valid) {
@@ -314,11 +323,11 @@ export default {
     ) {
       this.signUserStatus = true;
     }
-    console.log(this.$route.params.id)
-    console.log(typeof this.$route.query.checkType)
-    console.log(parseInt(this.$route.query.updatePersonId) )
-    console.log(this.getUpdatePersonId )
-    console.log(this.signUserStatus)
+    console.log(this.$route.params.id);
+    console.log(typeof this.$route.query.checkType);
+    console.log(parseInt(this.$route.query.updatePersonId));
+    console.log(this.getUpdatePersonId);
+    console.log(this.signUserStatus);
   }
 };
 </script>

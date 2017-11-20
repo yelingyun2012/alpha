@@ -208,22 +208,24 @@ export default {
     arrFormat(arr) {
       for (var i in arr) {
         //插入children
-        if (arr[i].type === 1) {
+        if (arr[i].groupType === 1) {
           arr[i].children = []
         }
         //把数据插入到children
         for (var j in arr) {
-          if (arr[i].id === arr[j].parId) {
+          if (arr[i].propertyId === arr[j].parentId) {
             arr[i].children.push(arr[j])
           }
         }
       }
       //删除第一级以外的数据
       for (var i = arr.length - 1; i >= 0; i--) {
-        if (arr[i].parId !== "0") {
+        if (arr[i].parentId !== "0") {
           arr.splice(i, 1)
         }
       }
+      //插入数据
+      this.items = arr;
     }
   }
 }
