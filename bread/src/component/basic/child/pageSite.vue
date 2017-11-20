@@ -1,5 +1,5 @@
 <template lang="pug">
-  section
+  section.siteData
     RadioGroup(v-model="siteId")
       Radio(v-for="site in siteData", :label="site.siteId", :key="site.siteId") {{site.siteName}}
 </template>
@@ -33,3 +33,13 @@
     }
   }
 </script>
+
+<style lang="stylus">
+.siteData{
+  margin:0 20px;
+  label.ivu-radio-wrapper{
+    display block
+    margin-bottom: 20px;
+  }
+}
+</style>

@@ -159,6 +159,7 @@ export default {
       }).then(response => {
         let queryData = response.data.data;
         this.formValidate.modelName = queryData.modelName;
+        this.$refs.pageSite.siteId = queryData.siteId;
         this.$refs.pageBasic.basicData = queryData;
         if (
           queryData.pageTurningConfigureEntity !== null &&
