@@ -126,11 +126,11 @@ export default {
             }
             postData.token = getCookie("token");
 
-            let typeName = "添加成功";
+            let txt = "添加成功！";
             if(type === 'signIn'){
-              typeName = "签入成功";
+              txt = "签入成功！"
             }
-            this.modelAdd(postData,typeName);
+            this.modelAdd(postData,type,txt);
           }
         } else {
           this.$Message.error({
@@ -157,11 +157,15 @@ export default {
     modelData(val) {
       this.modelList = val;
     },
-    //添加
-    modelAdd(val,name) {
-      pageModelAdd(val).then(res => {
+    //添加 & 签入
+    modelAdd(data,type,txt) {
+      let ajaxUrl = pageModelAdd;
+      if(type === "signIn"){
+        ajaxUrl = pageModelCheckIn;
+      }
+      ajaxUrl(data).then(res => {
         if(res.data.respCode === "0"){
-          this.$Message.success(name);
+          this.$Message.success(txt);
           this.$router.push("/basic/pageModel");
         }else{
           this.$Message.error(res.data.respMsg);
@@ -211,17 +215,7 @@ export default {
           this.signStatus = true;
         }
       });
-    },
-    modelCheckIn(val) {
-      pageModelCheckIn(val).then(response => {
-        if (response.data.respCode === "0") {
-          this.signStatus = false;
-          this.$Message.success("签入成功");
-        } else {
-          this.$Message.error(response.data.respMsg);
-        }
-      });
-    },
+    }
   },
   components: {
     pageSite,
