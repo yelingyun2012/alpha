@@ -157,9 +157,10 @@ export default {
         modelId: this.$route.query.modelId,
         token: getCookie("token")
       }).then(response => {
-        let queryData = response.data.data
-        this.formValidate.modelName = queryData.modelName
-        this.$refs.pageBasic.basicData = queryData
+        let queryData = response.data.data;
+        this.formValidate.modelName = queryData.modelName;
+        this.$refs.pageSite.siteId = queryData.siteId;
+        this.$refs.pageBasic.basicData = queryData;
         if (
           queryData.pageTurningConfigureEntity !== null &&
           queryData.browserRefreshConfigureEntity.length !== 0
@@ -188,7 +189,11 @@ export default {
           this.$refs.pageBasic.basicData.pageDownExpression =
             queryData.pageTurningConfigureEntity[0].pageDownExpression
         }
-      })
+        if(queryData.pageModelPropertyEntity !== null && queryData.pageModelPropertyEntity.length !== 0){
+          this.$refs.pageModelBasic.postData = queryData.pageModelPropertyEntity;
+          this.$refs.pageModelBasic.returnData();
+        }
+      });
     },
     pageModelSignOff() {
       pageModelCheckout({
@@ -212,7 +217,7 @@ export default {
       })
     },
     pageModelSignIn() {
-      let name = "formValidate"
+      let name = "formValidate";
       this.$refs[name].validate(valid => {
         if (valid) {
           this.siteList = ""

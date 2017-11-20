@@ -2,29 +2,29 @@
   section
     aside.site-name
       span.explain 站点名称 :
-      Input(placeholder='请输入任务名称', style="width: 20%;max-width:300px").typeIn
+      Input(placeholder='请输入任务名称', style="width: 20%;max-width:300px", v-model="siteName").typeIn
       Button(type="success", @click="handleSearch") 查询
-      Button(@click="handleAdd") 新增
+      Button(@click="handleSwitchState") 新增
     aside.site-minute
       Table(:columns="siteColumns", :data="siteData")
-      Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @click="handlePage")
+      Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
     Modal(v-model="siteModal", :title="modalTitle", :mask-closable="false")
       Form(label-position="top")
         FormItem(label="站点名称")
-          Input(placeholder='请输入站点名称')
+          Input(placeholder='请输入站点名称', v-model="siteAddName")
         FormItem(label="域名")
-          Input(placeholder='请输入域名')
+          Input(placeholder='请输入域名', v-model="siteAddDomainName")
       div(slot="footer")
         p(v-if='siteModalBtnVisible')
-          Button(type='primary') 确定
+          Button(type='primary', @click="handleAdd") 确定
           Button(@click="handleCancel") 取消
         p(v-else)
-          Button(type='primary') 签出
-          Button(type='primary') 签入
+          Button(type='primary', :disabled="signStatus", @click="initCheckOut") 签出
+          Button(:disabled="!signStatus", @click="initCheckIn") 签入
           Button(@click="handleCancel") 取消
 </template>
 <script>
-  import { siteList } from '../../config/getData'
+  import { siteList, siteAdd, siteDelete, siteLoginCheckIn, siteCheckIn } from '../../config/getData'
   import { getCookie } from '../../utils/cookie'
 
   export default {
@@ -32,6 +32,7 @@
     data () {
       return {
         siteModal: false,
+        signStatus: false,
         modalTitle: '修改站点',
         siteModalBtnVisible: true,
         pageIndex: 1,
@@ -39,6 +40,9 @@
         pageTotal: 0,
         siteName: '',
         siteData: [],
+        siteAddName: '',
+        siteAddDomainName: '',
+        detailsOnTheSite: {},
         siteColumns: [
           {title: 'ID', key: 'siteId'},
           {
@@ -53,9 +57,18 @@
                   },
                   on: {
                     click: event => {
-                      this.test = true
+                      this.siteModal = true
                       this.modalTitle = '修改站点'
-                      this.btnVisible = false
+                      this.siteModalBtnVisible = false
+                      params.row.checkType === 0 ? this.signStatus = false : this.signStatus = true
+                      this.siteAddName = params.row.siteName
+                      this.siteAddDomainName = params.row.siteDomainName
+                      this.detailsOnTheSite = {
+                        siteId: params.row.siteId,
+                        siteName: params.row.siteName,
+                        siteDomainName: params.row.siteDomainName
+                      }
+                      console.log(this.detailsOnTheSite)
                     }
                   }
                 },
@@ -66,7 +79,43 @@
           {title: '域名', key: 'siteDomainName'},
           {title: '创建时间', key: 'createTimes'},
           {title: '创建人', key: 'creatorName'},
-          {title: '签出状态', key: 'checkType'},
+          {
+            title: '签出状态', key: 'checkType',
+            render: (h, params) => {
+              switch (params.row.checkType) {
+                case 0:
+                  return h(
+                    'span',
+                    {
+                      style: {
+                        color: '#646464',
+                        display: 'inline-block',
+                        padding: '4px 10px',
+                        opacity: '0.7',
+                        background: '#EBF8F2',
+                        border: '1px solid #A7E1C4',
+                        borderRadius: '2px'
+                      }
+                    }, '已签入')
+                  break
+                case 1:
+                  return h(
+                    'span',
+                    {
+                      style: {
+                        color: '#646464',
+                        display: 'inline-block',
+                        padding: '4px 10px',
+                        opacity: '0.7',
+                        background: '#EBF8F2',
+                        border: '1px solid #FABEB9',
+                        borderRadius: '2px'
+                      }
+                    }, `已签出${params.row.updatePersonName}`)
+                  break
+              }
+            }
+          },
           {title: '签出时间', key: 'updateTimes'},
           {
             title: '操作',
@@ -78,13 +127,15 @@
                     style: {
                       color: '#2d8cf0',
                       cursor: 'pointer'
+                    },
+                    on: {
+                      click: event => {
+                        this.confirm(params.row.siteId, params.index)
+                      }
                     }
-                  },
-                  '删除'
-                ),
+                  }, '删除'),
 
-                h(
-                  'Poptip',
+                h('Poptip',
                   {
                     props: {
                       placement: 'top-start',
@@ -92,24 +143,19 @@
                     }
                   },
                   [
-                    h(
-                      'span',
+                    h('span',
                       {
                         style: {
                           color: '#2d8cf0',
                           cursor: 'pointer'
                         }
-                      },
-                      '高级'
-                    ),
-                    h(
-                      'div',
+                      }, '高级'),
+                    h('div',
                       {
                         slot: 'content'
                       },
                       [
-                        h(
-                          'p',
+                        h('p',
                           {
                             style: {
                               color: '#2d8cf0',
@@ -117,20 +163,15 @@
                               borderBottom: '1px solid #e9eaec',
                               padding: '5px 0'
                             }
-                          },
-                          'cookies自动配置'
-                        ),
-                        h(
-                          'p',
+                          }, 'cookies自动配置'),
+                        h('p',
                           {
                             style: {
                               color: '#2d8cf0',
                               cursor: 'pointer',
                               padding: '5px 0'
                             }
-                          },
-                          'cookies手动配置'
-                        )
+                          }, 'cookies手动配置')
                       ]
                     )
                   ]
@@ -145,7 +186,28 @@
       this.initSiteList()
     },
     methods: {
-      handleAdd () {
+      confirm (siteId, index) {
+        this.$Modal.confirm({
+          content: '<p>是否确定删除该站点</p>',
+          onOk: () => {
+            siteDelete({
+              siteId: siteId,
+              token: getCookie('token')
+            }).then(response => {
+              switch (response.data.respCode) {
+                case '0':
+                  this.siteData.splice(index, 1)
+                  this.$Message.success('删除成功')
+                  break
+                case '204':
+                  this.$Message.success('参数异常')
+                  break
+              }
+            })
+          }
+        })
+      },
+      handleSwitchState () {
         this.modalTitle = '添加站点'
         this.siteModal = true
         this.siteModalBtnVisible = true
@@ -161,6 +223,28 @@
         this.pageIndex = pageIndex
         this.initSiteList()
       },
+      handleAdd () {
+        this.initSiteAdd()
+      },
+      async initCheckOut () {
+        let {siteId} = this.detailsOnTheSite
+        let res = siteLoginCheckIn({siteId: siteId, token: getCookie('token')})
+        if (res.data.respCode === '0') {
+          this.signStatus = !this.signStatus
+        }
+      },
+      async initCheckIn () {
+        let {siteId, siteName, siteDomainName} = this.detailsOnTheSite
+        let res = siteCheckIn({
+          siteId: siteId,
+          siteName: siteName,
+          siteDomainName: siteDomainName,
+          token: getCookie('token')
+        })
+        if (res.data.respCode === '0') {
+          this.signStatus = !this.signStatus
+        }
+      },
       async initSiteList () {
         let res = await siteList({
           pageIndex: this.pageIndex,
@@ -169,7 +253,23 @@
           token: getCookie('token')
         })
         if (res.data.data.length !== null && res.data.data.length !== 0) {
+          this.pageTotal = res.data.data.recordCount
           this.siteData = res.data.data.result
+        } else {
+          this.siteData = []
+        }
+      },
+      async initSiteAdd () {
+        let res = await siteAdd({
+          siteName: this.siteAddName,
+          siteDomainName: this.siteAddDomainName,
+          token: getCookie('token')
+        })
+        if (res.data.respCode === '0') {
+          this.$Message.success('添加站点成功')
+          this.siteModal = false
+          this.siteAddName = this.siteAddDomainName = ''
+          this.initSiteList()
         }
       }
     }

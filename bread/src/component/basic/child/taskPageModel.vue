@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       siteData: [],
-      siteVal: "",
+      siteVal: '',
       startAddressVal: "",
       moreStartAddressVal: "",
       addressData: []
@@ -53,7 +53,9 @@ export default {
   created() {
     listSiteName({ token: getCookie("token") }).then(response => {
       this.siteData = response.data.data;
-      this.siteVal = this.siteData[0].siteId;
+      if(this.$route.params.id !== "alter"){
+        this.siteVal = this.siteData[0].siteId;
+      }
     });
   }
 };

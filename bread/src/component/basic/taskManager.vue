@@ -123,7 +123,7 @@ export default {
                       borderRadius: "2px"
                     }
                   },
-                  "未签出"
+                  "已签入"
                 );
                 break;
               case 1:

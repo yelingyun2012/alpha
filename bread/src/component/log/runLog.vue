@@ -30,9 +30,9 @@
       Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
 </template>
 
-<script>  
-import { taskLog } from '../../config/getData'
-import { getCookie } from '../../utils/cookie'
+<script>
+import { taskLog } from "../../config/getData";
+import { getCookie } from "../../utils/cookie";
 
 export default {
   name: "RunLog",
@@ -42,7 +42,7 @@ export default {
       search: {
         startTime: "", //开始时间
         endTime: "", //结束时间
-        crawlingLogState:"0", //异常
+        crawlingLogState: "0", //异常
         crawlingUrl: "", //采集url
         taskName: "", //任务名称
         siteName: "", //站点名称
@@ -52,7 +52,7 @@ export default {
         token: getCookie("token")
       },
       //异常列表
-      crawlingLogStateList:[
+      crawlingLogStateList: [
         {
           value: "0",
           label: "全部"
@@ -139,10 +139,10 @@ export default {
       pageIndex: 1
     };
   },
-  mounted(){
-    this.$nextTick(()=>{
+  mounted() {
+    this.$nextTick(() => {
       this.getDate();
-    })
+    });
   },
   methods: {
     //查询

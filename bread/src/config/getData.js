@@ -204,3 +204,31 @@ export const siteList = params => fetch('site/list', {
   method: 'post',
   data: params
 })
+/***
+ * 站点添加
+ */
+export const siteAdd = params => fetch('site/add', {
+  method: 'post',
+  data: params
+})
+/**
+ * 站点删除
+ */
+export const siteDelete = params => fetch('site/delete', {
+  method: 'post',
+  data: params
+})
+/***
+ * 站点签出
+ */
+export const siteLoginCheckIn = params => fetch('site/logincheckin', {
+  method: 'post',
+  data: params
+})
+/***
+ * 站点签入
+ */
+export const siteCheckIn = params => fetch('site/checkin', {
+  method: 'post',
+  data: params
+})
