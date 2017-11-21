@@ -99,7 +99,6 @@
                         color:'#108EE9'
                       },
                       attrs: {
-//                        type: this.operateStatus ? 'ios-pause' : ''
                         type: this.operateStatus ? 'ios-play' : 'ios-pause'
                       }
                     })

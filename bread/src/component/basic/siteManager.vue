@@ -19,12 +19,12 @@
           Button(type='primary', @click="handleAdd") 确定
           Button(@click="handleCancel") 取消
         p(v-else)
-          Button(type='primary', :disabled="signStatus", @click="initCheckOut") 签出
-          Button(:disabled="!signStatus", @click="initCheckIn") 签入
+          Button(type='success', :disabled="signStatus", @click="initCheckOut") 签出
+          Button(type='success', :disabled="!signStatus", @click="initCheckIn") 签入
           Button(@click="handleCancel") 取消
 </template>
 <script>
-  import { siteList, siteAdd, siteDelete, siteLoginCheckIn, siteCheckIn } from '../../config/getData'
+  import { siteList, siteAdd, siteDelete, siteCheckOut, siteCheckIn } from '../../config/getData'
   import { getCookie } from '../../utils/cookie'
 
   export default {
@@ -202,6 +202,9 @@
                 case '204':
                   this.$Message.success('参数异常')
                   break
+                case '205':
+                  this.$Message.warning('该站点已被签出，不能直接删除')
+                  break
               }
             })
           }
@@ -227,36 +230,48 @@
         this.initSiteAdd()
       },
       async initCheckOut () {
-        let {siteId} = this.detailsOnTheSite
-        let res = siteLoginCheckIn({siteId: siteId, token: getCookie('token')})
-        if (res.data.respCode === '0') {
+        try {
+          let {siteId} = this.detailsOnTheSite
+          let res = await siteCheckOut({siteId: siteId, token: getCookie('token')})
           this.signStatus = !this.signStatus
+//          if (res.data.respCode === '0') {
+//
+//          }
+        } catch (err) {
+          console.log(err)
         }
+
       },
       async initCheckIn () {
-        let {siteId, siteName, siteDomainName} = this.detailsOnTheSite
-        let res = siteCheckIn({
+        let {siteId} = this.detailsOnTheSite
+        let res = await siteCheckIn({
           siteId: siteId,
-          siteName: siteName,
-          siteDomainName: siteDomainName,
+          siteName: this.siteAddName,
+          siteDomainName: this.siteAddDomainName,
           token: getCookie('token')
         })
         if (res.data.respCode === '0') {
           this.signStatus = !this.signStatus
+          this.siteModal = false
+          this.initSiteList()
         }
+//        if(res.data.respCode === '205'){
+//          this.$Message.warning(res.data.respMsg)
+//        }
       },
       async initSiteList () {
-        let res = await siteList({
-          pageIndex: this.pageIndex,
-          pageSize: this.pageSize,
-          siteName: this.siteName,
-          token: getCookie('token')
-        })
-        if (res.data.data.length !== null && res.data.data.length !== 0) {
+        try {
+          let res = await siteList({
+            pageIndex: this.pageIndex,
+            pageSize: this.pageSize,
+            siteName: this.siteName,
+            token: getCookie('token')
+          })
           this.pageTotal = res.data.data.recordCount
           this.siteData = res.data.data.result
-        } else {
+        } catch (err) {
           this.siteData = []
+          this.$Message.info(err)
         }
       },
       async initSiteAdd () {

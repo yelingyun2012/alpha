@@ -1,5 +1,5 @@
 import { fetch } from './fetch'
-
+// 用户登录模块
 /**
  * 用户登陆
  */
@@ -10,52 +10,20 @@ export const Login = loginForm => fetch('elise/login', {
     pwd: loginForm.password
   }
 })
-
 /**
  * 用户退出
  */
-export const LoginOut = params => fetch('sign/signOut', {
-  method: 'post',
-  data: params
-})
+export const LoginOut = params => fetch('sign/signOut', {method: 'post', data: params})
 
-/**
- * 统计站点
- */
-export const siteNum = (params) => fetch('site/sitenum', {
-  method: 'post',
-  data: params
-})
-
-/**
- * 模型列表
- */
-// export const pageModelList = (params) => fetch('pagemodel/list', {
-//   method: 'post',
-//   data: params
-// })
-
+// 任务模块
 /**
  * 任务列表
  */
-export const taskList = (params) => fetch('task/list', {
+export const taskList = params => fetch('task/list', {
   method: 'post',
   data: params
 })
-/**
- * 字典类型
- */
-export const queryType = params => fetch('pagemodel/querytype', {
-  method: 'post',
-  data: params
-})
-/**
- * 站点加载
- */
-export const listSiteName = params => fetch('site/listsitename', {
-  method: 'post',
-  data: params
-})
+
 /**
  * 任务签出
  */
@@ -99,6 +67,125 @@ export const taskQuery = params => fetch('task/query', {
   data: params
 })
 
+// 模型模块
+/**
+ * 字典类型
+ */
+export const queryType = params => fetch('pagemodel/querytype', {
+  method: 'post',
+  data: params
+})
+/***
+ * 模型列表
+ */
+export const pageModelList = params => fetch('pagemodel/list', {
+  method: 'post',
+  data: params
+})
+/***
+ * 模型删除
+ */
+export const pageModelDelete = params => fetch('pagemodel/delete', {
+  method: 'post',
+  data: params
+})
+/***
+ * 模型添加
+ */
+export const pageModelAdd = params => fetch('pagemodel/add', {
+  method: 'post',
+  data: params
+})
+/**
+ * 模型详情
+ */
+export const pageModelQuery = params => fetch('pagemodel/query', {
+  method: 'post',
+  data: params
+})
+/**
+ * 模型签出
+ */
+export const pageModelCheckout = params => fetch('pagemodel/checkout', {
+  method: 'post',
+  data: params
+})
+/**
+ * 模型签入
+ */
+export const pageModelCheckIn = params => fetch('pagemodel/checkin', {
+  method: 'post',
+  data: params
+})
+
+// 站点模块
+/***
+ * 站点列表
+ */
+export const siteList = params => fetch('site/list', {
+  method: 'post',
+  data: params
+})
+/***
+ * 站点添加
+ */
+export const siteAdd = params => fetch('site/add', {
+  method: 'post',
+  data: params
+})
+/**
+ * 站点删除
+ */
+export const siteDelete = params => fetch('site/delete', {
+  method: 'post',
+  data: params
+})
+/***
+ * 站点签出
+ */
+export const siteCheckOut = params => fetch('site/checkout', {
+  method: 'post',
+  data: params
+})
+/***
+ * 站点签入
+ */
+export const siteCheckIn = params => fetch('site/checkin', {
+  method: 'post',
+  data: params
+})
+/**
+ * 统计站点
+ */
+export const siteNum = (params) => fetch('site/sitenum', {
+  method: 'post',
+  data: params
+})
+/**
+ * 站点加载
+ */
+export const listSiteName = params => fetch('site/listsitename', {
+  method: 'post',
+  data: params
+})
+
+// 日志模块
+/***
+ * 异常任务列表
+ */
+export const taskLog = params => fetch('taskLog/exceptionTaskList', {
+  method: 'post',
+  data: params
+})
+/***
+ * 任务抓取统计
+ */
+export const exceptionTaskList = params => fetch('taskLog/exceptionTaskList', {
+  method: 'post',
+  data: params
+})
+
+// 用户模块
 /***
  * 用户列表
  */
@@ -138,97 +225,6 @@ export const userGet = params => fetch('user/get', {
  * 用户信息修改
  */
 export const userUpdate = params => fetch('user/update', {
-  method: 'post',
-  data: params
-})
-/***
- * 模型列表
- */
-export const pageModelList = params => fetch('pagemodel/list', {
-  method: 'post',
-  data: params
-})
-/***
- * 模型删除
- */
-export const pageModelDelete = params => fetch('pagemodel/delete', {
-  method: 'post',
-  data: params
-})
-/***
- * 模型添加
- */
-export const pageModelAdd = params => fetch('pagemodel/add', {
-  method: 'post',
-  data: params
-})
-/***
- * 异常任务列表
- */
-export const taskLog = params => fetch('taskLog/exceptionTaskList', {
-  method: 'post',
-  data: params
-})
-/***
- * 任务抓取统计
- */
-export const exceptionTaskList = params => fetch('taskLog/exceptionTaskList', {
-  method: 'post',
-  data: params
-})
-/**
- * 模型详情
- */
-export const pageModelQuery = params => fetch('pagemodel/query', {
-  method: 'post',
-  data: params
-})
-/**
- * 模型签出
- */
-export const pageModelCheckout = params => fetch('pagemodel/checkout', {
-  method: 'post',
-  data: params
-})
-/**
- * 模型签入
- */
-export const pageModelCheckIn = params => fetch('pagemodel/checkin', {
-  method: 'post',
-  data: params
-})
-/***
- * 站点列表
- */
-export const siteList = params => fetch('site/list', {
-  method: 'post',
-  data: params
-})
-/***
- * 站点添加
- */
-export const siteAdd = params => fetch('site/add', {
-  method: 'post',
-  data: params
-})
-/**
- * 站点删除
- */
-export const siteDelete = params => fetch('site/delete', {
-  method: 'post',
-  data: params
-})
-/***
- * 站点签出
- */
-export const siteLoginCheckIn = params => fetch('site/logincheckin', {
-  method: 'post',
-  data: params
-})
-/***
- * 站点签入
- */
-export const siteCheckIn = params => fetch('site/checkin', {
   method: 'post',
   data: params
 })

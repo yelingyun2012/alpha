@@ -98,6 +98,7 @@ export default {
             if (response.data.respCode === "0") {
               this.signStatus = false;
               this.$Message.success("签入成功");
+              this.$router.push('/basic/taskManager')
             } else {
               this.$Message.error(response.data.respMsg);
             }
