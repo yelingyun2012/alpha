@@ -7,8 +7,8 @@
           DatePicker(:value="search.startTime", type="datetime", placeholder="请选择时间" @on-change="startTimeFn")
           span  - 
           DatePicker(:value="search.endTime", type="datetime", placeholder="请选择时间" @on-change="endTimeFn")
-          Select(v-model="search.period").select
-            Option(v-for="item in periodList", :value="item.value", :key="item.value") {{item.label}}
+          Select(v-model="search.periodType").select
+            Option(v-for="item in periodTypeList", :value="item.value", :key="item.value") {{item.label}}
       Row(v-show="searchToggleState").rowCenter
         Col(span="8")
           span.title 任务名称：
@@ -27,7 +27,7 @@
             Icon(:type=" searchToggleState ? 'chevron-up' : 'chevron-down' " style="margin-left:5px;")
     aside.logStatis-minute
       Table(:columns="logColumns", :data="logData", border)
-      Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
+      Page(:total="pageTotal", :current="pageNo", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
       Modal(v-model="pieShow", title="采集详情", width="1000",class-name="vertical-center-modal")
         div.pieDiv
             div(id="myPie")
@@ -42,7 +42,7 @@
 
 <script>
 import echarts from "echarts";
-import { exceptionTaskList } from '../../config/getData'
+import { taskLogStatistic } from '../../config/getData'
 import { getCookie } from '../../utils/cookie'
 
 export default {
@@ -52,7 +52,7 @@ export default {
       //搜索高级&简易切换
       searchToggleState: false,
       //统计
-      periodList: [
+      periodTypeList: [
         {
           value: 0,
           label: "默认"
@@ -74,19 +74,24 @@ export default {
       search: {
         startTime: "", //开始时间
         endTime: "", //结束时间
-        period: 0, //统计
+        periodType: 0, //统计
         taskName: "", //任务名称
         siteName: "", //站点名称
         creatorName: "", //任务创建者
-        pageIndex: 1, //页码
+        pageNo: 1, //页码
         pageSize: 10, //每页最大条数
         token: getCookie("token")
       },
+      //提交查询
+      postData:{},
       //日志配置
       logColumns: [
         {
           title: "运行时间段",
-          key: "startTime"
+          render: (h, params) => {
+            if (params.row.startTime !== undefined)
+              return `${params.row.startTime} - ${params.row.endTime}`;
+          }
         },
         {
           title: "任务创建者",
@@ -150,7 +155,8 @@ export default {
       //日志数据
       logData: [
         {
-          startTime: "1",
+          startTime: 1510156800000,
+          endTime:1511971200000,
           creatorName: "2",
           taskName: "3",
           siteName: "4",
@@ -164,7 +170,7 @@ export default {
       //页码
       pageTotal: 0,
       pageSize: 10,
-      pageIndex: 1,
+      pageNo: 1,
 
       pieShow: false, //显示饼图
       pieData: [
@@ -193,23 +199,54 @@ export default {
   },
   mounted(){
     this.$nextTick(()=>{
-      this.getDate();
+      this.postData = JSON.parse(JSON.stringify(this.search));
+      this.getDate(this.postData);
     })
   },
   methods: {
     //查询
     handleSearch() {
-      this.pageIndex = 1;
-      this.search.pageIndex = 1;
-      let con = this.search;
-      if (con.startTime > con.endTime) {
+      this.pageNo = 1;
+      this.search.pageNo = 1;
+      let con = this.postData = JSON.parse(JSON.stringify(this.search));
+      let startTime = con.startTime = new Date(con.startTime).getTime();
+      let endTime = con.endTime =new Date(con.endTime).getTime();
+      let periodType = con.periodType;
+      if (startTime > endTime) {
+        this.timeErr("结束时间必须大于开始时间！");
+      }else{
+        if(periodType === 0){
+          //默认
+          let txt = "结束时间必须大于开始时间！";
+          this.timeJudge(startTime,endTime,txt);
+        }else if(periodType === 1){
+          //按小时统计
+          let newTime = startTime + (60 * 60 * 1000);
+          let txt = "结束时间必须大于开始时间一小时！";
+          this.timeJudge(newTime,endTime,txt);
+        }else if(periodType === 2){
+          //按天统计
+          let newTime = startTime + (60 * 60 * 1000 * 24);
+          let txt = "结束时间必须大于开始时间一天！";
+          this.timeJudge(newTime,endTime,txt);
+        }else if(periodType === 3){
+          //按月统计
+          let newTime = startTime + (60 * 60 * 1000 * 24 * 30);
+          let txt = "结束时间必须大于开始时间一个月！";
+          this.timeJudge(newTime,endTime,txt);
+        }
+      }
+    },
+    //时间判断
+    timeJudge(newTime,endTime,txt){
+      if(newTime <= endTime){
+        this.getDate(this.postData);
+      }else{
         this.$Message.error({
-          content: "结束时间不能小于开始时间！",
+          content: txt,
           duration: 3,
           closable: true
         });
-      } else {
-        this.getDate();
       }
     },
     //开始时间
@@ -221,14 +258,15 @@ export default {
       this.search.endTime = val;
     },
     //分页
-    handlePage(pageIndex) {
-      this.pageIndex = pageIndex;
-      this.search.pageIndex = pageIndex;
+    handlePage(pageNo) {
+      this.pageNo = pageNo;
+      this.search.pageNo = pageNo;
       this.getDate();
     },
     //获取数据
-    getDate() {
-      // exceptionTaskList(this.search).then(res=>{
+    getDate(data) {
+      console.log(data)
+      // taskLogStatistic(this.search).then(res=>{
       //   console.log(res)
       // })
     },

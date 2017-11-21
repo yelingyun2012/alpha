@@ -48,7 +48,7 @@ export const otherRouter = [
       {
         path: 'pageManager/:id',
         name: 'pageManager',
-        title: '页面模型新建',
+        title: '页面模型操作',
         component: _import('basic/child/pageManager')
       },
       {

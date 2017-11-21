@@ -173,14 +173,14 @@ export const listSiteName = params => fetch('site/listsitename', {
 /***
  * 异常任务列表
  */
-export const taskLog = params => fetch('taskLog/exceptionTaskList', {
+export const taskLogList = params => fetch('taskLog/exceptionTaskList', {
   method: 'post',
   data: params
 })
 /***
  * 任务抓取统计
  */
-export const exceptionTaskList = params => fetch('taskLog/exceptionTaskList', {
+export const taskLogStatistic = params => fetch('taskLog/crawlingStatistic', {
   method: 'post',
   data: params
 })

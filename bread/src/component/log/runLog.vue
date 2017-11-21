@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { taskLog } from "../../config/getData";
+import { taskLogList } from "../../config/getData";
 import { getCookie } from "../../utils/cookie";
 
 export default {
@@ -176,7 +176,7 @@ export default {
     },
     //获取数据
     getDate() {
-      // taskLog(this.search).then(res=>{
+      // taskLogList(this.search).then(res=>{
       //   console.log(res)
       // })
     },
