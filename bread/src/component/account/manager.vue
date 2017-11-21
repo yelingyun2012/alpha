@@ -96,10 +96,10 @@
                         padding: '5px 13px',
                         background: '#F2F2F2',
                         borderRadius: '4px',
-                        color:'#EE2337'
+                        color:'#108EE9'
                       },
                       attrs: {
-                        type: this.operateStatus ? 'ios-pause' : 'ios-play'
+                        type: this.operateStatus ? 'ios-play' : 'ios-pause'
                       }
                     })
                   ])
@@ -121,10 +121,10 @@
                           padding: '5px 13px',
                           background: '#F2F2F2',
                           borderRadius: '4px',
-                          color:'#108EE9'
+                          color:'#EE2337'
                         },
                         attrs: {
-                          type: !this.operateStatus ? 'ios-pause' : 'ios-play'
+                          type: !this.operateStatus ? 'ios-play' : 'ios-pause'
                         }
                       })
                     ])

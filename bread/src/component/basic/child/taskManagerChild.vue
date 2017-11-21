@@ -98,6 +98,7 @@ export default {
             if (response.data.respCode === "0") {
               this.signStatus = false;
               this.$Message.success("签入成功");
+              this.$router.push('/basic/taskManager')
             } else {
               this.$Message.error(response.data.respMsg);
             }
@@ -109,8 +110,8 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           if (
-            this.$refs.property.collectStartVal === "" ||
-            this.$refs.property.collectEndVal === ""
+            this.$refs.property.startTimeVal === "" ||
+            this.$refs.property.endTimeVal === ""
           ) {
             this.$Message.warning("采集时间不能为空");
             return false;

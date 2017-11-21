@@ -155,7 +155,7 @@ export default {
   methods: {
     confirm(modelId, index) {
       this.$Modal.confirm({
-        content: "<p>是否确定删除</p>",
+        content: "<p>是否确定删除该模型</p>",
         onOk: () => {
           pageModelDelete({
             modelId: modelId,

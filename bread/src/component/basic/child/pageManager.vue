@@ -25,11 +25,11 @@ import {
   pageModelQuery,
   pageModelCheckout,
   pageModelCheckIn
-} from "../../../config/getData";
-import { getCookie } from "../../../utils/cookie";
-import pageSite from "./pageSite.vue";
-import pageBasic from "./pageBasic.vue";
-import pageModelBasic from "./pageModelBasic.vue";
+} from "../../../config/getData"
+import { getCookie } from "../../../utils/cookie"
+import pageSite from "./pageSite.vue"
+import pageBasic from "./pageBasic.vue"
+import pageModelBasic from "./pageModelBasic.vue"
 
 export default {
   name: "pageManager",
@@ -47,37 +47,37 @@ export default {
       ruleValidate: {
         modelName: [{ required: true, message: "页面模型名称不能为空", trigger: "blur" }]
       }
-    };
+    }
   },
   methods: {
     //返回
     handleBack() {
-      this.$router.go(-1);
+      this.$router.go(-1)
     },
     //保存
     handleSave(type) {
       let name = "formValidate";
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.siteList = "";
-          this.basicList = [];
-          this.modelList = "";
+          this.siteList = ""
+          this.basicList = []
+          this.modelList = ""
 
-          this.$refs.pageSite.pageSiteSubmit();
-          this.$refs.pageBasic.pageBasicSubmit();
-          this.$refs.pageModelBasic.pageModelBasicSubmit();
+          this.$refs.pageSite.pageSiteSubmit()
+          this.$refs.pageBasic.pageBasicSubmit()
+          this.$refs.pageModelBasic.pageModelBasicSubmit()
 
           if (!this.modelErrState) {
-            return false;
+            return false
           }
 
           if (this.siteList && this.basicList.length !== 0) {
-            let objData = this.basicList;
-            objData.siteId = this.siteList;
-            objData.pageModelProperty = this.modelList;
-            objData.modelName = this.formValidate.modelName;
+            let objData = this.basicList
+            objData.siteId = this.siteList
+            objData.pageModelProperty = this.modelList
+            objData.modelName = this.formValidate.modelName
 
-            let postData = {};
+            let postData = {}
             let pageModelResult = {
               modelType: objData.modelType,
               modelName: objData.modelName,
@@ -96,7 +96,7 @@ export default {
             }
             postData.pageModelResult = JSON.stringify(pageModelResult);
             if (objData.pageModelProperty !== "") {
-              postData.pageModelPropertyResult = objData.pageModelProperty;
+              postData.pageModelPropertyResult = objData.pageModelProperty
             }
             if (objData.browserCrawlable === 1) {
               let browserParameter = {
@@ -137,25 +137,25 @@ export default {
             content: "页面模型名称不能为空！",
             duration: 3,
             closable: true
-          });
+          })
         }
-      });
+      })
     },
     //页面模型错误
     modelErr(val) {
-      this.modelErrState = val;
+      this.modelErrState = val
     },
     //归属站点数据
     siteData(val) {
-      this.siteList = val;
+      this.siteList = val
     },
     //基本属性数据
     basicData(val) {
-      this.basicList = val;
+      this.basicList = val
     },
     //页面模型数据
     modelData(val) {
-      this.modelList = val;
+      this.modelList = val
     },
     //添加 & 签入
     modelAdd(data,type,txt) {
@@ -211,8 +211,8 @@ export default {
         token: getCookie("token")
       }).then(response => {
         if (response.data.respCode === "0") {
-          this.$Message.success("签出成功");
-          this.signStatus = true;
+          this.$Message.success("签出成功")
+          this.signStatus = true
         }
       });
     }
@@ -224,12 +224,12 @@ export default {
   },
   computed: {
     getUpdatePersonId() {
-      return JSON.parse(getCookie("userInfo")).userId;
+      return JSON.parse(getCookie("userInfo")).userId
     }
   },
   mounted() {
     if (this.$route.params.id === "alter") {
-      this.initQuery();
+      this.initQuery()
     }
   },
   created() {
@@ -240,59 +240,36 @@ export default {
       }
     }
   }
-};
+}
 </script>
 <style lang="stylus" scoped>
-.task {
-  &-inform {
-    padding: 30px 20px 20px;
-    background-color: #ffffff;
-
-    .seed-name {
-      color: #323232;
-      font-size: 14px;
-    }
-
-    .typeIn {
-      margin-left: 4px;
-    }
-
-    header {
-      display: flex;
-    }
-  }
-
-  &-header {
-    &-typeIn {
-      display: block;
-      flex-grow: 1;
-      flex-shrink: 1;
-    }
-
-    &-btn, .test {
-      display: block;
-
-      .ivu-btn {
-        padding: 6px 23px;
-        font-size: 14px;
-
-        &:last-child {
-          margin-left: 10px; // asdsa
-        }
-      }
-    }
-  }
-
-  &-section {
-    margin-top: 40px;
-
-    .ivu-tabs-tabpane:first-child {
-      padding-bottom: 300px;
-    }
-  }
-}
-
-.ivu-form-item {
-  margin-bottom: 0;
-}
+.task
+  &-inform
+    padding 30px 20px 20px
+    background-color #ffffff
+    .seed-name
+      color #323232
+      font-size 14px
+    .typeIn
+      margin-left 4px
+    header
+      display flex
+  &-header
+    &-typeIn
+      display block
+      flex-grow 1
+      flex-shrink 1
+    &-btn, .test
+      display block
+      .ivu-btn
+        padding 6px 23px
+        font-size 14px
+        &:last-child
+          margin-left 10px // asdsa
+  &-section
+    margin-top 40px
+    .ivu-tabs-tabpane:first-child
+      padding-bottom 300px
+.ivu-form-item
+  margin-bottom 0
 </style>
