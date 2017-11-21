@@ -321,11 +321,13 @@ export default {
         other = errSum - val.downLoadFailedCount - val.extractionFailedCount; //其他
       let sum = success + errSum; //总和
       let arr = [success, downErr, extractErr, other];
+      let color = ["#4FC1E9", "#AC92EC", "#A0D468", "#FC6E51"];
       let sumPie = 100;
       let pieData = this.pieData;
       for (let i = 0; i < pieData.length; i++) {
+        pieData[i].color = color[i];
         if (sum === 0) {
-          pieData[i].name = "0%";
+          pieData[i].name = "0.00%";
         } else {
           pieData[i].value = arr[i];
           let val = (arr[i] / sum * 100).toFixed(2);
@@ -343,7 +345,9 @@ export default {
         series: [
           {
             type: "pie",
-            color: ["#4FC1E9", "#AC92EC", "#A0D468", "#FC6E51"],
+            color: this.pieData.filter(function(x){
+              x.name !== "0.00%" ? x.color : ""
+            }),
             label: {
               normal: {
                 position: "inner",
@@ -354,7 +358,9 @@ export default {
                 }
               }
             },
-            data: this.pieData
+            data: this.pieData.filter(function(x){
+              return (x.name !== "0.00%");
+            })
           }
         ]
       };
