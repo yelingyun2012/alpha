@@ -165,6 +165,9 @@ export default {
               this.pageModelData.splice(index, 1);
               this.$Message.success("删除成功");
             }
+          }).catch(err => {
+            let e = err.match(/([^\[\]]+)(?=\])/g);
+            this.$Message.error(e[0]);
           });
         }
         //          onCancel: () => {
