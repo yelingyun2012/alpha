@@ -142,9 +142,18 @@
                 {
                   on: {
                     click: event => {
-                      this.initQueryCollectionHistory(params.row.taskId, 0).then(() => {
-                        params.row.status = 0
-                      })
+                      (async ()=> {
+                        try {
+                          let res = await queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 0,
+                            token: getCookie('token')
+                          })
+                          params.row.status = 0
+                        } catch (error) {
+                          this.$Message.warning(error)
+                        }
+                      })()
                     }
                   }
                 }, '停止')
@@ -152,9 +161,18 @@
               let startUpFunction = h('span', {
                 on: {
                   click: event => {
-                    this.initQueryCollectionHistory(params.row.taskId, 1).then(() => {
-                      params.row.status = 1
-                    })
+                    (async ()=> {
+                      try {
+                        let res = await queryCollectionHistory({
+                          taskId: params.row.taskId,
+                          statusId: 1,
+                          token: getCookie('token')
+                        })
+                        params.row.status = 1
+                      } catch (error) {
+                        this.$Message.warning(error)
+                      }
+                    })()
                   }
                 }
               }, '启动')
@@ -163,9 +181,18 @@
                 {
                   on: {
                     click: event => {
-                      this.initQueryCollectionHistory(params.row.taskId, 2).then(() => {
-                        params.row.status = 2
-                      })
+                      (async ()=> {
+                        try {
+                          let res = await queryCollectionHistory({
+                            taskId: params.row.taskId,
+                            statusId: 2,
+                            token: getCookie('token')
+                          })
+                          params.row.status = 2
+                        } catch (error) {
+                          this.$Message.warning(error)
+                        }
+                      })()
                     }
                   }
                 }, '暂停')
@@ -173,9 +200,18 @@
               let deleteOperation = h('span', {
                 on: {
                   click: event => {
-                    this.initQueryCollectionHistory(params.row.taskId, 3).then(() => {
-                      this.handleRemoveTaskData(params.index)
-                    })
+                    (async ()=> {
+                      try {
+                        let res = await queryCollectionHistory({
+                          taskId: params.row.taskId,
+                          statusId: 3,
+                          token: getCookie('token')
+                        })
+                        params.row.status = 3
+                      } catch (error) {
+                        this.$Message.warning(error)
+                      }
+                    })()
                   }
                 }
               }, '删除')
@@ -247,18 +283,6 @@
         } catch (error) {
           this.taskData = []
           this.$Message.error(error)
-        }
-      },
-      // 任务操作
-      async initQueryCollectionHistory (taskId, statusId) {
-        try {
-          let res = await queryCollectionHistory({
-            taskId: taskId,
-            statusId: statusId,
-            token: getCookie('token')
-          })
-        } catch (error) {
-          this.$Message.warning(error)
         }
       }
     }

@@ -15,8 +15,8 @@
         Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
 </template>
 <script>
-import { siteNum, pageModelList, pageModelDelete } from "../../config/getData";
-import { getCookie } from "../../utils/cookie";
+import { siteNum, pageModelList, pageModelDelete } from "../../config/getData"
+import { getCookie } from "../../utils/cookie"
 
 export default {
   name: "PageModel",
@@ -53,7 +53,7 @@ export default {
                 }
               },
               params.row.modelName
-            );
+            )
           }
         },
         {
@@ -88,8 +88,8 @@ export default {
                     }
                   },
                   "未签出"
-                );
-                break;
+                )
+                break
               case 1:
                 return h(
                   "span",
@@ -105,7 +105,7 @@ export default {
                     }
                   },
                   `已签出${params.row.updateName}`
-                );
+                )
             }
           }
         },
@@ -121,7 +121,7 @@ export default {
               {
                 on: {
                   click: event => {
-                    this.confirm(params.row.modelId, params.index);
+                    this.confirm(params.row.modelId, params.index)
                   }
                 }
               },
@@ -140,7 +140,7 @@ export default {
                   }
                 })
               ]
-            );
+            )
           }
         }
       ],
@@ -150,12 +150,12 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       siteId: ""
-    };
+    }
   },
   methods: {
     confirm(modelId, index) {
       this.$Modal.confirm({
-        content: "<p>是否确定删除</p>",
+        content: "<p>是否确定删除该模型</p>",
         onOk: () => {
           pageModelDelete({
             modelId: modelId,
@@ -163,87 +163,27 @@ export default {
           }).then(response => {
             switch (response.data.respCode) {
               case "0":
-                this.pageModelData.splice(index, 1);
-                this.$Message.success("删除成功");
-                break;
-              default:
-                this.$Message.error(response.data.respMsg);
-                break;
+                this.pageModelData.splice(index, 1)
+                this.$Message.success("删除成功")
+                break
+              case "204":
+                this.$Message.success("参数异常")
+                break
             }
-          });
+          })
         }
         //          onCancel: () => {
         //            this.$Message.info('Clicked cancel')
         //          }
-      });
+      })
     },
-    methods: {
-      confirm (modelId, index) {
-        this.$Modal.confirm({
-          content: '<p>是否确定删除该模型</p>',
-          onOk: () => {
-            pageModelDelete({
-              modelId: modelId,
-              token: getCookie('token')
-            }).then(response => {
-              switch (response.data.respCode) {
-                case '0':
-                  this.pageModelData.splice(index,1)
-                  this.$Message.success('删除成功')
-                  break
-                case '204':
-                  this.$Message.success('参数异常')
-                  break
-              }
-            })
-          }
-//          onCancel: () => {
-//            this.$Message.info('Clicked cancel')
-//          }
-        })
-      },
-      initSite () {
-        siteNum({
-          typeId: 1,
-          token: getCookie('token')
-        }).then(response => {
-          this.siteList = this.siteList.concat(response.data.data)
-        })
-      },
-      initPageModelList () {
-        pageModelList({
-          pageIndex: this.pageIndex,
-          pageSize: this.pageSize,
-          siteId: this.siteId,
-          modelName: this.pageModelName,
-          token: getCookie('token')
-        }).then(response => {
-          if (response.data.data !== null) {
-            this.pageTotal = response.data.data.recordCount
-            this.pageModelData = response.data.data.result
-          } else {
-            this.pageModelData = []
-          }
-        })
-      },
-      handleSearch () {
-        this.pageIndex = 1
-        this.activeIndex = 0
-        this.siteId = ''
-        this.initPageModelList()
-      },
-      handleAdd () {
-        this.$router.push('/pageManager/add')
-      },
-      handleCut (subscript, siteId) {
-        this.activeIndex = subscript
-        this.siteId = siteId
-        this.initPageModelList()
-      },
-      handlePage (pageIndex) {
-        this.pageIndex = pageIndex
-        this.initPageModelList()
-      }
+    initSite() {
+      siteNum({
+        typeId: 1,
+        token: getCookie("token")
+      }).then(response => {
+        this.siteList = this.siteList.concat(response.data.data)
+      })
     },
     initPageModelList() {
       pageModelList({
@@ -254,126 +194,92 @@ export default {
         token: getCookie("token")
       }).then(response => {
         if (response.data.data !== null) {
-          this.pageTotal = response.data.data.recordCount;
-          this.pageModelData = response.data.data.result;
+          this.pageTotal = response.data.data.recordCount
+          this.pageModelData = response.data.data.result
         } else {
-          this.pageModelData = [];
+          this.pageModelData = []
         }
-      });
+      })
     },
     handleSearch() {
-      this.pageIndex = 1;
-      this.activeIndex = 0;
-      this.siteId = "";
-      this.initPageModelList();
+      this.pageIndex = 1
+      this.activeIndex = 0
+      this.siteId = ""
+      this.initPageModelList()
     },
     handleAdd() {
-      this.$router.push("/pageManager/add");
+      this.$router.push("/pageManager/add")
     },
     handleCut(subscript, siteId) {
-      this.activeIndex = subscript;
-      this.siteId = siteId;
-      this.initPageModelList();
+      this.activeIndex = subscript
+      this.siteId = siteId
+      this.initPageModelList()
     },
     handlePage(pageIndex) {
-      this.pageIndex = pageIndex;
-      this.initPageModelList();
+      this.pageIndex = pageIndex
+      this.initPageModelList()
     }
   },
   created() {
-    this.initSite();
-    this.initPageModelList();
+    this.initSite()
+    this.initPageModelList()
   }
-};
+}
 </script>
 <style lang="stylus">
 // 公共函数
-taskWrapper(top, right, bottom, left) {
-  padding: top right bottom left;
-  background-color: #fff;
-}
-
-.page {
-  &-name {
-    margin-bottom: 20px;
-    taskWrapper: 30px 20px 30px 20px;
-
-    .ivu-input {
-      padding: 7px 7px;
-      height: auto;
-      font-size: 14px;
-    }
-
-    .explain {
-      color: #323232;
-      font-size: 14px;
-    }
-
-    .typeIn {
-      margin-right: 30px;
-      margin-left: 4px;
-    }
-
-    .ivu-btn {
-      padding: 6px 23px;
-      font-size: 16px;
-
-      &-success {
-        background-color: rgba(23, 187, 156, 1);
-
-        &:hover {
-          background-color: rgba(23, 187, 156, 0.8);
-        }
-      }
-
-      &:last-child {
-        margin-left: 10px;
-        border-color: #17BB9C;
-        color: #17BB9C;
-
-        &:hover {
-          border-color: #57a3f3;
-          color: #57a3f3;
-        }
-      }
-    }
-  }
-
-  &-minute { // 任务详细
-    taskWrapper: 20px 20px 20px 20px;
-  }
-
-  &-site {
-    padding-bottom: 10px;
-    border-bottom: 1px dashed #B7B7B7;
-
-    span {
-      display: inline-block;
-      padding: 6px 15px;
-      color: #589BEE;
-      font-size: 14px;
-      cursor: pointer;
-
-      &.task-site-active {
-        border-radius: 4px;
-        background-color: #2D8CF0;
-        color: #fff;
-      }
-
-      i {
-        font-style: inherit;
-      }
-    }
-  }
-
-  &-mission {
-    margin-top: 20px;
-
-    .ivu-page {
-      margin-top: 20px;
-      margin-right: 20px;
-      text-align: right;
-    }
-  }
-}
+taskWrapper(top,right,bottom,left)
+  padding top right bottom left
+  background-color #fff
+.page
+  &-name
+    margin-bottom 20px
+    taskWrapper 30px 20px 30px 20px
+    .ivu-input
+      padding 7px 7px
+      height auto
+      font-size 14px
+    .explain
+      color #323232
+      font-size 14px
+    .typeIn
+      margin-right 30px
+      margin-left 4px
+    .ivu-btn
+      padding 6px 23px
+      font-size 16px
+      &-success
+        background-color rgba(23,187,156,1)
+        &:hover
+          background-color rgba(23,187,156,.8)
+      &:last-child
+        margin-left 10px
+        border-color #17BB9C
+        color #17BB9C
+        &:hover
+          border-color #57a3f3
+          color #57a3f3
+  &-minute // 任务详细
+    taskWrapper 20px 20px 20px 20px
+  &-site
+    padding-bottom 10px
+    border-bottom 1px dashed #B7B7B7
+    span
+      display inline-block
+      padding 6px 15px
+      color #589BEE
+      font-size 14px
+      cursor pointer
+      &.task-site-active
+        border-radius 4px
+        background-color #2D8CF0
+        color #fff
+      i
+        font-style inherit
+  &-mission
+    margin-top 20px
+    .ivu-page
+      margin-top 20px
+      margin-right 20px
+      text-align right
 </style>

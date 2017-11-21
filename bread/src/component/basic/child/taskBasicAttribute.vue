@@ -196,7 +196,7 @@
         this.taskCycleTypeData = response[0].data.data
         this.requestMethodValData = response[1].data.data
         this.taskPriorityValData = response[2].data.data
-        
+
         if(this.$route.params.id==='add'){
           this.taskCycleTypeVal = this.taskCycleTypeData[0].itemType
           this.requestMethodVal = this.requestMethodValData[0].itemType
@@ -212,6 +212,7 @@
       &-basic
         margin-top -16px
         padding 20px
+        padding-bottom 250px
   .periodic
     display inline-block
     padding 10px 12px 10px 0
