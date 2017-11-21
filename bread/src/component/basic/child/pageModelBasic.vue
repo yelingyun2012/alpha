@@ -9,7 +9,7 @@
         <pageModelBasicTree v-for="(val, index) in items" :item="val" @remove="delItem(index)" :key="index"></pageModelBasicTree>
       </div>
       <div class="testData" v-if="testData.length !== 0">
-        <pre><span v-for="(item,index) in testData" :key="index" :class="item.cls">{{item.value}}</span></pre>
+        <pre v-html="testData"></pre>
       </div>
     </div>
     <Button type="dashed" icon="plus" @click="addCon()" style="width:70%;">添加属性或属性组</Button>
@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       testURL: "", //测试url
-      testData:[],  //测试数据
+      testData:"",  //测试数据
       modal: false, //添加弹出层
       //弹出层表单
       formData: {
@@ -90,24 +90,7 @@ export default {
         json = JSON.stringify(json, undefined, 2);
       }
       json = json.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
-      return json.replace(
-        /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-        function(match) {
-          let cls = "number";
-          if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-              cls = "key";
-            } else {
-              cls = "string";
-            }
-          } else if (/true|false/.test(match)) {
-            cls = "boolean";
-          } else if (/null/.test(match)) {
-            cls = "null";
-          }
-          this.testData.push({value:match,cls:cls});
-        }
-      );
+      this.testData = json;
     },
     //uuid
     uuid() {
@@ -285,7 +268,7 @@ export default {
       display inline-block
       margin-bottom 24px
       padding 0 20px
-      width 80%
+      width 70%
       background #F7F7F7
       & > .pageModelBasicTree
         &:last-child
@@ -295,7 +278,7 @@ export default {
           padding 0
     .testData
       display inline-block
-      width calc(100% - 80% - 20px)
+      width calc(100% - 70% - 20px)
       border 1px solid #ccc
       vertical-align top
       pre

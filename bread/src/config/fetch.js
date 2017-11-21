@@ -4,7 +4,7 @@ import router from '../router'
 // axios 配置参数
 // const baseURL = `http://192.168.10.93:8282/`
 // const baseURL = `http://192.168.10.93:8282/`  // 测试端口
-const baseURL = `http://192.168.10.93:8282/` // 开发端口
+const baseURL = `http://192.168.10.93:8181/` // 开发端口
 axios.defaults.baseURL = baseURL
 axios.defaults.timeout = 30000
 /**
@@ -61,7 +61,7 @@ function checkStatus (response) {
 function checkCode (response) {
   // code码存在时,对相应的Code码进行处理
   if (response.data.respCode) {
-    let CodeArr = ['201', '202', '203', '204', '205', '206', '101']
+    let CodeArr = ['201', '202', '203', '204', '205', '206', '101',"E2001","E1000","E1001","E1002","E4000","E4001","E4002","E4003","E4004","E4005","E4006"]
     // if (CodeArr.includes(response.data.respCode)) {
     //   return response
     // }

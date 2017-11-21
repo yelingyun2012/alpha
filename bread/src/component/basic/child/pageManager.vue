@@ -65,7 +65,7 @@ export default {
           this.modelList = ""
 
           this.$refs.pageSite.pageSiteSubmit()
-          this.$refs.pageBasic.pageBasicSubmit()
+          this.$refs.pageBasic.pageBasicSubmit('delete')
           this.$refs.pageModelBasic.pageModelBasicSubmit()
 
           if (!this.modelErrState) {
@@ -80,6 +80,7 @@ export default {
 
             let postData = {}
             let pageModelResult = {
+              needLogin: objData.needLogin,
               modelType: objData.modelType,
               modelName: objData.modelName,
               browserCrawlable: objData.browserCrawlable,
@@ -178,7 +179,8 @@ export default {
         let queryData = response.data.data;
         this.formValidate.modelName = queryData.modelName;
         this.$refs.pageSite.siteId = queryData.siteId;
-
+        
+        this.$refs.pageBasic.basicData.needLogin = queryData.needLogin;
         this.$refs.pageBasic.basicData.modelType = queryData.modelType;
         this.$refs.pageBasic.basicData.contentType = queryData.contentType;
         this.$refs.pageBasic.basicData.modelRegularExpression = queryData.modelRegularExpression;
@@ -230,16 +232,17 @@ export default {
       let name = "formValidate";
       this.$refs[name].validate(valid => {
         if (valid) {
-          let modelId = 0;
-          if(this.$router.params.id){
-            modelId = this.$router.params.id;
+          let modelId = '';
+          if(this.$route.query.modelId){
+            modelId = Number(this.$route.query.modelId);
           }
+
           this.siteList = ""
           this.basicList = []
           this.modelList = ""
 
           this.$refs.pageSite.pageSiteSubmit()
-          this.$refs.pageBasic.pageBasicSubmit()
+          this.$refs.pageBasic.pageBasicSubmit('notDelete')
           this.$refs.pageModelBasic.pageModelBasicSubmit()
 
           if (!this.modelErrState) {
@@ -254,6 +257,7 @@ export default {
 
             let postData = {}
             let pageModelResult = {
+              needLogin:objData.needLogin,
               modelType: objData.modelType,
               modelName: objData.modelName,
               browserCrawlable: objData.browserCrawlable,
@@ -264,48 +268,42 @@ export default {
               contentType: objData.contentType,
               modelRegularExpression: objData.modelRegularExpression,
               pageTurningable: objData.pageTurningable,
-              urlExtractRule: objData.urlExtractRule
+              urlExtractRule: objData.urlExtractRule,
+              modelId: modelId
             };
-            if(modelId !== 0){
-              pageModelResult.modelId = this.$route.query.modelId;
-            }
             postData.pageModelParameter = JSON.stringify(pageModelResult);
 
-            if (objData.pageModelProperty !== "") {
-              postData.pageModelProperties = objData.pageModelProperty
-            }
-            if (objData.browserCrawlable === 1) {
-              let browserParameter = {
-                refreshable: objData.refreshable,
-                refreshType: objData.refreshType,
-                eleLocateRule: objData.eleLocateRule,
-                maxDropDownNum: objData.maxDropDownNum,
-                refreshWaitTime: objData.refreshWaitTime,
-                loadFinishedDecisionRule: objData.loadFinishedDecisionRule
-              };
-              if(modelId !== 0){
-                browserParameter.modelId = this.$route.query.modelId;
-              }
-              postData.browserParameter = JSON.stringify(browserParameter);
-            }
-            if (objData.pageTurningable === 1) {
-              let pageTurningParameter = {
-                pageTurningType: objData.pageTurningType,
-                extractType: objData.extractType,
-                extractRule: objData.extractRule,
-                pageDownExpression: objData.pageDownExpression
-              };
-              if(modelId !== 0){
-                pageTurningParameter.modelId = this.$route.query.modelId;
-              }
-              postData.pageTurningParameter = JSON.stringify(pageTurningParameter);
-            }
+            postData.pageModelProperties = objData.pageModelProperty
+
+            let browserParameter = {
+              refreshable: objData.refreshable,
+              refreshType: objData.refreshType,
+              eleLocateRule: objData.eleLocateRule,
+              maxDropDownNum: objData.maxDropDownNum,
+              refreshWaitTime: objData.refreshWaitTime,
+              loadFinishedDecisionRule: objData.loadFinishedDecisionRule,
+              modelId: modelId
+            };
+            postData.browserParameter = JSON.stringify(browserParameter);
+            
+            let pageTurningParameter = {
+              pageTurningType: objData.pageTurningType,
+              extractType: objData.extractType,
+              extractRule: objData.extractRule,
+              pageDownExpression: objData.pageDownExpression,
+              modelId: modelId
+            };
+            postData.pageTurningParameter = JSON.stringify(pageTurningParameter);
+            
             postData.testUrl = testUrl;
-            postData.token = getCookie("token");
 
             pageModelTest(postData).then(res=>{
-              console.log(res)
-            })
+              if(res.data.respCode === "0"){
+                this.$refs.pageModelBasic.syntaxHighlight(res.data.data);
+              }
+            }).catch(err => {
+              this.$Message.error(err);
+            });
           }
         } else {
           this.$Message.error({

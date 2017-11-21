@@ -136,6 +136,7 @@ export default {
       ],
       //列表
       basicData: {
+        needLogin:0,  //是否需要登录
         modelType: 1, //模型类别
         contentType: 1, //内容提供方式
         modelRegularExpression: "", //模型正则表达式
@@ -212,25 +213,30 @@ export default {
           })
       })
     },
-    pageBasicSubmit() {
+    pageBasicSubmit(val) {
       let name = "basicData"
       this.$refs[name].validate(valid => {
         if (valid) {
-          let data = JSON.parse(JSON.stringify(this.basicData))
-          if (data.browserCrawlable === 2) {
-            delete data.refreshType
-            delete data.maxDropDownNum
-            delete data.eleLocateRule
-            delete data.refreshable
-            delete data.refreshWaitTime
+          if(val === 'delete'){
+            let data = JSON.parse(JSON.stringify(this.basicData))
+            if (data.browserCrawlable === 2) {
+              delete data.refreshType
+              delete data.maxDropDownNum
+              delete data.eleLocateRule
+              delete data.refreshable
+              delete data.refreshWaitTime
+            }
+            if (data.pageTurningable === 0) {
+              delete data.pageTurningType
+              delete data.extractType
+              delete data.extractRule
+              delete data.pageDownExpression
+            }
+            this.$emit("basicData", data)
+          }else{
+            let data = JSON.parse(JSON.stringify(this.basicData));
+            this.$emit("basicData", data)
           }
-          if (data.pageTurningable === 0) {
-            delete data.pageTurningType
-            delete data.extractType
-            delete data.extractRule
-            delete data.pageDownExpression
-          }
-          this.$emit("basicData", data)
         } else {
           this.$Message.error({
             content: "基本属性请填写完整！",
