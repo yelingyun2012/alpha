@@ -30,13 +30,11 @@
               </RadioGroup>
             </FormItem>
           </Col>
-          <Col span="8" style="margin-right: 15px">
-            <Select v-model="basicData.urlExtractRuleType">
+          <Col span="18" style="margin-right: 15px" v-if="basicData.urlExtractable === 1">
+            <Select v-model="basicData.urlExtractRuleType" style="width:100px">
               <Option v-for="item in extractTypeList" :value="item.itemType" :key="item.itemType">{{item.itemName}}</Option>
             </Select>
-          </Col>
-          <Col span="10" v-if="basicData.urlExtractable === 1">
-            <FormItem prop="urlExtractRule">
+            <FormItem prop="urlExtractRule" style="width:300px;display: inline-block;">
               <Input v-model="basicData.urlExtractRule"></Input>
             </FormItem>
           </Col>
