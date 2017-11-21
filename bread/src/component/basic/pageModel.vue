@@ -161,14 +161,11 @@ export default {
             modelId: modelId,
             token: getCookie("token")
           }).then(response => {
-            switch (response.data.respCode) {
-              case "0":
-                this.pageModelData.splice(index, 1);
-                this.$Message.success("删除成功");
-                break;
-              default:
-                this.$Message.error(response.data.respMsg);
-                break;
+            if (response.data.respCode === "0") {
+              this.pageModelData.splice(index, 1);
+              this.$Message.success("删除成功");
+            } else {
+              this.$Message.error(response.data.respMsg);
             }
           });
         }
@@ -228,92 +225,58 @@ export default {
 </script>
 <style lang="stylus">
 // 公共函数
-taskWrapper(top, right, bottom, left) {
-  padding: top right bottom left;
-  background-color: #fff;
-}
-
-.page {
-  &-name {
-    margin-bottom: 20px;
-    taskWrapper: 30px 20px 30px 20px;
-
-    .ivu-input {
-      padding: 7px 7px;
-      height: auto;
-      font-size: 14px;
-    }
-
-    .explain {
-      color: #323232;
-      font-size: 14px;
-    }
-
-    .typeIn {
-      margin-right: 30px;
-      margin-left: 4px;
-    }
-
-    .ivu-btn {
-      padding: 6px 23px;
-      font-size: 16px;
-
-      &-success {
-        background-color: rgba(23, 187, 156, 1);
-
-        &:hover {
-          background-color: rgba(23, 187, 156, 0.8);
-        }
-      }
-
-      &:last-child {
-        margin-left: 10px;
-        border-color: #17BB9C;
-        color: #17BB9C;
-
-        &:hover {
-          border-color: #57a3f3;
-          color: #57a3f3;
-        }
-      }
-    }
-  }
-
-  &-minute { // 任务详细
-    taskWrapper: 20px 20px 20px 20px;
-  }
-
-  &-site {
-    padding-bottom: 10px;
-    border-bottom: 1px dashed #B7B7B7;
-
-    span {
-      display: inline-block;
-      padding: 6px 15px;
-      color: #589BEE;
-      font-size: 14px;
-      cursor: pointer;
-
-      &.task-site-active {
-        border-radius: 4px;
-        background-color: #2D8CF0;
-        color: #fff;
-      }
-
-      i {
-        font-style: inherit;
-      }
-    }
-  }
-
-  &-mission {
-    margin-top: 20px;
-
-    .ivu-page {
-      margin-top: 20px;
-      margin-right: 20px;
-      text-align: right;
-    }
-  }
-}
+taskWrapper(top,right,bottom,left)
+  padding top right bottom left
+  background-color #fff
+.page
+  &-name
+    margin-bottom 20px
+    taskWrapper 30px 20px 30px 20px
+    .ivu-input
+      padding 7px 7px
+      height auto
+      font-size 14px
+    .explain
+      color #323232
+      font-size 14px
+    .typeIn
+      margin-right 30px
+      margin-left 4px
+    .ivu-btn
+      padding 6px 23px
+      font-size 16px
+      &-success
+        background-color rgba(23,187,156,1)
+        &:hover
+          background-color rgba(23,187,156,.8)
+      &:last-child
+        margin-left 10px
+        border-color #17BB9C
+        color #17BB9C
+        &:hover
+          border-color #57a3f3
+          color #57a3f3
+  &-minute // 任务详细
+    taskWrapper 20px 20px 20px 20px
+  &-site
+    padding-bottom 10px
+    border-bottom 1px dashed #B7B7B7
+    span
+      display inline-block
+      padding 6px 15px
+      color #589BEE
+      font-size 14px
+      cursor pointer
+      &.task-site-active
+        border-radius 4px
+        background-color #2D8CF0
+        color #fff
+      i
+        font-style inherit
+  &-mission
+    margin-top 20px
+    .ivu-page
+      margin-top 20px
+      margin-right 20px
+      text-align right
 </style>
