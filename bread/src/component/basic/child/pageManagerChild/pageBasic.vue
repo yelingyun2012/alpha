@@ -22,7 +22,7 @@
       </FormItem>
       <FormItem label="抽取url：">
         <Row>
-          <Col span="6">
+          <Col span="3">
             <FormItem prop="urlExtractable">
               <RadioGroup v-model="basicData.urlExtractable">
                 <Radio :label="1">是</Radio>
@@ -30,7 +30,12 @@
               </RadioGroup>
             </FormItem>
           </Col>
-          <Col span="15" v-if="basicData.urlExtractable === 1">
+          <Col span="8" style="margin-right: 15px">
+            <Select v-model="basicData.urlExtractRuleType">
+              <Option v-for="item in extractTypeList" :value="item.itemType" :key="item.itemType">{{item.itemName}}</Option>
+            </Select>
+          </Col>
+          <Col span="10" v-if="basicData.urlExtractable === 1">
             <FormItem prop="urlExtractRule">
               <Input v-model="basicData.urlExtractRule"></Input>
             </FormItem>
@@ -146,6 +151,7 @@ export default {
         pageTurningable: 0, //翻页
 
         urlExtractRule:"",  //抽取url地址
+        urlExtractRuleType:"",  //抽取url地址 新增
 
         refreshType: 1, //刷新方式
         maxDropDownNum: 1, //最大下拉次数

@@ -102,23 +102,70 @@
           },
           {title: '签出时间', width: 85, align: 'center', key: 'updateTimes'},
           {
-            title: '当前状态', width: 70, align: 'center',
+            title: '当前状态', width: 80, align: 'center',
             render: (h, params) => {
               switch (params.row.status) {
                 case 0:
-                  return `停止`
+                  return h('p', [
+                    h('Icon', {
+                      style: {
+                        marginRight: '5px',
+                        color: '#9B9B9B',
+                        opacity: '0.9',
+                        marginLeft: '-10px'
+                      },
+                      attrs: {
+                        type: 'record'
+                      }
+                    }),
+                    h('span', '停止')
+                  ])
                   break
                 case 1:
-                  return `运行中`
+                  return h('p', [
+                    h('Icon', {
+                      style: {
+                        marginRight: '5px',
+                        color: '#3DBD7D',
+                        opacity: '0.9'
+                      },
+                      attrs: {
+                        type: 'record'
+                      }
+                    }),
+                    h('span', '运行中')
+                  ])
                   break
                 case 2:
-                  return `暂停`
-                  break
-                case 3:
-                  return `删除`
+                  return h('p', [
+                    h('Icon', {
+                      style: {
+                        marginRight: '5px',
+                        color: '#FFBF00',
+                        opacity: '0.9',
+                        marginLeft: '-10px'
+                      },
+                      attrs: {
+                        type: 'record'
+                      }
+                    }),
+                    h('span', '暂停')
+                  ])
                   break
                 case 4:
-                  return `已完成`
+                  return h('p', [
+                    h('Icon', {
+                      style: {
+                        marginRight: '5px',
+                        color: '#108EE9',
+                        opacity: '0.9'
+                      },
+                      attrs: {
+                        type: 'record'
+                      }
+                    }),
+                    h('span', '已完成')
+                  ])
                   break
               }
             }
@@ -140,9 +187,18 @@
               // 停止操作
               let secure = h('span',
                 {
+                  style: {
+                    fontSize: '16px',
+                    padding: '5px 18px',
+                    background: '#F2F2F2',
+                    color:'#FFBF00',
+                    display: 'inline-block',
+                    borderRadius: '4px',
+                    margin:'0 5px'
+                  },
                   on: {
                     click: event => {
-                      (async ()=> {
+                      (async () => {
                         try {
                           await queryCollectionHistory({
                             taskId: params.row.taskId,
@@ -156,12 +212,26 @@
                       })()
                     }
                   }
-                }, '停止')
+                }, [
+                  h('Icon', {
+                    props: {
+                      type: 'ios-skipforward'
+                    }
+                  })])
               // 启动操作
               let startUpFunction = h('span', {
+                style: {
+                  fontSize: '16px',
+                  padding: '5px 18px',
+                  background: '#F2F2F2',
+                  color:'#329A23',
+                  display: 'inline-block',
+                  borderRadius: '4px',
+                  margin:'0 5px'
+                },
                 on: {
                   click: event => {
-                    (async ()=> {
+                    (async () => {
                       try {
                         await queryCollectionHistory({
                           taskId: params.row.taskId,
@@ -175,13 +245,28 @@
                     })()
                   }
                 }
-              }, '启动')
+              }, [
+                h('Icon', {
+                  props: {
+                    type: 'ios-play'
+                  }
+                })
+              ])
               // 暂停操作
               let suspendOperations = h('span',
                 {
+                  style: {
+                    fontSize: '16px',
+                    padding: '5px 18px',
+                    background: '#F2F2F2',
+                    color:'#108EE9',
+                    display: 'inline-block',
+                    borderRadius: '4px',
+                    margin:'0 5px'
+                  },
                   on: {
                     click: event => {
-                      (async ()=> {
+                      (async () => {
                         try {
                           await queryCollectionHistory({
                             taskId: params.row.taskId,
@@ -195,12 +280,26 @@
                       })()
                     }
                   }
-                }, '暂停')
+                }, [
+                  h('Icon', {
+                    props: {
+                      type: 'ios-pause'
+                    }
+                  })])
               // 删除操作
               let deleteOperation = h('span', {
+                style: {
+                  fontSize: '16px',
+                  padding: '5px 18px',
+                  background: '#F2F2F2',
+                  color:'#F04134',
+                  display: 'inline-block',
+                  borderRadius: '4px',
+                  margin:'0 5px'
+                },
                 on: {
                   click: event => {
-                    (async ()=> {
+                    (async () => {
                       try {
                         await queryCollectionHistory({
                           taskId: params.row.taskId,
@@ -215,7 +314,13 @@
                     })()
                   }
                 }
-              }, '删除')
+              }, [
+                h('Icon',{
+                  props: {
+                    type: 'trash-a'
+                  }
+                })
+              ])
               switch (params.row.status) {
                 case 0:
                   return h('div', [startUpFunction, deleteOperation])
@@ -366,6 +471,19 @@
     background #FFF5F4
     border 1px solid #FABEB9
     border-radius 2px
+  .test {
+    position: absolute;
+    transform: translateX(-50%);
+    transform-origin: 0 center;
+    top: -4px;
+    right: -8px;
+    height: 8px;
+    width: 8px;
+    border-radius: 100%;
+    background: #ed3f14;
+    z-index: 10;
+    box-shadow: 0 0 0 1px #fff;
+  }
 </style>
 
 
