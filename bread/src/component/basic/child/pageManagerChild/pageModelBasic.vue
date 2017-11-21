@@ -282,18 +282,10 @@ export default {
       border 1px solid #ccc
       vertical-align top
       pre
-        margin 5px
+        margin 0
         padding 5px
-        .string
-          color green
-        .number
-          color darkorange
-        .boolean
-          color blue
-        .null
-          color magenta
-        .key
-          color red
+        white-space: pre-wrap;
+        word-wrap: break-word;
 .vertical-center-modal
   display flex
   justify-content center
