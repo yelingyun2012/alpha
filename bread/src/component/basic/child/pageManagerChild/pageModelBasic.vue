@@ -1,8 +1,14 @@
 <template>
   <div class="pageModelBasic">
     <div class="pageModelUrl">
-      <Input v-model="testURL" style="width:70%" placeholder="测试URL地址"></Input>
+      <Input v-model="testURL" style="width:70%" placeholder="测试URL地址" @on-focus="testFocus"></Input>
       <Button type="primary" @click="testClick">测试</Button>
+      <div class="history" v-show="historyShow && testDataHistory.length !== 0">
+        <div class="historyList" v-for="(val,index) in testDataHistory" :key="index">
+          <span class="historyName" @click.stop="historyClick(val)">{{val}}</span>
+          <span class="operation" @click.stop="historyDelete(val)">删除</span>
+        </div>
+      </div>
     </div>
     <div class="pageModelCenter">
       <div class="pageModelTree" v-if="items.length !== 0">
@@ -39,7 +45,7 @@
 </template>
 
 <script>
-import { queryType } from "../../../../config/getData";
+import { queryType, pageModelTestHistory,pageModelTestHistoryDelete } from "../../../../config/getData";
 import { getCookie } from "../../../../utils/cookie";
 import pageModelBasicTree from "./pageModelBasicTree";
 import pageModelBasicOption from "./pageModelBasicOption";
@@ -53,8 +59,10 @@ export default {
   data() {
     return {
       testURL: "", //测试url
-      testData:"",  //测试数据
+      testData: "", //测试数据
       modal: false, //添加弹出层
+      testDataHistory: [], //历史查询数据
+      historyShow:false,  //历史记录开关
       //弹出层表单
       formData: {
         radio: 0,
@@ -71,9 +79,14 @@ export default {
     };
   },
   mounted() {
-    this.$nextTick(()=>{
+    this.$nextTick(() => {
+      document.addEventListener("click", e => {
+      if (!this.$el.contains(e.target)) {
+          this.historyShow = false;
+        }
+      })
       this.httpConData();
-    })
+    });
   },
   methods: {
     //测试URL
@@ -81,15 +94,46 @@ export default {
       if (!this.testURL) {
         this.$Message.error("请填写页面模型的测试地址");
       } else {
-        this.$emit("testClick",this.testURL);
+        this.$emit("testClick", this.testURL);
       }
+    },
+    //测试记录
+    testFocus() {
+      pageModelTestHistory({ modelId: this.$route.query.modelId })
+        .then(res => {
+          if (res.data.respCode === "0") {
+            this.testDataHistory = res.data.data;
+            if(this.testDataHistory.length !== 0 && this.testDataHistory.length !== null){
+              this.historyShow = true;
+            }
+          }
+        })
+        .catch(err => {
+          this.$Message.error(err);
+        });
+    },
+    //点击历史记录
+    historyClick(val){
+      this.testURL = val;
+      this.historyShow = false;
+    },
+    //删除历史记录
+    historyDelete(val){
+      pageModelTestHistoryDelete({testUrl:val,modelId:this.$route.query.modelId}).then(res=>{
+        this.testFocus();
+      }).catch(err => {
+        this.$Message.error(err);
+      });
     },
     //json格式化
     syntaxHighlight(json) {
       if (typeof json != "string") {
         json = JSON.stringify(json, undefined, 2);
       }
-      json = json.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
+      json = json
+        .replace(/&/g, "&")
+        .replace(/</g, "<")
+        .replace(/>/g, ">");
       this.testData = json;
     },
     //uuid
@@ -261,14 +305,40 @@ export default {
 <style lang="stylus">
 .pageModelBasic
   .pageModelUrl
+    position relative
     margin-bottom 20px
-  .pageModelCenter
+  .history
+    position absolute
+    top 35px
+    left 0
+    z-index 999
     width 70%
+    border 1px solid #dddee1
+    background #fff
+    font-size 14px
+    cursor pointer
+    .historyList
+      padding 0 10px
+      width 100%
+      height 30px
+      line-height 30px
+      &:hover
+        background #2d8cf0
+        color #fff
+      span
+        display inline-block
+        &.historyName
+          width calc(100% - 5% - 10px)
+        &.operation
+          width 5%
+          text-align center
+  .pageModelCenter
+    width 100%
     .pageModelTree
       display inline-block
       margin-bottom 24px
       padding 0 20px
-      width 70%
+      width 60%
       background #F7F7F7
       & > .pageModelBasicTree
         &:last-child
@@ -278,14 +348,14 @@ export default {
           padding 0
     .testData
       display inline-block
-      width calc(100% - 70% - 20px)
+      width calc(100% - 60% - 20px)
       border 1px solid #ccc
       vertical-align top
       pre
         margin 0
         padding 5px
-        white-space: pre-wrap;
-        word-wrap: break-word;
+        white-space pre-wrap
+        word-wrap break-word
 .vertical-center-modal
   display flex
   justify-content center

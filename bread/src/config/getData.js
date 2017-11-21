@@ -124,6 +124,20 @@ export const pageModelTest = params => fetch('http://192.168.10.144:8686/modelVe
   method: 'post',
   data: params
 })
+/**
+ * 模型测试历史记录
+ */
+export const pageModelTestHistory = params => fetch('http://192.168.10.144:8686/modelVerify/getTestUrls', {
+  method: 'get',
+  params: params
+})
+/**
+ * 模型测试历史记录删除
+ */
+export const pageModelTestHistoryDelete = params => fetch('http://192.168.10.144:8686/modelVerify/deleteTestUrl', {
+  method: 'get',
+  params: params
+})
 
 // 站点模块
 /***
@@ -180,16 +194,16 @@ export const listSiteName = params => fetch('site/listsitename', {
 /***
  * 异常任务列表
  */
-export const taskLogList = params => fetch('taskLog/exceptionTaskList', {
+export const taskLogList = params => fetch('http://192.168.10.153:8282/taskLog/exceptionTaskList', {
   method: 'post',
   data: params
 })
 /***
  * 任务抓取统计
  */
-export const taskLogStatistic = params => fetch('taskLog/crawlingStatistic', {
-  method: 'post',
-  data: params
+export const taskLogStatistic = params => fetch('http://192.168.10.153:8282/taskLog/crawlingStatistic', {
+  method: 'get',
+  params: params
 })
 
 // 用户模块

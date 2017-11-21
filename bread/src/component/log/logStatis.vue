@@ -42,8 +42,8 @@
 
 <script>
 import echarts from "echarts";
-import { taskLogStatistic } from '../../config/getData'
-import { getCookie } from '../../utils/cookie'
+import { taskLogStatistic } from "../../config/getData";
+import { getCookie } from "../../utils/cookie";
 
 export default {
   name: "logStatis",
@@ -72,8 +72,8 @@ export default {
       ],
       //查询
       search: {
-        startTime: "", //开始时间
-        endTime: "", //结束时间
+        startTime: new Date(new Date() - (60 * 60 * 24 * 1000)), //开始时间
+        endTime: new Date(), //结束时间
         periodType: 0, //统计
         taskName: "", //任务名称
         siteName: "", //站点名称
@@ -83,7 +83,7 @@ export default {
         token: getCookie("token")
       },
       //提交查询
-      postData:{},
+      postData: {},
       //日志配置
       logColumns: [
         {
@@ -92,11 +92,6 @@ export default {
             if (params.row.startTime !== undefined)
               return `${params.row.startTime} - ${params.row.endTime}`;
           }
-        },
-        {
-          title: "任务创建者",
-          key: "creatorName",
-          align: "center"
         },
         {
           title: "采集成功URL数量",
@@ -153,20 +148,7 @@ export default {
         }
       ],
       //日志数据
-      logData: [
-        {
-          startTime: 1510156800000,
-          endTime:1511971200000,
-          creatorName: "2",
-          taskName: "3",
-          siteName: "4",
-          successCount: 55,
-          failedCount: 66,
-          downLoadFailedCount: 7,
-          extractionFailedCount: 8,
-          addedCount: 9
-        }
-      ],
+      logData: [],
       //页码
       pageTotal: 0,
       pageSize: 10,
@@ -197,51 +179,26 @@ export default {
       ]
     };
   },
-  mounted(){
-    this.$nextTick(()=>{
+  mounted() {
+    this.$nextTick(() => {
       this.postData = JSON.parse(JSON.stringify(this.search));
-      this.getDate(this.postData);
-    })
+      this.postData.startTime = new Date(this.postData.startTime).getTime();
+      this.postData.endTime = new Date(this.postData.endTime).getTime();
+      this.getData(this.postData);
+    });
   },
   methods: {
     //查询
     handleSearch() {
       this.pageNo = 1;
       this.search.pageNo = 1;
-      let con = this.postData = JSON.parse(JSON.stringify(this.search));
-      let startTime = con.startTime = new Date(con.startTime).getTime();
-      let endTime = con.endTime =new Date(con.endTime).getTime();
-      let periodType = con.periodType;
-      if (startTime > endTime) {
-        this.timeErr("结束时间必须大于开始时间！");
-      }else{
-        if(periodType === 0){
-          //默认
-          let txt = "结束时间必须大于开始时间！";
-          this.timeJudge(startTime,endTime,txt);
-        }else if(periodType === 1){
-          //按小时统计
-          let newTime = startTime + (60 * 60 * 1000);
-          let txt = "结束时间必须大于开始时间一小时！";
-          this.timeJudge(newTime,endTime,txt);
-        }else if(periodType === 2){
-          //按天统计
-          let newTime = startTime + (60 * 60 * 1000 * 24);
-          let txt = "结束时间必须大于开始时间一天！";
-          this.timeJudge(newTime,endTime,txt);
-        }else if(periodType === 3){
-          //按月统计
-          let newTime = startTime + (60 * 60 * 1000 * 24 * 30);
-          let txt = "结束时间必须大于开始时间一个月！";
-          this.timeJudge(newTime,endTime,txt);
-        }
-      }
+      this.chuliData();
     },
     //时间判断
-    timeJudge(newTime,endTime,txt){
-      if(newTime <= endTime){
-        this.getDate(this.postData);
-      }else{
+    timeJudge(newTime, endTime, txt) {
+      if (newTime <= endTime) {
+        this.getData(this.postData);
+      } else {
         this.$Message.error({
           content: txt,
           duration: 3,
@@ -261,14 +218,72 @@ export default {
     handlePage(pageNo) {
       this.pageNo = pageNo;
       this.search.pageNo = pageNo;
-      this.getDate();
+      this.chuliData();
+    },
+    //处理数据
+    chuliData(){
+      let con = (this.postData = JSON.parse(JSON.stringify(this.search)));
+      let startTime = (con.startTime = new Date(con.startTime).getTime());
+      let endTime = (con.endTime = new Date(con.endTime).getTime());
+      let periodType = con.periodType;
+      if (startTime > endTime) {
+        this.$Message.error("结束时间必须大于开始时间！");
+      } else {
+        if (periodType === 0) {
+          //默认
+          let txt = "结束时间必须大于开始时间！";
+          this.timeJudge(startTime, endTime, txt);
+        } else if (periodType === 1) {
+          //按小时统计
+          let newTime = startTime + 60 * 60 * 1000;
+          let txt = "结束时间必须大于开始时间一小时！";
+          this.timeJudge(newTime, endTime, txt);
+        } else if (periodType === 2) {
+          //按天统计
+          let newTime = startTime + 60 * 60 * 1000 * 24;
+          let txt = "结束时间必须大于开始时间一天！";
+          this.timeJudge(newTime, endTime, txt);
+        } else if (periodType === 3) {
+          //按月统计
+          let newTime = startTime + 60 * 60 * 1000 * 24 * 30;
+          let txt = "结束时间必须大于开始时间一个月！";
+          this.timeJudge(newTime, endTime, txt);
+        }
+      }
     },
     //获取数据
-    getDate(data) {
-      console.log(data)
-      // taskLogStatistic(this.search).then(res=>{
-      //   console.log(res)
-      // })
+    getData(data) {
+      taskLogStatistic(data)
+        .then(res => {
+          if (res.data.respCode === "0") {
+            let data = res.data.data;
+            for (let i = 0; i < data.length; i++) {
+              data[i].startTime = this.formatDateTime(data[i].startTime);
+              data[i].endTime = this.formatDateTime(data[i].endTime);
+            }
+            this.logData = data;
+            this.pageTotal = res.data.totalPage;
+          }
+        })
+        .catch(err => {
+          this.$Message.error(err);
+        });
+    },
+    //时间转换
+    formatDateTime(inputTime) {
+      var date = new Date(inputTime);
+      var y = date.getFullYear();
+      var m = date.getMonth() + 1;
+      m = m < 10 ? "0" + m : m;
+      var d = date.getDate();
+      d = d < 10 ? "0" + d : d;
+      var h = date.getHours();
+      h = h < 10 ? "0" + h : h;
+      var minute = date.getMinutes();
+      var second = date.getSeconds();
+      minute = minute < 10 ? "0" + minute : minute;
+      second = second < 10 ? "0" + second : second;
+      return y + "-" + m + "-" + d + " " + h + ":" + minute + ":" + second;
     },
     //搜索高级&简易切换
     searchToggle() {
@@ -276,6 +291,7 @@ export default {
       if (!this.searchToggleState) {
         this.logColumns.splice(2, 1);
         this.logColumns.splice(2, 1);
+        this.logColumns.splice(1, 1);
       } else {
         let taskName = {
           title: "任务名称",
@@ -286,6 +302,12 @@ export default {
           key: "siteName",
           align: "center"
         };
+        let creatorName = {
+          title: "任务创建者",
+          key: "creatorName",
+          align: "center"
+        };
+        this.logColumns.splice(1, 0, creatorName);
         this.logColumns.splice(2, 0, taskName);
         this.logColumns.splice(3, 0, siteName);
       }
@@ -300,18 +322,22 @@ export default {
       let sum = success + errSum; //总和
       let arr = [success, downErr, extractErr, other];
       let sumPie = 100;
-
       let pieData = this.pieData;
       for (let i = 0; i < pieData.length; i++) {
-        pieData[i].value = arr[i];
-        let val = (arr[i] / sum * 100).toFixed(2);
-        pieData[i].name = val + "%";
-        if (i !== 0) {
-          sumPie -= val;
+        if (sum === 0) {
+          pieData[i].name = "0%";
+        } else {
+          pieData[i].value = arr[i];
+          let val = (arr[i] / sum * 100).toFixed(2);
+          pieData[i].name = val + "%";
+          if (i !== 0) {
+            sumPie -= val;
+          }
         }
       }
-      this.pieData[0].name = sumPie.toFixed(2) + "%";
-
+      if(sum !== 0){
+        this.pieData[0].name = sumPie.toFixed(2) + "%";
+      }
       let myPie = echarts.init(document.getElementById("myPie"));
       let option = {
         series: [
@@ -343,141 +369,87 @@ export default {
 
 <style lang="stylus">
 // 公共函数
-taskWrapper(top, right, bottom, left) {
-  background-color: #fff;
-  padding: top right bottom left;
-}
-
-.logStatis {
-  &-name { // 任务名称
-    taskWrapper: 30px 20px 30px 20px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    color: #323232;
-
-    .select {
-      margin-left: 10px;
-      width: 160px;
-    }
-
-    .rowCenter {
-      margin: 20px 0 0;
-    }
-
-    .title {
-      display: inline-block;
-      width: 90px;
-      text-align: right;
-    }
-
-    .inputText {
-      width: calc(100% - 90px - 20px);
-    }
-
-    .btn {
-      margin-top: 24px;
-      text-align: right;
-
-      button {
-        min-width: 60px;
-        height: 35px;
-        font-size: 14px;
-      }
-    }
-  }
-
-  &-minute { // 任务详细
-    taskWrapper: 20px 20px 20px 20px;
-
-    .ivu-page {
-      margin-top: 20px;
-      margin-right: 20px;
-      text-align: right;
-    }
-  }
-}
-
-.vertical-center-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .ivu-modal {
-    top: 0;
-  }
-
-  .ivu-modal-footer {
-    display: none;
-  }
-
-  .pieDiv {
-    width: 800px;
-    margin-left: 20px;
-    overflow: hidden;
-
-    div {
-      float: left;
-      height: 400px;
-
-      &#myPie {
-        width: 500px;
-      }
-
-      &#dateList {
-        display: flex;
-        align-items: center;
-        width: 300px;
-
-        ul {
-          width: 100%;
-
-          li {
-            border-bottom: 1px solid #453937;
-            height: 50px;
-            line-height: 50px;
-            font-size: 16px;
-            color: #453937;
-
-            i {
-              width: 8px;
-              height: 8px;
-              display: inline-block;
-              margin-right: 20px;
-              border-radius: 50%;
-            }
-
-            &:nth-child(1) {
-              i {
-                background: #4FC1E9;
-              }
-            }
-
-            &:nth-child(2) {
-              i {
-                background: #AC92EC;
-              }
-            }
-
-            &:nth-child(3) {
-              i {
-                background: #A0D468;
-              }
-            }
-
-            &:nth-child(4) {
-              i {
-                background: #FC6E51;
-              }
-            }
-
-            span.name {
-              float: right;
-              margin-right: 20px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
+taskWrapper(top,right,bottom,left)
+  padding top right bottom left
+  background-color #fff
+.logStatis
+  &-name // 任务名称
+    margin-bottom 20px
+    color #323232
+    font-size 14px
+    taskWrapper 30px 20px 30px 20px
+    .select
+      margin-left 10px
+      width 160px
+    .rowCenter
+      margin 20px 0 0
+    .title
+      display inline-block
+      width 90px
+      text-align right
+    .inputText
+      width calc(100% - 90px - 20px)
+    .btn
+      margin-top 24px
+      text-align right
+      button
+        min-width 60px
+        height 35px
+        font-size 14px
+  &-minute // 任务详细
+    taskWrapper 20px 20px 20px 20px
+    .ivu-page
+      margin-top 20px
+      margin-right 20px
+      text-align right
+.vertical-center-modal
+  display flex
+  justify-content center
+  align-items center
+  .ivu-modal
+    top 0
+  .ivu-modal-footer
+    display none
+  .pieDiv
+    overflow hidden
+    margin-left 20px
+    width 800px
+    div
+      float left
+      height 400px
+      &#myPie
+        width 500px
+      &#dateList
+        display flex
+        align-items center
+        width 300px
+        ul
+          width 100%
+          li
+            height 50px
+            border-bottom 1px solid #453937
+            color #453937
+            font-size 16px
+            line-height 50px
+            i
+              display inline-block
+              margin-right 20px
+              width 8px
+              height 8px
+              border-radius 50%
+            &:nth-child(1)
+              i
+                background #4FC1E9
+            &:nth-child(2)
+              i
+                background #AC92EC
+            &:nth-child(3)
+              i
+                background #A0D468
+            &:nth-child(4)
+              i
+                background #FC6E51
+            span.name
+              float right
+              margin-right 20px
 </style>
