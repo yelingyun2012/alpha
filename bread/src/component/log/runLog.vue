@@ -59,11 +59,23 @@ export default {
         },
         {
           value: "1",
-          label: "网络请求异常"
+          label: "采集失败"
         },
         {
           value: "2",
-          label: "抽取异常"
+          label: "模型匹配失败"
+        },
+        {
+          value: "3",
+          label: "下载失败"
+        },
+        {
+          value: "4",
+          label: "抽取失败"
+        },
+        {
+          value: "5",
+          label: "持久化失败"
         }
       ],
       //日志配置

@@ -117,6 +117,13 @@ export const pageModelCheckIn = params => fetch('pagemodel/checkin', {
   method: 'post',
   data: params
 })
+/**
+ * 模型测试
+ */
+export const pageModelTest = params => fetch('http://192.168.10.144:8686/modelVerify/getPageModelAttribute', {
+  method: 'post',
+  data: params
+})
 
 // 站点模块
 /***

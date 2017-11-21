@@ -20,11 +20,22 @@
       <FormItem label="不允许爬行URL正则：" prop="urlsNotAllowCrawlRegex">
         <Input v-model="basicData.urlsNotAllowCrawlRegex" type="textarea" :autosize="{minRows: 4,maxRows: 5}"></Input>
       </FormItem>
-      <FormItem label="抽取url：" prop="urlExtractable">
-        <RadioGroup v-model="basicData.urlExtractable">
-          <Radio :label="1">是</Radio>
-          <Radio :label="0">否</Radio>
-        </RadioGroup>
+      <FormItem label="抽取url：">
+        <Row>
+          <Col span="6">
+            <FormItem prop="urlExtractable">
+              <RadioGroup v-model="basicData.urlExtractable">
+                <Radio :label="1">是</Radio>
+                <Radio :label="0">否</Radio>
+              </RadioGroup>
+            </FormItem>
+          </Col>
+          <Col span="15" v-if="basicData.urlExtractable === 1">
+            <FormItem prop="urlExtractRule">
+              <Input v-model="basicData.urlExtractRule"></Input>
+            </FormItem>
+          </Col>
+        </Row>
       </FormItem>
       <FormItem label="浏览器采集：" prop="browserCrawlable">
         <RadioGroup v-model="basicData.browserCrawlable">
@@ -133,6 +144,8 @@ export default {
         urlExtractable: 0, //抽取url
         browserCrawlable: 2, //浏览器采集
         pageTurningable: 0, //翻页
+
+        urlExtractRule:"",  //抽取url地址
         
         refreshType: 1, //刷新方式
         maxDropDownNum: 1, //最大下拉次数
@@ -155,44 +168,9 @@ export default {
         modelRegularExpression: [
           { required: true, message: "请输入", trigger: "blur" }
         ],
-        urlsAllowCrawlRegex: [
+        urlExtractRule: [
           { required: true, message: "请输入", trigger: "blur" }
         ],
-        urlsNotAllowCrawlRegex: [
-          { required: true, message: "请输入", trigger: "blur" }
-        ],
-        urlExtractable: [
-          { type: "number", required: true, message: "请选择", trigger: "change" }
-        ],
-        browserCrawlable: [
-          { type: "number", required: true, message: "请选择", trigger: "change" }
-        ],
-        pageTurningable: [
-          { type: "number", required: true, message: "请选择", trigger: "change" }
-        ],
-        refreshType: [
-          { type: "number", required: true, message: "请选择", trigger: "change" }
-        ],
-        maxDropDownNum: [
-          { type: "number", required: true, message: "请选择", trigger: "change" }
-        ],
-        eleLocateRule: [{ required: true, message: "请输入", trigger: "blur" }],
-        refreshable: [
-          { type: "number", required: true, message: "请选择", trigger: "change" }
-        ],
-        refreshWaitTime: [
-          { type: "number", required: true, message: "请选择", trigger: "change" }
-        ],
-        pageTurningType: [
-          { type: "number", required: true, message: "请选择", trigger: "change" }
-        ],
-        extractType: [
-          { type: "number", required: true, message: "请选择", trigger: "change" }
-        ],
-        extractRule: [{ required: true, message: "请输入", trigger: "blur" }],
-        pageDownExpression: [
-          { required: true, message: "请输入", trigger: "blur" }
-        ]
       }
     }
   },

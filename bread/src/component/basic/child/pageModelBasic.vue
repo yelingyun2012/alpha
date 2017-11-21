@@ -1,9 +1,18 @@
 <template>
   <div class="pageModelBasic">
-    <div class="pageModelTree" v-if="items.length !== 0">
-      <pageModelBasicTree v-for="(val, index) in items" :item="val" @remove="delItem(index)" :key="index"></pageModelBasicTree>
+    <div class="pageModelUrl">
+      <Input v-model="testURL" style="width:70%" placeholder="测试URL地址"></Input>
+      <Button type="primary" @click="testClick">测试</Button>
     </div>
-    <Button type="dashed" icon="plus" @click="addCon()" style="width:60%;">添加属性或属性组</Button>
+    <div class="pageModelCenter">
+      <div class="pageModelTree" v-if="items.length !== 0">
+        <pageModelBasicTree v-for="(val, index) in items" :item="val" @remove="delItem(index)" :key="index"></pageModelBasicTree>
+      </div>
+      <div class="testData" v-if="testData.length !== 0">
+        <pre><span v-for="(item,index) in testData" :key="index" :class="item.cls">{{item.value}}</span></pre>
+      </div>
+    </div>
+    <Button type="dashed" icon="plus" @click="addCon()" style="width:70%;">添加属性或属性组</Button>
     <Modal title="属性/属性组" v-model="modal" class-name="vertical-center-modal">
       <Form ref="formData" :model="formData" :rules="ruleValidate" :label-width="100">
         <FormItem label=" " prop="radio">
@@ -11,13 +20,13 @@
             <Radio v-for="(val,index) in groupType" :key="index" :label="val.id">{{val.name}}</Radio>
           </RadioGroup>
         </FormItem>
-        <FormItem label="属性组名称：" prop="par">
+        <FormItem label="属性组：" prop="par">
           <Select v-model="formData.par">
             <Option value="-1">顶级</Option>
             <pageModelBasicOption v-for="(val,index) in items" :key="index" v-if="val.groupType === 1" :item="val">{{val.name}}</pageModelBasicOption>
           </Select>
         </FormItem>
-        <FormItem label="抽取个数：" prop="name">
+        <FormItem label="名称：" prop="name">
           <Input v-model="formData.name"></Input>
         </FormItem>
         <FormItem>
@@ -30,10 +39,10 @@
 </template>
 
 <script>
-import { queryType } from "../../../config/getData"
-import { getCookie } from "../../../utils/cookie"
-import pageModelBasicTree from "./pageModelBasicTree"
-import pageModelBasicOption from "./pageModelBasicOption"
+import { queryType } from "../../../config/getData";
+import { getCookie } from "../../../utils/cookie";
+import pageModelBasicTree from "./pageModelBasicTree";
+import pageModelBasicOption from "./pageModelBasicOption";
 
 export default {
   name: "pageModelBasic",
@@ -43,7 +52,10 @@ export default {
   },
   data() {
     return {
-      modal: false,
+      testURL: "", //测试url
+      testData:[],  //测试数据
+      modal: false, //添加弹出层
+      //弹出层表单
       formData: {
         radio: 0,
         par: "",
@@ -54,53 +66,88 @@ export default {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }]
       },
       groupType: [{ id: 0, name: "属性" }, { id: 1, name: "属性组" }],
-      items: [],
-      postData: []
-    }
+      items: [], //数据
+      postData: [] //提交数据
+    };
   },
   mounted() {
-    this.httpConData()
+    this.$nextTick(()=>{
+      this.httpConData();
+    })
   },
   methods: {
+    //测试URL
+    testClick() {
+      if (!this.testURL) {
+        this.$Message.error("请填写页面模型的测试地址");
+      } else {
+        this.$emit("testClick",this.testURL);
+      }
+    },
+    //json格式化
+    syntaxHighlight(json) {
+      if (typeof json != "string") {
+        json = JSON.stringify(json, undefined, 2);
+      }
+      json = json.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
+      return json.replace(
+        /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+        function(match) {
+          let cls = "number";
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = "key";
+            } else {
+              cls = "string";
+            }
+          } else if (/true|false/.test(match)) {
+            cls = "boolean";
+          } else if (/null/.test(match)) {
+            cls = "null";
+          }
+          this.testData.push({value:match,cls:cls});
+        }
+      );
+    },
     //uuid
     uuid() {
-      let s = []
-      let hexDigits = "0123456789abcdef"
+      let s = [];
+      let hexDigits = "0123456789abcdef";
       for (let i = 0; i < 36; i++) {
-        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
+        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
       }
-      s[14] = "4"
-      s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
-      s[8] = s[13] = s[18] = s[23] = "-"
+      s[14] = "4";
+      s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+      s[8] = s[13] = s[18] = s[23] = "-";
 
-      let uuid = s.join("")
-      return uuid
+      let uuid = s.join("");
+      return uuid;
     },
     //获取parseType
     httpConData() {
       queryType({ typeId: 3, token: getCookie("token") })
         .then(response => {
           if (response.data.respCode === "0") {
-            let httpCon = response.data.data
-            this.$store.dispatch("setHttpCon", httpCon)
+            let httpCon = response.data.data;
+            this.$store.dispatch("setHttpCon", httpCon);
           }
         })
         .catch(err => {
-          console.log(err.statusCode)
-        })
+          console.log(err.statusCode);
+        });
     },
     //添加
     addCon() {
-      this.handleReset("formData")
-      this.modal = true
+      this.handleReset("formData");
+      this.modal = true;
     },
     //确定
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          let formData = this.formData
-          let items = this.items
-          let propertyId = this.uuid()
+          let formData = this.formData;
+          let items = this.items;
+          let propertyId = this.uuid();
           let obj = {
             modelId: this.$route.query.modelId,
             propertyId: propertyId,
@@ -110,67 +157,67 @@ export default {
             matchExpression: "",
             groupType: formData.radio,
             parentId: "0"
-          }
+          };
           if (formData.radio === 0) {
             if (formData.par === "-1") {
-              items.push(obj)
+              items.push(obj);
             } else {
-              this.insertArr(items, formData.par, obj)
+              this.insertArr(items, formData.par, obj);
             }
           } else {
-            obj.children = []
+            obj.children = [];
             if (formData.par === "-1") {
-              items.push(obj)
+              items.push(obj);
             } else {
-              this.insertArr(items, formData.par, obj)
+              this.insertArr(items, formData.par, obj);
             }
           }
           this.modal = false;
         } else {
-          this.$Message.error("请填写!")
+          this.$Message.error("请填写!");
         }
-      })
+      });
     },
     //递归插入数据
     insertArr(arr, id, val) {
-      let result
+      let result;
       for (let i in arr) {
         if (arr[i].propertyId == id) {
-          val.parentId = id
-          arr[i].children.push(val)
-          break
+          val.parentId = id;
+          arr[i].children.push(val);
+          break;
         } else {
-          result = this.insertArr(arr[i].children, id, val)
+          result = this.insertArr(arr[i].children, id, val);
           if (result) {
-            val.parentId = id
-            arr[i].children.push(val)
-            break
+            val.parentId = id;
+            arr[i].children.push(val);
+            break;
           }
         }
       }
     },
     //重置表单
     handleReset(name) {
-      this.$refs[name].resetFields()
+      this.$refs[name].resetFields();
     },
     //删除
     delItem(index) {
-      this.items.splice(index, 1)
+      this.items.splice(index, 1);
     },
     //获取json格式
     pageModelBasicSubmit() {
-      this.postData = []
-      let jsonItems = JSON.parse(JSON.stringify(this.items))
-      this.arrJson(jsonItems)
-      this.deleteChildren(this.postData)
-      this.validateCon(this.postData)
+      this.postData = [];
+      let jsonItems = JSON.parse(JSON.stringify(this.items));
+      this.arrJson(jsonItems);
+      this.deleteChildren(this.postData);
+      this.validateCon(this.postData);
     },
     //数据结构转换
     arrJson(arr) {
       for (let i in arr) {
-        this.postData.push(arr[i])
+        this.postData.push(arr[i]);
         if (arr[i].children) {
-          this.arrJson(arr[i].children)
+          this.arrJson(arr[i].children);
         }
       }
     },
@@ -179,7 +226,7 @@ export default {
       for (let i in arr) {
         arr[i].sortedId = i - 0 + 1;
         if (arr[i].children) {
-          delete arr[i].children
+          delete arr[i].children;
         }
       }
     },
@@ -206,60 +253,70 @@ export default {
       for (var i in arr) {
         //插入children
         if (arr[i].groupType === 1) {
-          arr[i].children = []
+          arr[i].children = [];
         }
         //把数据插入到children
         for (var j in arr) {
           if (arr[i].propertyId === arr[j].parentId) {
-            arr[i].children.push(arr[j])
+            arr[i].children.push(arr[j]);
           }
         }
       }
       //删除第一级以外的数据
       for (var i = arr.length - 1; i >= 0; i--) {
         if (arr[i].parentId !== "0") {
-          arr.splice(i, 1)
+          arr.splice(i, 1);
         }
       }
       //插入数据
       this.items = arr;
     }
   }
-}
+};
 </script>
 
 <style lang="stylus">
-.pageModelBasic {
-  .pageModelTree {
-    margin-bottom: 24px;
-    background: #F7F7F7;
-    padding: 0 20px;
-
-    & > .pageModelBasicTree {
-      &:last-child {
-        border: 0;
-      }
-
-      border-bottom: 1px solid #d9d9d9;
-
-      & > ul {
-        padding: 0;
-      }
-    }
-  }
-}
-
-.vertical-center-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .ivu-modal {
-    top: 0;
-  }
-
-  .ivu-modal-footer {
-    display: none;
-  }
-}
+.pageModelBasic
+  .pageModelUrl
+    margin-bottom 20px
+  .pageModelCenter
+    width 70%
+    .pageModelTree
+      display inline-block
+      margin-bottom 24px
+      padding 0 20px
+      width 80%
+      background #F7F7F7
+      & > .pageModelBasicTree
+        &:last-child
+          border 0
+        border-bottom 1px solid #d9d9d9
+        & > ul
+          padding 0
+    .testData
+      display inline-block
+      width calc(100% - 80% - 20px)
+      border 1px solid #ccc
+      vertical-align top
+      pre
+        margin 5px
+        padding 5px
+        .string
+          color green
+        .number
+          color darkorange
+        .boolean
+          color blue
+        .null
+          color magenta
+        .key
+          color red
+.vertical-center-modal
+  display flex
+  justify-content center
+  align-items center
+  .ivu-modal
+    top 0
+  .ivu-modal-footer
+    display none
 </style>

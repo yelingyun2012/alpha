@@ -17,14 +17,15 @@
         TabPane(label='基本属性',name='2')
           pageBasic(ref="pageBasic",@basicData="basicData")
         TabPane(label='页面模型',name='3')
-          pageModelBasic(ref="pageModelBasic",@modelData="modelData",@modelErr="modelErr")
+          pageModelBasic(ref="pageModelBasic",@modelData="modelData",@modelErr="modelErr",@testClick="testClick")
 </template>
 <script>
 import {
   pageModelAdd,
   pageModelQuery,
   pageModelCheckout,
-  pageModelCheckIn
+  pageModelCheckIn,
+  pageModelTest
 } from "../../../config/getData"
 import { getCookie } from "../../../utils/cookie"
 import pageSite from "./pageSite.vue"
@@ -89,7 +90,7 @@ export default {
               contentType: objData.contentType,
               modelRegularExpression: objData.modelRegularExpression,
               pageTurningable: objData.pageTurningable,
-              urlExtractRule: objData.urlExtractable
+              urlExtractRule: objData.urlExtractRule
             };
             if(type === 'signIn'){
               pageModelResult.modelId = this.$route.query.modelId;
@@ -186,6 +187,8 @@ export default {
         this.$refs.pageBasic.basicData.urlExtractable = queryData.urlExtractable;
         this.$refs.pageBasic.basicData.browserCrawlable = queryData.browserCrawlable;
         this.$refs.pageBasic.basicData.pageTurningable = queryData.pageTurningable;
+
+        this.$refs.pageBasic.basicData.urlExtractRule = queryData.urlExtractRule;
         
         if ( queryData.browserCrawlable === 1 ) {
           this.$refs.pageBasic.basicData.refreshType = queryData.browserRefreshConfigureEntity[0].refreshType;
@@ -221,6 +224,97 @@ export default {
           this.signStatus = true
         }
       });
+    },
+    //测试
+    testClick(testUrl){
+      let name = "formValidate";
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          let modelId = 0;
+          if(this.$router.params.id){
+            modelId = this.$router.params.id;
+          }
+          this.siteList = ""
+          this.basicList = []
+          this.modelList = ""
+
+          this.$refs.pageSite.pageSiteSubmit()
+          this.$refs.pageBasic.pageBasicSubmit()
+          this.$refs.pageModelBasic.pageModelBasicSubmit()
+
+          if (!this.modelErrState) {
+            return false
+          }
+
+          if (this.siteList && this.basicList.length !== 0) {
+            let objData = this.basicList
+            objData.siteId = this.siteList
+            objData.pageModelProperty = this.modelList
+            objData.modelName = this.formValidate.modelName
+
+            let postData = {}
+            let pageModelResult = {
+              modelType: objData.modelType,
+              modelName: objData.modelName,
+              browserCrawlable: objData.browserCrawlable,
+              urlExtractable: objData.urlExtractable,
+              urlsAllowCrawlRegex: objData.urlsAllowCrawlRegex,
+              urlsNotAllowCrawlRegex: objData.urlsNotAllowCrawlRegex,
+              siteId: objData.siteId,
+              contentType: objData.contentType,
+              modelRegularExpression: objData.modelRegularExpression,
+              pageTurningable: objData.pageTurningable,
+              urlExtractRule: objData.urlExtractRule
+            };
+            if(modelId !== 0){
+              pageModelResult.modelId = this.$route.query.modelId;
+            }
+            postData.pageModelParameter = JSON.stringify(pageModelResult);
+
+            if (objData.pageModelProperty !== "") {
+              postData.pageModelProperties = objData.pageModelProperty
+            }
+            if (objData.browserCrawlable === 1) {
+              let browserParameter = {
+                refreshable: objData.refreshable,
+                refreshType: objData.refreshType,
+                eleLocateRule: objData.eleLocateRule,
+                maxDropDownNum: objData.maxDropDownNum,
+                refreshWaitTime: objData.refreshWaitTime,
+                loadFinishedDecisionRule: objData.loadFinishedDecisionRule
+              };
+              if(modelId !== 0){
+                browserParameter.modelId = this.$route.query.modelId;
+              }
+              postData.browserParameter = JSON.stringify(browserParameter);
+            }
+            if (objData.pageTurningable === 1) {
+              let pageTurningParameter = {
+                pageTurningType: objData.pageTurningType,
+                extractType: objData.extractType,
+                extractRule: objData.extractRule,
+                pageDownExpression: objData.pageDownExpression
+              };
+              if(modelId !== 0){
+                pageTurningParameter.modelId = this.$route.query.modelId;
+              }
+              postData.pageTurningParameter = JSON.stringify(pageTurningParameter);
+            }
+            postData.testUrl = testUrl;
+            postData.token = getCookie("token");
+
+            pageModelTest(postData).then(res=>{
+              console.log(res)
+            })
+          }
+        } else {
+          this.$Message.error({
+            content: "页面模型名称不能为空！",
+            duration: 3,
+            closable: true
+          })
+        }
+      })
     }
   },
   components: {
