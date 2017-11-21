@@ -4,7 +4,7 @@
       .ivu-card
         .login-form-logo
           img(src='../../assets/images/logo.png')
-        h5.login-form-head 比一比大数据平台
+        h5.login-form-head 比一比大数据平台 1.3.7_010101
         Form(ref="loginForm", :model='loginForm', :rules="ruleValidate")
           FormItem(prop="account")
             Input(placeholder='账号', icon="android-person", v-model='loginForm.account').login-form-con
@@ -56,7 +56,7 @@ export default {
         setCookie("userInfo", res.data.data)
         this.$router.push({ path: "/basic" })
       } catch (error) {
-        this.$Message.error(error)
+        this.$Message.error(error.match(/([^\[\]]+)(?=\])/g)[0])
       }
     }
   }

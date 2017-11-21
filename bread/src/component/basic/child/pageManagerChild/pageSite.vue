@@ -4,8 +4,8 @@
       Radio(v-for="site in siteData", :label="site.siteId", :key="site.siteId") {{site.siteName}}
 </template>
 <script>
-  import { listSiteName } from '../../../config/getData'
-  import { getCookie } from '../../../utils/cookie'
+  import { listSiteName } from '../../../../config/getData'
+  import { getCookie } from '../../../../utils/cookie'
 
   export default {
     name: 'pageSite',
