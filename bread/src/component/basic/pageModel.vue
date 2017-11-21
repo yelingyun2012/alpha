@@ -164,8 +164,6 @@ export default {
             if (response.data.respCode === "0") {
               this.pageModelData.splice(index, 1);
               this.$Message.success("删除成功");
-            } else {
-              this.$Message.error(response.data.respMsg);
             }
           });
         }
