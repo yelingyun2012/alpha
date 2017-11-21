@@ -26,8 +26,8 @@ import {
   pageModelCheckout,
   pageModelCheckIn,
   pageModelTest
-} from "../../../config/getData"
-import { getCookie } from "../../../utils/cookie"
+} from "../../../../config/getData"
+import { getCookie } from "../../../../utils/cookie"
 import pageSite from "./pageSite.vue"
 import pageBasic from "./pageBasic.vue"
 import pageModelBasic from "./pageModelBasic.vue"
@@ -189,7 +189,7 @@ export default {
         this.$refs.pageBasic.basicData.pageTurningable = queryData.pageTurningable;
 
         this.$refs.pageBasic.basicData.urlExtractRule = queryData.urlExtractRule;
-        
+
         if ( queryData.browserCrawlable === 1 ) {
           this.$refs.pageBasic.basicData.refreshType = queryData.browserRefreshConfigureEntity[0].refreshType;
           this.$refs.pageBasic.basicData.maxDropDownNum = queryData.browserRefreshConfigureEntity[0].maxDropDownNum;

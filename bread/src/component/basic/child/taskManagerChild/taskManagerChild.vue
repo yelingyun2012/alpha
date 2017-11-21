@@ -20,8 +20,8 @@
 <script>
   import taskBasicAttribute from './taskBasicAttribute.vue'
   import taskPageModel from './taskPageModel.vue'
-  import { taskCheckout, taskAdd, taskCheckin, taskQuery } from '../../../config/getData'
-  import { getCookie } from '../../../utils/cookie'
+  import { taskCheckout, taskAdd, taskCheckin, taskQuery } from '../../../../config/getData'
+  import { getCookie } from '../../../../utils/cookie'
 
   export default {
     name: 'TaskManagerChild',

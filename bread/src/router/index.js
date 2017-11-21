@@ -43,13 +43,13 @@ export const otherRouter = [
         path: 'taskManagerChild/:id',
         name: 'taskManagerChild',
         title: '任务操作',
-        component: _import('basic/child/taskManagerChild')
+        component: _import('basic/child/taskManagerChild/taskManagerChild')
       }, // 展示任务添加与详情路由
       {
         path: 'pageManager/:id',
         name: 'pageManager',
         title: '页面模型操作',
-        component: _import('basic/child/pageManager')
+        component: _import('basic/child/pageManagerChild/pageManager')
       },
       {
         path: 'alterUser/:operate',

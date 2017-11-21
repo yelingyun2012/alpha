@@ -103,8 +103,8 @@
 </template>
 
 <script>
-import { queryType } from "../../../config/getData"
-import { getCookie } from "../../../utils/cookie"
+import { queryType } from "../../../../config/getData"
+import { getCookie } from "../../../../utils/cookie"
 
 export default {
   name: "pageBasic",
@@ -146,7 +146,7 @@ export default {
         pageTurningable: 0, //翻页
 
         urlExtractRule:"",  //抽取url地址
-        
+
         refreshType: 1, //刷新方式
         maxDropDownNum: 1, //最大下拉次数
         eleLocateRule: "", //元素刷新定位规格：（xpath格式）

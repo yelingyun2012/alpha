@@ -18,8 +18,8 @@
               li(v-for='item in addressData') {{item.modelName}}
 </template>
 <script>
-import { listSiteName, matchingModel } from "../../../config/getData";
-import { getCookie } from "../../../utils/cookie";
+import { listSiteName, matchingModel } from "../../../../config/getData";
+import { getCookie } from "../../../../utils/cookie";
 
 export default {
   name: "TaskPageModel",

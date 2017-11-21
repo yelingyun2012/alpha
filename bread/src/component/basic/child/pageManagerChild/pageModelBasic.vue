@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import { queryType } from "../../../config/getData";
-import { getCookie } from "../../../utils/cookie";
+import { queryType } from "../../../../config/getData";
+import { getCookie } from "../../../../utils/cookie";
 import pageModelBasicTree from "./pageModelBasicTree";
 import pageModelBasicOption from "./pageModelBasicOption";
 
