@@ -68,7 +68,6 @@
                         siteName: params.row.siteName,
                         siteDomainName: params.row.siteDomainName
                       }
-                      console.log(this.detailsOnTheSite)
                     }
                   }
                 },
@@ -87,31 +86,17 @@
                   return h(
                     'span',
                     {
-                      style: {
-                        color: '#646464',
-                        display: 'inline-block',
-                        padding: '4px 10px',
-                        opacity: '0.7',
-                        background: '#EBF8F2',
-                        border: '1px solid #A7E1C4',
-                        borderRadius: '2px'
-                      }
-                    }, '已签入')
+                      'class':{
+                        signIn:true
+                      }}, '已签入')
                   break
                 case 1:
                   return h(
                     'span',
                     {
-                      style: {
-                        color: '#646464',
-                        display: 'inline-block',
-                        padding: '4px 10px',
-                        opacity: '0.7',
-                        background: '#EBF8F2',
-                        border: '1px solid #FABEB9',
-                        borderRadius: '2px'
-                      }
-                    }, `已签出${params.row.updatePersonName}`)
+                      'class':{
+                        signOut:true
+                      }}, `已签出${params.row.updatePersonName}`)
                   break
               }
             }
@@ -190,23 +175,7 @@
         this.$Modal.confirm({
           content: '<p>是否确定删除该站点</p>',
           onOk: () => {
-            siteDelete({
-              siteId: siteId,
-              token: getCookie('token')
-            }).then(response => {
-              switch (response.data.respCode) {
-                case '0':
-                  this.siteData.splice(index, 1)
-                  this.$Message.success('删除成功')
-                  break
-                case '204':
-                  this.$Message.success('参数异常')
-                  break
-                case '205':
-                  this.$Message.warning('该站点已被签出，不能直接删除')
-                  break
-              }
-            })
+            this.initSiteDelete(siteId, index)
           }
         })
       },
@@ -232,32 +201,28 @@
       async initCheckOut () {
         try {
           let {siteId} = this.detailsOnTheSite
-          let res = await siteCheckOut({siteId: siteId, token: getCookie('token')})
+          await siteCheckOut({siteId: siteId, token: getCookie('token')})
           this.signStatus = !this.signStatus
-//          if (res.data.respCode === '0') {
-//
-//          }
-        } catch (err) {
-          console.log(err)
+        } catch (error) {
+          this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
         }
 
       },
       async initCheckIn () {
-        let {siteId} = this.detailsOnTheSite
-        let res = await siteCheckIn({
-          siteId: siteId,
-          siteName: this.siteAddName,
-          siteDomainName: this.siteAddDomainName,
-          token: getCookie('token')
-        })
-        if (res.data.respCode === '0') {
+        try {
+          let {siteId} = this.detailsOnTheSite
+          await siteCheckIn({
+            siteId: siteId,
+            siteName: this.siteAddName,
+            siteDomainName: this.siteAddDomainName,
+            token: getCookie('token')
+          })
           this.signStatus = !this.signStatus
           this.siteModal = false
           this.initSiteList()
+        } catch (error) {
+          this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
         }
-//        if(res.data.respCode === '205'){
-//          this.$Message.warning(res.data.respMsg)
-//        }
       },
       async initSiteList () {
         try {
@@ -269,22 +234,36 @@
           })
           this.pageTotal = res.data.data.recordCount
           this.siteData = res.data.data.result
-        } catch (err) {
+        } catch (error) {
           this.siteData = []
-          this.$Message.info(err)
+          this.$Message.info(error.match(/([^\[\]]+)(?=\])/g)[0])
         }
       },
       async initSiteAdd () {
-        let res = await siteAdd({
-          siteName: this.siteAddName,
-          siteDomainName: this.siteAddDomainName,
-          token: getCookie('token')
-        })
-        if (res.data.respCode === '0') {
+        try {
+          await siteAdd({
+            siteName: this.siteAddName,
+            siteDomainName: this.siteAddDomainName,
+            token: getCookie('token')
+          })
           this.$Message.success('添加站点成功')
           this.siteModal = false
           this.siteAddName = this.siteAddDomainName = ''
           this.initSiteList()
+        } catch (error) {
+          this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
+        }
+      },
+      async initSiteDelete (siteId, index) {
+        try {
+          await siteDelete({
+            siteId: siteId,
+            token: getCookie('token')
+          })
+          this.siteData.splice(index, 1)
+          this.$Message.success('删除成功')
+        } catch (error) {
+          this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
         }
       }
     }
@@ -328,4 +307,20 @@
         text-align right
   .ivu-poptip-body
     padding 8px 12px
+  .signIn
+    color #646464
+    display inline-block
+    padding 4px 10px
+    opacity 0.7
+    background #EBF8F2
+    border 1px solid #A7E1C4
+    border-radius: 2px
+  .signOut
+    color #646464
+    display inline-block
+    padding 4px 10px
+    opacity 0.7
+    background #EBF8F2
+    border 1px solid #FABEB9
+    borderRadius 2px
 </style>

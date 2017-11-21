@@ -201,7 +201,13 @@ export default {
           this.$refs.pageBasic.basicData.pageDownExpression = queryData.pageTurningConfigureEntity[0].pageDownExpression;
         }
         if(queryData.pageModelPropertyEntity !== null && queryData.pageModelPropertyEntity.length !== 0){
-          this.$refs.pageModelBasic.arrFormat(queryData.pageModelPropertyEntity);
+          let data = queryData.pageModelPropertyEntity;
+          let newData = [];
+          for(var i = 0; i<data.length; i++){
+            let newSort = data[i].sortedId;
+            newData[newSort-1] = data[i];
+          }
+          this.$refs.pageModelBasic.arrFormat(newData);
         }
       });
     },

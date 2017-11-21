@@ -43,7 +43,7 @@
       },
       async initSignOut () {
         try {
-          let res = taskCheckout({taskId: this.$route.query.taskId, token: getCookie('token')})
+          await taskCheckout({taskId: this.$route.query.taskId, token: getCookie('token')})
           this.$Message.success('签出成功')
           this.signStatus = true
         } catch (error) {

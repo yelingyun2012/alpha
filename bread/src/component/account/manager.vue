@@ -78,25 +78,32 @@
           {title: '创建时间', key: 'creatTimes'},
           {
             title: '启用状态',
-            align:'center',
+            align: 'center',
             render: (h, params) => {
               switch (params.row.enabled) { // 被禁用
                 case 0:
                   return h('span', {
                     on: {
                       click: event => {
-                        this.alterUserUpdateEnableds(1, params.row.userId)
-                        params.row.enabled = 1
+                        (async () => {
+                          try {
+                            await userUpdateEnableds({
+                              enabled: 1,
+                              userId: params.row.userId,
+                              token: getCookie('token')
+                            })
+                            this.$Message.success('状态修改成功')
+                            params.row.enabled = 1
+                          } catch (error) {
+                            this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
+                          }
+                        })()
                       }
                     }
                   }, [
                     h('Icon', {
-                      style:{
-                        fontSize: '16px',
-                        padding: '5px 13px',
-                        background: '#F2F2F2',
-                        borderRadius: '4px',
-                        color:'#108EE9'
+                      'class': {
+                        managerClose: true
                       },
                       attrs: {
                         type: this.operateStatus ? 'ios-play' : 'ios-pause'
@@ -110,18 +117,25 @@
                     {
                       on: {
                         click: event => {
-                          this.alterUserUpdateEnableds(0, params.row.userId)
-                          params.row.enabled = 0
+                          (async () => {
+                            try {
+                              await userUpdateEnableds({
+                                enabled: 0,
+                                userId: params.row.userId,
+                                token: getCookie('token')
+                              })
+                              this.$Message.success('状态修改成功')
+                              params.row.enabled = 0
+                            } catch (error) {
+                              this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
+                            }
+                          })()
                         }
                       },
                     }, [
                       h('Icon', {
-                        style:{
-                          fontSize: '16px',
-                          padding: '5px 13px',
-                          background: '#F2F2F2',
-                          borderRadius: '4px',
-                          color:'#EE2337'
+                        'class': {
+                          managerOpen: true
                         },
                         attrs: {
                           type: !this.operateStatus ? 'ios-play' : 'ios-pause'
@@ -144,13 +158,8 @@
                   }
                 }
               }, [h('Icon', {
-                style: {
-                  color: '#F04134',
-                  cursor: 'pointer',
-                  fontSize: '20px',
-                  padding: '7px 20px',
-                  background: '#F2F2F2',
-                  borderRadius: '4px'
+                'class': {
+                  manageDelete: true
                 },
                 attrs: {
                   type: 'trash-a'
@@ -172,59 +181,11 @@
         this.$Modal.confirm({
           content: '<p>是否确定删除该用户</p>',
           onOk: () => {
-            userDelete({
-              userId: userId,
-              token: getCookie('token')
-            }).then(response => {
-              switch (response.data.respCode) {
-                case '0':
-                  this.accountData.splice(index,1)
-                  this.$Message.success('删除成功')
-                  break
-                case '204':
-                  this.$Message.success('参数异常')
-                  break
-              }
-            })
-          }
-//          onCancel: () => {
-//            this.$Message.info('Clicked cancel')
-//          }
-        })
-      },
-      initUserList () {
-        userList({
-          pageIndex: this.pageIndex,
-          pageSize: this.pageSize,
-          userName: this.userName,
-          token: getCookie('token')
-        }).then(response => {
-          if(response.data.respCode==='205'){
-            this.$router.push('/401')
-            return false
-          }
-          if (response.data.data !== null || response.data.data.length !== 0) {
-            this.pageTotal = response.data.data.recordCount
-            this.accountData = response.data.data.result
-          } else {
-            this.accountData = []
+            this.initUserDelete(userId, index)
           }
         })
       },
-      deleteUser (userId, index) {
 
-      },
-      alterUserUpdateEnableds (enabled, userId) {
-        userUpdateEnableds({
-          enabled: enabled,
-          userId: userId,
-          token: getCookie('token')
-        }).then(response => {
-          if (response.data.respCode === '0') {
-            this.$Message.success('状态修改成功')
-          }
-        })
-      },
       handleSearch () {
         this.pageIndex = 1
         this.initUserList()
@@ -235,9 +196,36 @@
       },
       handleAdd () {
         this.$router.push('/alterUser/add')
+      },
+      async initUserList () {
+        try {
+          let res = await userList({
+            pageIndex: this.pageIndex,
+            pageSize: this.pageSize,
+            userName: this.userName,
+            token: getCookie('token')
+          })
+          this.pageTotal = res.data.data.recordCount
+          this.accountData = res.data.data.result
+        } catch (error) {
+          this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
+          this.accountData = []
+        }
+      },
+      async initUserDelete (userId, index) {
+        try {
+          await userDelete({
+            userId: userId,
+            token: getCookie('token')
+          })
+          this.accountData.splice(index, 1)
+          this.$Message.success('删除成功')
+        } catch (error) {
+          this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
+        }
       }
     },
-    created () {
+    mounted () {
       this.initUserList()
     }
   }
@@ -268,4 +256,23 @@
         margin-top 20px
         margin-right 20px
         text-align right
+  .manageDelete
+    color #F04134
+    cursor pointer
+    font-size 20px
+    padding 7px 20px
+    background #F2F2F2
+    border-radius 4px
+  .managerOpen
+    font-size 16px
+    padding 5px 13px
+    background #F2F2F2
+    border-radius 4px
+    color #EE2337
+  .managerClose
+    font-size 16px
+    padding 5px 13px
+    background #F2F2F2
+    border-radius 4px
+    color #108EE9
 </style>

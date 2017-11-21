@@ -144,14 +144,14 @@
                     click: event => {
                       (async ()=> {
                         try {
-                          let res = await queryCollectionHistory({
+                          await queryCollectionHistory({
                             taskId: params.row.taskId,
                             statusId: 0,
                             token: getCookie('token')
                           })
                           params.row.status = 0
                         } catch (error) {
-                          this.$Message.warning(error)
+                          this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
                         }
                       })()
                     }
@@ -163,14 +163,14 @@
                   click: event => {
                     (async ()=> {
                       try {
-                        let res = await queryCollectionHistory({
+                        await queryCollectionHistory({
                           taskId: params.row.taskId,
                           statusId: 1,
                           token: getCookie('token')
                         })
                         params.row.status = 1
                       } catch (error) {
-                        this.$Message.warning(error)
+                        this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
                       }
                     })()
                   }
@@ -183,14 +183,14 @@
                     click: event => {
                       (async ()=> {
                         try {
-                          let res = await queryCollectionHistory({
+                          await queryCollectionHistory({
                             taskId: params.row.taskId,
                             statusId: 2,
                             token: getCookie('token')
                           })
                           params.row.status = 2
                         } catch (error) {
-                          this.$Message.warning(error)
+                          this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
                         }
                       })()
                     }
@@ -202,14 +202,15 @@
                   click: event => {
                     (async ()=> {
                       try {
-                        let res = await queryCollectionHistory({
+                        await queryCollectionHistory({
                           taskId: params.row.taskId,
                           statusId: 3,
                           token: getCookie('token')
                         })
-                        params.row.status = 3
+//                        params.row.status = 3
+                        this.taskData.splice(params.index, 1)
                       } catch (error) {
-                        this.$Message.warning(error)
+                        this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
                       }
                     })()
                   }
@@ -239,9 +240,6 @@
       this.initTaskList()
     },
     methods: {
-      handleRemoveTaskData (index) {
-        this.taskData.splice(index, 1)
-      },
       handleSearch () {
         this.pageIndex = 1
         this.initTaskList()
@@ -265,7 +263,7 @@
           let res = await siteNum({token: getCookie('token'), typeId: 0})
           this.siteList = [...this.siteList, ...res.data.data]
         } catch (error) {
-          this.$Message.warning(error)
+          this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0])
         }
       },
       // 模型列表
@@ -282,7 +280,7 @@
           this.taskData = res.data.data.result
         } catch (error) {
           this.taskData = []
-          this.$Message.error(error)
+          this.$Message.error(error.match(/([^\[\]]+)(?=\])/g)[0])
         }
       }
     }
@@ -359,15 +357,15 @@
     opacity 0.7
     background #EBF8F2
     border 1px solid #A7E1C4
-    borderRadius 2px
+    border-radius 2px
   .signOutTab
     color #646464
     display inline-block
     padding 4px 10px
     opacity 0.7
-    background #EBF8F2
+    background #FFF5F4
     border 1px solid #FABEB9
-    borderRadius 2px
+    border-radius 2px
 </style>
 
 
