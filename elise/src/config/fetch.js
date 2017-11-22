@@ -1,13 +1,12 @@
 import axios from 'axios'
 import qs from 'qs'
 import router from '../router'
-
 // axios 配置参数
 // const baseURL = `http://192.168.10.93:8282/`
-const baseURL = `https://www.easy-mock.com/mock/59ffde02a3412760ce86204c/elise/`
+// const baseURL = `http://192.168.10.93:8282/`  // 测试端口
+const baseURL = `http://192.168.10.93:8282/` // 开发端口
 axios.defaults.baseURL = baseURL
 axios.defaults.timeout = 30000
-
 /**
  * 请求拦截器
  * @param {Object} config 接口请求配置
@@ -42,15 +41,17 @@ axios.interceptors.response.use(
  * @param {Number} response 接口返回对象
  */
 function checkStatus (response) {
-  const Status = [200, 304]
+  const [Status, abnormalStatus] = [[200, 304], [404, 500]]
   if (Status.includes(response.status)) {
     return response
   }
-  return {
-    data: {
-      respCode: '404',
-      message: response.statusText,
-      data: ''
+  if (abnormalStatus.includes(response.status)) {
+    return {
+      data: {
+        respCode: response.status,
+        message: response.statusText,
+        data: ''
+      }
     }
   }
 }
@@ -62,45 +63,27 @@ function checkStatus (response) {
 function checkCode (response) {
   // code码存在时,对相应的Code码进行处理
   if (response.data.respCode) {
-    let CodeArr = ['0', '2001', '2002', '2003', '2004', '2005', '2006', '3001', '4002','1001','100']
-    if (CodeArr.includes(response.data.respCode)) {
-      return response
-    } else {
-      router.push('/500')
-      return Promise.reject(data.message)
-    }
-    // switch (response.data.code) {
-    //   case '0':
-    //     return response
-    //     break
-    //   case '2001':
-    //     return response
-    //     break
-    //   case '2002':
-    //     return response
-    //     break
-    //   case '2003':
-    //     return response
-    //     break
-    //   case '2004':
-    //     return response
-    //     break
-    //   case '2005':
-    //     return response
-    //     break
-    //   case '2006':
-    //     return response
-    //     break
-    //   case '3001':
-    //     return response
-    //     break
-    //   case '4002':
-    //     return response
-    //     break
-    //   default:
-    //     router.push('/500')
-    //     break
+    let CodeArr = ['201', '202', '203', '204', '205', '206', '101', 'E2001', 'E1000', 'E1001', 'E1002', 'E4000', 'E4001', 'E4002', 'E4003', 'E4004', 'E4005', 'E4006']
+    // if (CodeArr.includes(response.data.respCode)) {
+    //   return response
     // }
+    /**
+     * code 测试
+     */
+    if (response.data.respCode === '0' || response.data.respCode === '100') {
+      return response
+    }
+    if (CodeArr.includes(response.data.respCode)) {
+      return Promise.reject(response.data.respMsg)
+    }
+    if (response.data.respCode === '404') {
+      router.push('/404')
+      return Promise.reject(response.data.respMsg)
+    }
+    if (response.data.respCode === '500') {
+      router.push('/500')
+      return Promise.reject(response.data.respMsg)
+    }
   } else {
     router.push('/login')
   }
@@ -118,8 +101,8 @@ export function fetch (url, options) {
   return axios({
     url,
     method: opt.method || 'get',
-    params: opt.params || undefined,  //get
-    data: opt.data || undefined,  //post
+    params: opt.params || undefined, //get
+    data: opt.data || undefined, //post
     responseType: opt.responseType || 'json'
   }).then(checkStatus).then(checkCode)
 }

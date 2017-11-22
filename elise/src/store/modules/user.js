@@ -11,10 +11,11 @@ const mutations = {
 
 const actions = {
   // 登陆函数
-  handleLogin({ commit }, loginForm) {
+  handleLogin ({commit}, loginForm) {
     return new Promise((resolve, reject) => {
       Login(loginForm).then(response => {
         setCookie('token', response.data.data.token)
+        setCookie('userInfo', response.data.data)
         commit('SET_TOKEN', response.data.data.token)
       })
       resolve()
@@ -23,9 +24,10 @@ const actions = {
     })
   },
   // 退出函数
-  handleLoginOut({ commit }) {
+  handleLoginOut ({commit}) {
     LoginOut(getCookie('token')).then(response => {
       removeCookie('token')
+      removeCookie('userInfo')
       commit('SET_TOKEN', '')
     })
   }

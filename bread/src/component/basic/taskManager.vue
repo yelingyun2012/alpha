@@ -52,7 +52,7 @@
             }
           },
           {
-            title: '有效时间', width: 180,
+            title: '有效时间',
             render: (h, params) => {
               if (params.row.startTime !== undefined)
                 return `${params.row.startTimes.split(' ')[0]} ~ ${params.row.endTimes.split(' ')[0]}`
@@ -88,7 +88,7 @@
             }
           },
           {
-            title: '签出状态', align: 'center', width: 150,
+            title: '签出状态', align: 'center', width: 100,
             render: (h, params) => {
               switch (params.row.checkType) {
                 case 0:
@@ -172,7 +172,12 @@
           },
           {
             title: '进度',
-            render: (h, params) => {return params.row.speedOfProgress > 0 ? `${params.row.speedOfProgress}%` : params.row.speedOfProgress}
+            render: (h, params) => {
+              return h('Progress',{
+                attrs:{
+                  percent:params.row.speedOfProgress
+                }
+              })}
           },
           {
             title: '抽取率',
@@ -183,13 +188,14 @@
           {
             title: '操作',
             key: 'operate',
+            width:190,
             render: (h, params) => {
               // 停止操作
               let secure = h('span',
                 {
                   style: {
                     fontSize: '16px',
-                    padding: '5px 18px',
+                    padding: '3px 18px',
                     background: '#F2F2F2',
                     color:'#FFBF00',
                     display: 'inline-block',
@@ -222,7 +228,7 @@
               let startUpFunction = h('span', {
                 style: {
                   fontSize: '16px',
-                  padding: '5px 18px',
+                  padding: '3px 18px',
                   background: '#F2F2F2',
                   color:'#329A23',
                   display: 'inline-block',
@@ -257,7 +263,7 @@
                 {
                   style: {
                     fontSize: '16px',
-                    padding: '5px 18px',
+                    padding: '3px 18px',
                     background: '#F2F2F2',
                     color:'#108EE9',
                     display: 'inline-block',
@@ -290,7 +296,7 @@
               let deleteOperation = h('span', {
                 style: {
                   fontSize: '16px',
-                  padding: '5px 18px',
+                  padding: '3px 18px',
                   background: '#F2F2F2',
                   color:'#F04134',
                   display: 'inline-block',

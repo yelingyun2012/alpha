@@ -4,7 +4,7 @@ import router from '../router'
 // axios 配置参数
 // const baseURL = `http://192.168.10.93:8282/`
 // const baseURL = `http://192.168.10.93:8282/`  // 测试端口
-const baseURL = `http://192.168.10.93:8181/` // 开发端口
+const baseURL = `http://192.168.10.203:8181/` // 开发端口
 axios.defaults.baseURL = baseURL
 axios.defaults.timeout = 30000
 /**
@@ -41,19 +41,20 @@ axios.interceptors.response.use(
  * @param {Number} response 接口返回对象
  */
 function checkStatus (response) {
-  const Status = [200, 304]
+  const [Status, abnormalStatus] = [[200, 304], [404, 500]]
   if (Status.includes(response.status)) {
     return response
   }
-  return {
-    data: {
-      respCode: '404',
-      message: response.statusText,
-      data: ''
+  if (abnormalStatus.includes(response.status)) {
+    return {
+      data: {
+        respCode: response.status,
+        message: response.statusText,
+        data: ''
+      }
     }
   }
 }
-
 /**
  * 处理接口返回参数
  * @param {Object} response 接口返回对象

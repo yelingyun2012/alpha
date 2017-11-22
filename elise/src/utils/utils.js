@@ -1,56 +1,55 @@
-/**
- * 获取路由对象name
- * @param {*} routers 路由对象
- * @param {*} name 当前name属性
- */
-export const getRouterObjByName = (routers, name) => {
-  let routerObj = {}
-  routers.forEach(item => {
-    if (item.name === 'otherRouter') {
-      item.children.forEach(child => {
-        if (child.name === name) routerObj = child
-      })
-    }
-    else {
-      if (item.children.length === 1) {
-        if (item.children[0].name === name) routerObj = item.children[0]
-      }
-      else {
-        item.children.forEach(child => {
-          if (child.name === name) routerObj = child
-        })
-      }
-    }
-  })
-  return routerObj
-}
-/**
- * 设置打开路径
- * @param {*} vm vue中this对象
- * @param {*} name 当前name属性
- */
 export const setCurrentPath = (vm, name) => {
-  let title = ''
-  let isOtherRouter = false
-  vm.$store.state.routers.forEach(item => {
-    if (item.children.length === 1) {
-      if (item.children[0].name === name) {
-        title = item.title
-        if (item.title === 'otherRouter') {
-          isOtherRouter = true
+  let currentPathArr = []
+  let currentPathObj = vm.$store.state.app.routers.filter(item => {
+    if (item.children.length <= 1) {
+      return item.children[0].name === name
+    } else {
+      let [i, childArr] = [0, item.children]
+      let len = childArr.length
+      while (i < len) {
+        if (childArr[i].name === name) {
+          return true
         }
+        i++
       }
-    }
-    else {
-      item.children.forEach(child => {
-        if (child.name === name) {
-          title = child.title
-          if (item.title === 'otherRouter') {
-            isOtherRouter = true
-          }
-        }
-      })
+      return false
     }
   })
-
+  if (currentPathObj.children.length <= 1 && currentPathObj.name === 'home') {
+    currentPathArr = [{
+      title: '首页',
+      path: '',
+      name: 'home_index'
+    }]
+  } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
+    currentPathArr = [{
+      title: '首页',
+      path: '/home',
+      name: 'home_index'
+    }, {
+      title: currentPathObj.title,
+      path: '',
+      name: name
+    }]
+  } else {
+    let childObj = currentPathObj.children.filter(child => {
+      return child.name === name
+    })[0]
+    currentPathArr = [{
+      title: '首页',
+      path: '/home',
+      name: 'home_index'
+    }, {
+      title: currentPathObj.title,
+      path: '',
+      name: currentPathObj.name
+    }, {
+      title: childObj.title,
+      path: `${currentPathObj.path / childObj.path}`,
+      name: name
+    }]
+  }
+  vm.$store.commit('setCurrentPath', currentPathArr)
+  return currentPathArr
 }
+
