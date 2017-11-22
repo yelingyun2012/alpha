@@ -95,7 +95,7 @@
                   return h('span', {'class': {signInTab: true}}, '已签入')
                   break
                 case 1:
-                  return h('span', {'class': {signOutTab: true}}, `已签出${params.row.updatePersonName}`)
+                  return h('span', {'class': {signOutTab: true}}, `已签出（${params.row.updatePersonName}）`)
                   break
               }
             }
@@ -414,10 +414,6 @@
         margin-left 4px
       .ivu-btn
         padding 6px 23px
-        &-success
-          background-color rgba(23, 187, 156, 1)
-          &:hover
-            background-color rgba(23, 187, 156, .8)
         &:last-child
           margin-left 10px
           border-color #108EE9
