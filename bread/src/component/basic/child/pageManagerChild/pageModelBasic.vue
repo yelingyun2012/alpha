@@ -1,18 +1,24 @@
 <template>
-  <div class="pageModelBasic">
-    <div class="pageModelUrl">
-      <Input v-model="testURL" style="width:70%" placeholder="测试URL地址"></Input>
-      <Button type="primary" @click="testClick">测试</Button>
-    </div>
-    <div class="pageModelCenter">
+  <div class="pageModelBasic" @click.stop="pageModelClick">
+    <div class="modelLeft" :style="{'width':testData.length !== 0 ? '50%' : '100%'}">
+      <div class="pageModelUrl" @click.stop>
+        <Input v-model="testURL" style="width:70%" placeholder="测试URL地址" @on-focus.stop="testFocus"></Input>
+        <Button type="primary" @click.stop="testClick">测试</Button>
+        <div class="history" v-show="historyShow && testDataHistory.length !== 0">
+          <div class="historyList" v-for="(val,index) in testDataHistory" :key="index">
+            <span class="historyName" @click.stop="historyClick(val)">{{val}}</span>
+            <span class="operation" @click.stop="historyDelete(val)">删除</span>
+          </div>
+        </div>
+      </div>
       <div class="pageModelTree" v-if="items.length !== 0">
         <pageModelBasicTree v-for="(val, index) in items" :item="val" @remove="delItem(index)" :key="index"></pageModelBasicTree>
       </div>
-      <div class="testData" v-if="testData.length !== 0">
-        <pre v-html="testData"></pre>
-      </div>
+      <Button type="dashed" icon="plus" @click="addCon()" style="width:70%;">添加属性或属性组</Button>
     </div>
-    <Button type="dashed" icon="plus" @click="addCon()" style="width:70%;">添加属性或属性组</Button>
+    <div class="modelRight" v-if="testData.length !== 0">
+      <pre v-html="testData"></pre>
+    </div>
     <Modal title="属性/属性组" v-model="modal" class-name="vertical-center-modal">
       <Form ref="formData" :model="formData" :rules="ruleValidate" :label-width="100">
         <FormItem label=" " prop="radio">
@@ -39,7 +45,11 @@
 </template>
 
 <script>
-import { queryType } from "../../../../config/getData";
+import {
+  queryType,
+  pageModelTestHistory,
+  pageModelTestHistoryDelete
+} from "../../../../config/getData";
 import { getCookie } from "../../../../utils/cookie";
 import pageModelBasicTree from "./pageModelBasicTree";
 import pageModelBasicOption from "./pageModelBasicOption";
@@ -53,8 +63,10 @@ export default {
   data() {
     return {
       testURL: "", //测试url
-      testData:"",  //测试数据
+      testData: "", //测试数据
       modal: false, //添加弹出层
+      testDataHistory: [], //历史查询数据
+      historyShow: false, //历史记录开关
       //弹出层表单
       formData: {
         radio: 0,
@@ -71,25 +83,73 @@ export default {
     };
   },
   mounted() {
-    this.$nextTick(()=>{
+    this.$nextTick(() => {
+      document.addEventListener("click", e => {
+        if (!this.$el.contains(e.target)) {
+          this.pageModelClick();
+        }
+      });
       this.httpConData();
-    })
+    });
   },
   methods: {
+    //取消测试记录下拉
+    pageModelClick() {
+      this.historyShow = false;
+    },
     //测试URL
     testClick() {
       if (!this.testURL) {
         this.$Message.error("请填写页面模型的测试地址");
       } else {
-        this.$emit("testClick",this.testURL);
+        this.$emit("testClick", this.testURL);
       }
+    },
+    //测试记录
+    testFocus() {
+      pageModelTestHistory({ modelId: this.$route.query.modelId })
+        .then(res => {
+          if (res.data.respCode === "0") {
+            this.testDataHistory = res.data.data;
+            if (
+              this.testDataHistory.length !== 0 &&
+              this.testDataHistory.length !== null
+            ) {
+              this.historyShow = true;
+            }
+          }
+        })
+        .catch(err => {
+          this.$Message.error(err);
+        });
+    },
+    //点击历史记录
+    historyClick(val) {
+      this.testURL = val;
+      this.historyShow = false;
+    },
+    //删除历史记录
+    historyDelete(val) {
+      pageModelTestHistoryDelete({
+        testUrl: val,
+        modelId: this.$route.query.modelId
+      })
+        .then(res => {
+          this.testFocus();
+        })
+        .catch(err => {
+          this.$Message.error(err);
+        });
     },
     //json格式化
     syntaxHighlight(json) {
       if (typeof json != "string") {
         json = JSON.stringify(json, undefined, 2);
       }
-      json = json.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
+      json = json
+        .replace(/&/g, "&")
+        .replace(/</g, "<")
+        .replace(/>/g, ">");
       this.testData = json;
     },
     //uuid
@@ -260,15 +320,43 @@ export default {
 
 <style lang="stylus">
 .pageModelBasic
-  .pageModelUrl
-    margin-bottom 20px
-  .pageModelCenter
-    width 70%
+  margin: 0 20px;
+  .modelLeft
+    display inline-block
+    width 100%
+    .pageModelUrl
+      position relative
+      margin-bottom 20px
+    .history
+      position absolute
+      top 35px
+      left 0
+      z-index 999
+      width 70%
+      border 1px solid #dddee1
+      background #fff
+      font-size 14px
+      cursor pointer
+      .historyList
+        padding 0 10px
+        width 100%
+        height 30px
+        line-height 30px
+        &:hover
+          background #2d8cf0
+          color #fff
+        span
+          display inline-block
+          &.historyName
+            width calc(100% - 10% - 10px)
+          &.operation
+            width 10%
+            text-align right
     .pageModelTree
       display inline-block
-      margin-bottom 24px
+      margin-bottom 20px
       padding 0 20px
-      width 70%
+      width 100%
       background #F7F7F7
       & > .pageModelBasicTree
         &:last-child
@@ -276,16 +364,17 @@ export default {
         border-bottom 1px solid #d9d9d9
         & > ul
           padding 0
-    .testData
-      display inline-block
-      width calc(100% - 70% - 20px)
+  .modelRight
+    margin-left:20px;
+    display inline-block
+    width calc(50% - 25px)
+    vertical-align top
+    pre
       border 1px solid #ccc
-      vertical-align top
-      pre
-        margin 0
-        padding 5px
-        white-space: pre-wrap;
-        word-wrap: break-word;
+      margin 0
+      padding 5px
+      white-space pre-wrap
+      word-wrap break-word
 .vertical-center-modal
   display flex
   justify-content center
