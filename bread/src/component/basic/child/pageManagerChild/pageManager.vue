@@ -91,7 +91,8 @@ export default {
               contentType: objData.contentType,
               modelRegularExpression: objData.modelRegularExpression,
               pageTurningable: objData.pageTurningable,
-              urlExtractRule: objData.urlExtractRule
+              urlExtractRule: objData.urlExtractRule,
+              urlExtractRuleType: objData.urlExtractRuleType
             };
             if(type === 'signIn'){
               pageModelResult.modelId = this.$route.query.modelId;
@@ -191,6 +192,7 @@ export default {
         this.$refs.pageBasic.basicData.pageTurningable = queryData.pageTurningable;
 
         this.$refs.pageBasic.basicData.urlExtractRule = queryData.urlExtractRule;
+        this.$refs.pageBasic.basicData.urlExtractRuleType = queryData.urlExtractRuleType;
 
         if ( queryData.browserCrawlable === 1 ) {
           this.$refs.pageBasic.basicData.refreshType = queryData.browserRefreshConfigureEntity[0].refreshType;
@@ -269,6 +271,7 @@ export default {
               modelRegularExpression: objData.modelRegularExpression,
               pageTurningable: objData.pageTurningable,
               urlExtractRule: objData.urlExtractRule,
+              urlExtractRuleType: objData.urlExtractRuleType,
               modelId: modelId
             };
             postData.pageModelParameter = JSON.stringify(pageModelResult);
