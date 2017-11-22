@@ -29,7 +29,7 @@
       Table(:columns="logColumns", :data="logData", border)
       Page(:total="pageTotal", :current="pageNo", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
       Modal(v-model="modelShow", title="详情", width="1000",class-name="vertical-center-modal")
-        pre(v-html="modelData")
+        pre(v-html="modelData", style="margin:0;")
 </template>
 
 <script>
@@ -40,11 +40,11 @@ export default {
   name: "RunLog",
   data() {
     return {
-      modelShow:false,  //详情显示层
-      modelData:{}, //详情数据
+      modelShow: false, //详情显示层
+      modelData: {}, //详情数据
       //查询
       search: {
-        startTime: new Date(new Date() - (60 * 60 * 2 * 1000)), //开始时间
+        startTime: new Date(new Date() - 60 * 60 * 2 * 1000), //开始时间
         endTime: new Date(), //结束时间
         logType: "0", //异常
         taskUrl: "", //采集url
@@ -149,7 +149,7 @@ export default {
       ],
       //日志数据
       logData: [],
-      postData:{},
+      postData: {},
       //页码
       pageTotal: 0,
       pageSize: 10,
@@ -186,7 +186,7 @@ export default {
       this.chuliData();
     },
     //处理数据
-    chuliData(){
+    chuliData() {
       let con = (this.postData = JSON.parse(JSON.stringify(this.search)));
       let startTime = (con.startTime = new Date(con.startTime).getTime());
       let endTime = (con.endTime = new Date(con.endTime).getTime());
@@ -198,17 +198,18 @@ export default {
     },
     //获取数据
     getData(data) {
-      taskLogList(data).then(res=>{
+      taskLogList(data).then(res => {
         if (res.data.respCode === "0") {
-          let data = res.data.data;
-          for (let i = 0; i < data.length; i++) {
-            data[i].startTime = this.formatDateTime(data[i].startTime);
-            data[i].endTime = this.formatDateTime(data[i].endTime);
+          var resData = res.data.data;
+          if(resData.length !== 0){
+            for (var i = 0; i < resData.length; i++) {
+              resData[i].createTime = this.formatDateTime(Number(resData[i].createTime));
+            }
           }
-          this.logData = data;
-          this.pageTotal = res.data.totalPage;
+          this.logData = resData;
+          this.pageTotal = res.data.totalNumber;
         }
-      })
+      });
     },
     //时间转换
     formatDateTime(inputTime) {
@@ -229,14 +230,17 @@ export default {
     //详情
     goDetail(data) {
       let json = JSON.parse(JSON.stringify(data));
-      delete json.startTime
-      delete json.endTime
-      delete json._index
-      delete json._rowKey
+      delete json.startTime;
+      delete json.endTime;
+      delete json._index;
+      delete json._rowKey;
       if (typeof json != "string") {
         json = JSON.stringify(json, undefined, 2);
       }
-      json = json.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
+      json = json
+        .replace(/&/g, "&")
+        .replace(/</g, "<")
+        .replace(/>/g, ">");
       this.modelData = json;
       this.modelShow = true;
     }
@@ -246,64 +250,42 @@ export default {
 
 <style lang="stylus">
 // 公共函数
-taskWrapper(top, right, bottom, left) {
-  background-color: #fff;
-  padding: top right bottom left;
-}
-
-.log {
-  &-name { // 任务名称
-    taskWrapper: 30px 20px 30px 20px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    color: #323232;
-
-    .select {
-      margin-left: 10px;
-      width: 160px;
-    }
-
-    .rowCenter {
-      margin: 20px 0 24px;
-    }
-
-    .title {
-      display: inline-block;
-      width: 90px;
-      text-align: right;
-    }
-
-    .inputText {
-      width: calc(100% - 90px - 20px);
-    }
-
-    .btn {
-      text-align: right;
-
-      button {
-        width: 60px;
-        height: 35px;
-        font-size: 14px;
-      }
-    }
-  }
-
-  &-minute { // 任务详细
-    taskWrapper: 20px 20px 20px 20px;
-
-    .ivu-page {
-      margin-top: 20px;
-      margin-right: 20px;
-      text-align: right;
-    }
-  }
-  .vertical-center-modal{
-    display flex
-    justify-content center
-    align-items center
-    .ivu-modal{
-      top 0
-    }
-  }
-}
+taskWrapper(top,right,bottom,left)
+  padding top right bottom left
+  background-color #fff
+.log
+  &-name // 任务名称
+    margin-bottom 20px
+    color #323232
+    font-size 14px
+    taskWrapper 30px 20px 30px 20px
+    .select
+      margin-left 10px
+      width 160px
+    .rowCenter
+      margin 20px 0 24px
+    .title
+      display inline-block
+      width 90px
+      text-align right
+    .inputText
+      width calc(100% - 90px - 20px)
+    .btn
+      text-align right
+      button
+        width 60px
+        height 35px
+        font-size 14px
+  &-minute // 任务详细
+    taskWrapper 20px 20px 20px 20px
+    .ivu-page
+      margin-top 20px
+      margin-right 20px
+      text-align right
+.vertical-center-modal
+  display flex
+  justify-content center
+  align-items center
+  .ivu-modal
+    top 0
 </style>

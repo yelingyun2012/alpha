@@ -194,7 +194,7 @@ export const listSiteName = params => fetch('site/listsitename', {
 /***
  * 异常任务列表
  */
-export const taskLogList = params => fetch('http://192.168.10.153:8282/taskLog/exceptionTaskList', {
+export const taskLogList = params => fetch('http://192.168.10.144:8282/taskLog/exceptionTaskList', {
   method: 'post',
   data: params
 })

@@ -262,7 +262,7 @@ export default {
               data[i].endTime = this.formatDateTime(data[i].endTime);
             }
             this.logData = data;
-            this.pageTotal = res.data.totalPage;
+            this.pageTotal = res.data.totalNumber;
           }
         })
         .catch(err => {

@@ -299,7 +299,7 @@ export default {
 
             pageModelTest(postData).then(res=>{
               if(res.data.respCode === "0"){
-                this.$refs.pageModelBasic.syntaxHighlight(res.data.data);
+                this.$refs.pageModelBasic.syntaxHighlight(res.data);
               }
             }).catch(err => {
               this.$Message.error(err);
