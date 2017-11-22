@@ -1,6 +1,6 @@
 export const setCurrentPath = (vm, name) => {
   let currentPathArr = []
-  let currentPathObj = vm.$store.state.app.routers.filter(item => {
+  let currentPathObj = vm.$store.state.permission.routers.filter(item => {
     if (item.children.length <= 1) {
       return item.children[0].name === name
     } else {
@@ -14,19 +14,9 @@ export const setCurrentPath = (vm, name) => {
       }
       return false
     }
-  })
-  if (currentPathObj.children.length <= 1 && currentPathObj.name === 'home') {
+  })[0]
+  if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
     currentPathArr = [{
-      title: '首页',
-      path: '',
-      name: 'home_index'
-    }]
-  } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
-    currentPathArr = [{
-      title: '首页',
-      path: '/home',
-      name: 'home_index'
-    }, {
       title: currentPathObj.title,
       path: '',
       name: name
@@ -36,20 +26,15 @@ export const setCurrentPath = (vm, name) => {
       return child.name === name
     })[0]
     currentPathArr = [{
-      title: '首页',
-      path: '/home',
-      name: 'home_index'
-    }, {
       title: currentPathObj.title,
       path: '',
       name: currentPathObj.name
     }, {
       title: childObj.title,
-      path: `${currentPathObj.path / childObj.path}`,
+      path: `${currentPathObj.path}/${childObj.path}`,
       name: name
     }]
   }
-  vm.$store.commit('setCurrentPath', currentPathArr)
+  vm.$store.commit('permission/setCurrentPath', currentPathArr)
   return currentPathArr
 }
-

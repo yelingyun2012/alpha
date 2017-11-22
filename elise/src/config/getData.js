@@ -120,9 +120,23 @@ export const pageModelCheckIn = params => fetch('pagemodel/checkin', {
 /**
  * 模型测试
  */
-export const pageModelTest = params => fetch('http://192.168.10.144:8686/modelVerify/getPageModelAttribute', {
+export const pageModelTest = params => fetch('http://192.168.10.93:8686/modelVerify/getPageModelAttribute', {
   method: 'post',
   data: params
+})
+/**
+ * 模型测试历史记录
+ */
+export const pageModelTestHistory = params => fetch('http://192.168.10.93:8686/modelVerify/getTestUrls', {
+  method: 'get',
+  params: params
+})
+/**
+ * 模型测试历史记录删除
+ */
+export const pageModelTestHistoryDelete = params => fetch('http://192.168.10.93:8686/modelVerify/deleteTestUrl', {
+  method: 'get',
+  params: params
 })
 
 // 站点模块
@@ -188,8 +202,8 @@ export const taskLogList = params => fetch('taskLog/exceptionTaskList', {
  * 任务抓取统计
  */
 export const taskLogStatistic = params => fetch('taskLog/crawlingStatistic', {
-  method: 'post',
-  data: params
+  method: 'get',
+  params: params
 })
 
 // 用户模块
