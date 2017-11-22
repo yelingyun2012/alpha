@@ -87,7 +87,6 @@ export default {
         {
           title: "任务ID",
           align: "center",
-          width: 100,
           key: "taskId"
         },
         {
@@ -97,32 +96,27 @@ export default {
         {
           title: "站点",
           align: "center",
-          width: 200,
           key: "siteName"
         },
         {
           title: "任务创建者",
           key: "creatorName",
-          align: "center",
-          width: 150,
+          align: "center"
         },
         {
           title: "采集器IP",
           key: "sourceIp",
-          align: "center",
-          width: 150,
+          align: "center"
         },
         {
           title: "采集状态",
           key: "crawlStatus",
-          align: "center",
-          width: 150,
+          align: "center"
         },
         {
           title: "发生时间",
           key: "createTime",
-          align: "center",
-          width: 150,
+          align: "center"
         },
         {
           title: "当前URL",
@@ -131,7 +125,6 @@ export default {
         {
           title: "操作",
           key: "action",
-          width: 80,
           align: "center",
           render: (h, params) => {
             return h("div", [

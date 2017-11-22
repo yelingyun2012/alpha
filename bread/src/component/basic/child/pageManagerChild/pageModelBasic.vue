@@ -352,13 +352,18 @@ export default {
         width 100%
         height 30px
         line-height 30px
+        overflow hidden
         &:hover
           background #2d8cf0
           color #fff
         span
-          display inline-block
+          float left
           &.historyName
             width calc(100% - 10% - 10px)
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           &.operation
             width 10%
             text-align right

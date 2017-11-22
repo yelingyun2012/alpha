@@ -88,6 +88,7 @@ export default {
       logColumns: [
         {
           title: "运行时间段",
+          width:140,
           render: (h, params) => {
             if (params.row.startTime !== undefined)
               return `${params.row.startTime} - ${params.row.endTime}`;
