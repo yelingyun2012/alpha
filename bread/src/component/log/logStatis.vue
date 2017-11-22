@@ -119,9 +119,9 @@ export default {
           align: "center"
         },
         {
-          title: "操作",
+          title: "采集成功率详情",
           key: "action",
-          width: 80,
+          width: 150,
           align: "center",
           render: (h, params) => {
             return h("div", [

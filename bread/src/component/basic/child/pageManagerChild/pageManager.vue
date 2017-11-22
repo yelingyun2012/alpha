@@ -6,10 +6,10 @@
           FormItem(label="页面模型名称：", prop="modelName")
             Input(v-model="formValidate.modelName", placeholder="", style="max-width:300px")
       .task-header-btn
-        Button(type="success", v-if="$route.params.id==='alter'", :disabled='signStatus', @click='pageModelSignOff' ) 签出
+        Button(type="error", v-if="$route.params.id==='alter'", :disabled='signStatus', @click='pageModelSignOff' ) 签出
         Button(type="success", v-if="$route.params.id==='alter'", :disabled='!signStatus || signUserStatus',style="margin-left:10px", @click="handleSave('signIn')") 签入
-        Button(type="success", v-if="$route.params.id==='add'", @click="handleSave('save')") 保存
-        Button(type="primary", @click="handleBack") 返回
+        Button(type="primary", v-if="$route.params.id==='add'", @click="handleSave('save')") 保存
+        Button(@click="handleBack") 返回
     section.task-section
       Tabs(type='card',value='2')
         TabPane(label='归属站点',name='1')
@@ -106,9 +106,9 @@ export default {
                 refreshable: objData.refreshable,
                 refreshType: objData.refreshType,
                 eleLocateRule: objData.eleLocateRule,
+                loadFinishedDecisionRule: objData.loadFinishedDecisionRule,
                 maxDropDownNum: objData.maxDropDownNum,
-                refreshWaitTime: objData.refreshWaitTime,
-                loadFinishedDecisionRule: objData.loadFinishedDecisionRule
+                refreshWaitTime: objData.refreshWaitTime
               };
               if(type === 'signIn'){
                 browserParameter.modelId = this.$route.query.modelId;
@@ -198,6 +198,7 @@ export default {
           this.$refs.pageBasic.basicData.refreshType = queryData.browserRefreshConfigureEntity[0].refreshType;
           this.$refs.pageBasic.basicData.maxDropDownNum = queryData.browserRefreshConfigureEntity[0].maxDropDownNum;
           this.$refs.pageBasic.basicData.eleLocateRule = queryData.browserRefreshConfigureEntity[0].eleLocateRule;
+          this.$refs.pageBasic.basicData.loadFinishedDecisionRule = queryData.browserRefreshConfigureEntity[0].loadFinishedDecisionRule;
           this.$refs.pageBasic.basicData.refreshable = queryData.browserRefreshConfigureEntity[0].refreshable;
           this.$refs.pageBasic.basicData.refreshWaitTime = queryData.browserRefreshConfigureEntity[0].refreshWaitTime;
         }
@@ -282,9 +283,9 @@ export default {
               refreshable: objData.refreshable,
               refreshType: objData.refreshType,
               eleLocateRule: objData.eleLocateRule,
+              loadFinishedDecisionRule: objData.loadFinishedDecisionRule,
               maxDropDownNum: objData.maxDropDownNum,
               refreshWaitTime: objData.refreshWaitTime,
-              loadFinishedDecisionRule: objData.loadFinishedDecisionRule,
               modelId: modelId
             };
             postData.browserParameter = JSON.stringify(browserParameter);
@@ -366,7 +367,13 @@ export default {
         padding 6px 23px
         font-size 14px
         &:last-child
-          margin-left 10px // asdsa
+          margin-left 10px
+          border-color #108EE9
+          color #108EE9
+          opacity .9
+          &:hover
+            border-color #57a3f3
+            color #57a3f3
   &-section
     margin-top 40px
     .ivu-tabs-tabpane:first-child

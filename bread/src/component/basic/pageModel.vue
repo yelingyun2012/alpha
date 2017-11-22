@@ -78,7 +78,7 @@ export default {
         },
         {
           title: "签出状态",
-          width: 150,
+          width: 200,
           align: "center",
           key: "checkType",
           render: (h, params) => {
@@ -259,4 +259,20 @@ taskWrapper(top,right,bottom,left)
       margin-top 20px
       margin-right 20px
       text-align right
+.signInTab
+  display inline-block
+  padding 4px 10px
+  border 1px solid #A7E1C4
+  border-radius 2px
+  background #EBF8F2
+  color #646464
+  opacity .7
+.signOutTab
+  display inline-block
+  padding 4px 10px
+  border 1px solid #FABEB9
+  border-radius 2px
+  background #FFF5F4
+  color #646464
+  opacity .7
 </style>

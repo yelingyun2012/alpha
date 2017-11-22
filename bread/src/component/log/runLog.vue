@@ -86,6 +86,8 @@ export default {
       logColumns: [
         {
           title: "任务ID",
+          align: "center",
+          width: 100,
           key: "taskId"
         },
         {
@@ -94,25 +96,33 @@ export default {
         },
         {
           title: "站点",
+          align: "center",
+          width: 200,
           key: "siteName"
         },
         {
           title: "任务创建者",
           key: "creatorName",
-          align: "center"
+          align: "center",
+          width: 150,
         },
         {
           title: "采集器IP",
-          key: "sourceIp"
+          key: "sourceIp",
+          align: "center",
+          width: 150,
         },
         {
           title: "采集状态",
           key: "crawlStatus",
-          align: "center"
+          align: "center",
+          width: 150,
         },
         {
           title: "发生时间",
-          key: "createTime"
+          key: "createTime",
+          align: "center",
+          width: 150,
         },
         {
           title: "当前URL",

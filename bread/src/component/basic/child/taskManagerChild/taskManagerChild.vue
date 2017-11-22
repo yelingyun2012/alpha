@@ -6,10 +6,10 @@
           FormItem(label="任务名称", prop="taskName")
             Input(v-model="formValidate.taskName", placeholder="", style="max-width:300px;margin-bottom:30px")
       .task-header-btn
-        Button(type="success", v-if="$route.params.id==='alter'", :disabled='signStatus', @click="initSignOut") 签出
+        Button(type="error", v-if="$route.params.id==='alter'", :disabled='signStatus', @click="initSignOut") 签出
         Button(type="success", v-if="$route.params.id==='alter'", :disabled='!signStatus || signUserStatus', @click="initSignIn" ,style="margin-left:10px") 签入
-        Button(type="success", v-if="$route.params.id==='add'", @click="handleSave('formTaskName')") 保存
-        Button(type="primary", @click="handleBack") 返回
+        Button(type="primary", v-if="$route.params.id==='add'", @click="handleSave('formTaskName')") 保存
+        Button(@click="handleBack") 返回
     section.task-section
       Tabs(type='card')
         TabPane(label='基本属性')
@@ -199,7 +199,12 @@
           font-size 14px
           &:last-child
             margin-left 10px
-  // asdsa
+            border-color #108EE9
+            color #108EE9
+            opacity .9
+            &:hover
+              border-color #57a3f3
+              color #57a3f3
     &-section
       margin-top 40px
       .ivu-tabs-tabpane:first-child

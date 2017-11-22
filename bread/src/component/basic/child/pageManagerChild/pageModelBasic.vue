@@ -2,7 +2,7 @@
   <div class="pageModelBasic" @click.stop="pageModelClick">
     <div class="modelLeft" :style="{'width':testData.length !== 0 ? '50%' : '100%'}">
       <div class="pageModelUrl" @click.stop>
-        <Input v-model="testURL" style="width:70%" placeholder="测试URL地址" @on-focus.stop="testFocus"></Input>
+        <Input v-model="testURL" placeholder="测试URL地址" @on-focus.stop="testFocus"></Input>
         <Button type="primary" @click.stop="testClick">测试</Button>
         <div class="history" v-show="historyShow && testDataHistory.length !== 0">
           <div class="historyList" v-for="(val,index) in testDataHistory" :key="index">
@@ -14,13 +14,13 @@
       <div class="pageModelTree" v-if="items.length !== 0">
         <pageModelBasicTree v-for="(val, index) in items" :item="val" @remove="delItem(index)" :key="index"></pageModelBasicTree>
       </div>
-      <Button type="dashed" icon="plus" @click="addCon()" style="width:70%;">添加属性或属性组</Button>
+      <Button type="dashed" icon="plus" @click="addCon()" class="addBtn">添加属性或属性组</Button>
     </div>
     <div class="modelRight" v-if="testData.length !== 0">
       <pre v-html="testData"></pre>
     </div>
     <Modal title="属性/属性组" v-model="modal" class-name="vertical-center-modal">
-      <Form ref="formData" :model="formData" :rules="ruleValidate" :label-width="100">
+      <Form ref="formData" :model="formData" :rules="ruleValidate" :label-width="80">
         <FormItem label=" " prop="radio">
           <RadioGroup v-model="formData.radio">
             <Radio v-for="(val,index) in groupType" :key="index" :label="val.id">{{val.name}}</Radio>
@@ -107,6 +107,9 @@ export default {
     },
     //测试记录
     testFocus() {
+      if(!this.$route.query.modelId){
+        return false;
+      }
       pageModelTestHistory({ modelId: this.$route.query.modelId })
         .then(res => {
           if (res.data.respCode === "0") {
@@ -320,13 +323,20 @@ export default {
 
 <style lang="stylus">
 .pageModelBasic
-  margin: 0 20px;
+  margin 0 20px
   .modelLeft
     display inline-block
     width 100%
     .pageModelUrl
       position relative
       margin-bottom 20px
+      .ivu-input-wrapper
+        width 70%
+        input
+          height 35px
+      button
+        width 65px
+        height 35px
     .history
       position absolute
       top 35px
@@ -364,15 +374,19 @@ export default {
         border-bottom 1px solid #d9d9d9
         & > ul
           padding 0
+    .addBtn{
+      width:70%;
+      height:35px;
+    }
   .modelRight
-    margin-left:20px;
     display inline-block
+    margin-left 20px
     width calc(50% - 25px)
     vertical-align top
     pre
-      border 1px solid #ccc
       margin 0
       padding 5px
+      border 1px solid #ccc
       white-space pre-wrap
       word-wrap break-word
 .vertical-center-modal

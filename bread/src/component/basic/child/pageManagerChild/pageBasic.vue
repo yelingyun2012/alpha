@@ -61,6 +61,9 @@
           <FormItem label="元素刷新定位规格：（xpath格式）" prop="eleLocateRule">
             <Input v-model="basicData.eleLocateRule" type="textarea" :autosize="{minRows: 3,maxRows: 5}"></Input>
           </FormItem>
+          <FormItem label="页面加载完成元素判断规则：（xpath格式）" prop="loadFinishedDecisionRule">
+            <Input v-model="basicData.loadFinishedDecisionRule" type="textarea" :autosize="{minRows: 3,maxRows: 5}"></Input>
+          </FormItem>
           <FormItem label="是否刷新：" prop="refreshable">
             <RadioGroup v-model="basicData.refreshable">
               <Radio :label="1">是</Radio>
@@ -155,6 +158,7 @@ export default {
         refreshType: 1, //刷新方式
         maxDropDownNum: 1, //最大下拉次数
         eleLocateRule: "", //元素刷新定位规格：（xpath格式）
+        loadFinishedDecisionRule: "", //页面加载完成元素判断规则：（xpath格式）
         refreshable: 0, //是否刷新
         refreshWaitTime: 3, //刷新等待时间
 
@@ -227,6 +231,7 @@ export default {
               delete data.refreshType
               delete data.maxDropDownNum
               delete data.eleLocateRule
+              delete data.loadFinishedDecisionRule
               delete data.refreshable
               delete data.refreshWaitTime
             }
@@ -257,7 +262,7 @@ export default {
 <style lang="stylus">
 .pageBasic
   padding-bottom 100px
-  width 60%
+  width 70%
   .browserCrawlable
     padding 20px
     border 1px solid #dddee1
