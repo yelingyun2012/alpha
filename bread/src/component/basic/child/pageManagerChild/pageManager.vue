@@ -9,7 +9,7 @@
         Button(type="success", v-if="$route.params.id==='alter'", :disabled='signStatus', @click='pageModelSignOff' ) 签出
         Button(type="success", v-if="$route.params.id==='alter'", :disabled='!signStatus || signUserStatus',style="margin-left:10px", @click="handleSave('signIn')") 签入
         Button(type="success", v-if="$route.params.id==='add'", @click="handleSave('save')") 保存
-        Button(type="primary", @click="handleBack") 返回
+        Button(type="text", @click="handleBack") 返回
     section.task-section
       Tabs(type='card',value='2')
         TabPane(label='归属站点',name='1')
