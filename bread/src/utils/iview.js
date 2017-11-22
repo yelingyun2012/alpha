@@ -22,6 +22,7 @@ import Poptip from 'iview/src/components/poptip'
 import Radio from 'iview/src/components/radio'
 import Dropdown from 'iview/src/components/dropdown'
 import Modal from 'iview/src/components/modal'
+import Progress from 'iview/src/components/progress'
 
 // 组件组
 const components = {
@@ -60,7 +61,8 @@ const components = {
   RadioGroup: Radio.Group,
   Dropdown,
   DropdownItem: Dropdown.Item,
-  DropdownMenu: Dropdown.Menu
+  DropdownMenu: Dropdown.Menu,
+  Progress
 }
 
 // 实例化组件组

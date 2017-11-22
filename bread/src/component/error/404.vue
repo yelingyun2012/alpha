@@ -7,7 +7,7 @@
           span
             Icon(type="ios-navigate-outline")
           | 4
-        p.error404-body-message 当访问的页面不存在
+        p.error404-body-message 页面发生未知错误或页面不存在
         .error404-body-btn
           Button(@click='goHome', size='large') 返回首页
           Button(@click='backPage', size='large', type='primary') 返回上一页

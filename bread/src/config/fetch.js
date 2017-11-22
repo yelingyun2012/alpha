@@ -41,19 +41,20 @@ axios.interceptors.response.use(
  * @param {Number} response 接口返回对象
  */
 function checkStatus (response) {
-  const Status = [200, 304]
+  const [Status, abnormalStatus] = [[200, 304], [404, 500]]
   if (Status.includes(response.status)) {
     return response
   }
-  return {
-    data: {
-      respCode: '404',
-      message: response.statusText,
-      data: ''
+  if (abnormalStatus.includes(response.status)) {
+    return {
+      data: {
+        respCode: response.status,
+        message: response.statusText,
+        data: ''
+      }
     }
   }
 }
-
 /**
  * 处理接口返回参数
  * @param {Object} response 接口返回对象

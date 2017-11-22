@@ -18,9 +18,12 @@ import Page from 'iview/src/components/page'
 import Tabs from 'iview/src/components/tabs'
 import Checkbox from 'iview/src/components/checkbox'
 import DatePicker from 'iview/src/components/date-picker'
-import Modal from 'iview/src/components/modal'
 import Poptip from 'iview/src/components/poptip'
 import Radio from 'iview/src/components/radio'
+import Dropdown from 'iview/src/components/dropdown'
+import Modal from 'iview/src/components/modal'
+import Progress from 'iview/src/components/progress'
+
 // 组件组
 const components = {
   Button,
@@ -55,12 +58,18 @@ const components = {
   Modal,
   Poptip,
   Radio,
-  RadioGroup: Radio.Group
+  RadioGroup: Radio.Group,
+  Dropdown,
+  DropdownItem: Dropdown.Item,
+  DropdownMenu: Dropdown.Menu,
+  Progress
 }
+
 // 实例化组件组
 const install = function (Vue) {
   Object.keys(components).forEach(key => Vue.component(key, components[key]))
   Vue.prototype.$Message = Message
+  Vue.prototype.$Modal = Modal
   Vue.prototype.$Loading = LoadingBar
 }
 
