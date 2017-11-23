@@ -17,6 +17,7 @@
 <script>
   import { siteNum, taskList, queryCollectionHistory } from '../../config/getData'
   import { getCookie } from '../../utils/cookie'
+  import { mapState,mapMutations } from 'vuex'
 
   export default {
     name: 'TaskManager',
@@ -173,11 +174,12 @@
           {
             title: '进度',
             render: (h, params) => {
-              return h('Progress',{
-                attrs:{
-                  percent:params.row.speedOfProgress
+              return h('Progress', {
+                attrs: {
+                  percent: params.row.speedOfProgress
                 }
-              })}
+              })
+            }
           },
           {
             title: '抽取率',
@@ -188,7 +190,7 @@
           {
             title: '操作',
             key: 'operate',
-            width:190,
+            width: 190,
             render: (h, params) => {
               // 停止操作
               let secure = h('span',
@@ -197,10 +199,10 @@
                     fontSize: '16px',
                     padding: '3px 18px',
                     background: '#F2F2F2',
-                    color:'#FFBF00',
+                    color: '#FFBF00',
                     display: 'inline-block',
                     borderRadius: '4px',
-                    margin:'0 5px'
+                    margin: '0 5px'
                   },
                   on: {
                     click: event => {
@@ -230,10 +232,10 @@
                   fontSize: '16px',
                   padding: '3px 18px',
                   background: '#F2F2F2',
-                  color:'#329A23',
+                  color: '#329A23',
                   display: 'inline-block',
                   borderRadius: '4px',
-                  margin:'0 5px'
+                  margin: '0 5px'
                 },
                 on: {
                   click: event => {
@@ -265,10 +267,10 @@
                     fontSize: '16px',
                     padding: '3px 18px',
                     background: '#F2F2F2',
-                    color:'#108EE9',
+                    color: '#108EE9',
                     display: 'inline-block',
                     borderRadius: '4px',
-                    margin:'0 5px'
+                    margin: '0 5px'
                   },
                   on: {
                     click: event => {
@@ -298,10 +300,10 @@
                   fontSize: '16px',
                   padding: '3px 18px',
                   background: '#F2F2F2',
-                  color:'#F04134',
+                  color: '#F04134',
                   display: 'inline-block',
                   borderRadius: '4px',
-                  margin:'0 5px'
+                  margin: '0 5px'
                 },
                 on: {
                   click: event => {
@@ -321,7 +323,7 @@
                   }
                 }
               }, [
-                h('Icon',{
+                h('Icon', {
                   props: {
                     type: 'trash-a'
                   }
@@ -350,13 +352,22 @@
       this.initSite()
       this.initTaskList()
     },
+    computed: {
+      ...mapState({
+        currentPath: state => state.permission.currentPath
+      })
+    },
     methods: {
+      ...mapMutations({
+        setCurrentPath: 'permission/setCurrentPath'
+      }),
       handleSearch () {
         this.pageIndex = 1
         this.initTaskList()
       },
       handleAdd () {
         this.$router.push('/taskManagerChild/add')
+        window.localStorage.setItem('currentPath',JSON.stringify(this.currentPath))
       },
       handleCut (subscript, siteId) {
         this.activeIndex = subscript

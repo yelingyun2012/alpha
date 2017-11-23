@@ -4,7 +4,7 @@ import router from '../router'
 // axios 配置参数
 // const baseURL = `http://192.168.10.93:8282/`
 // const baseURL = `http://192.168.10.93:8282/`  // 测试端口
-const baseURL = `http://192.168.10.93:8282/` // 开发端口
+const baseURL = `http://192.168.10.203:8181/` // 开发端口
 axios.defaults.baseURL = baseURL
 axios.defaults.timeout = 30000
 /**

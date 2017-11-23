@@ -2,37 +2,53 @@
   section
     headerView
     aside.sidebar-con
-      sidebarMenu(:menuList="menuList")
+      sidebarMenu(:menuList="menuList", :open-names="openedSubmenuArr")
     aside.main-con
+      breadcrumbNav(:currentPath="currentPath")
       router-view
 </template>
 <script>
   import { mapState, mapMutations } from 'vuex'
   import headerView from '../component/layout/header.vue'
   import sidebarMenu from '../component/layout/sidebarMenu.vue'
+  import breadcrumbNav from '../component/layout/breadcrumb.vue'
   import { setCurrentPath } from '../utils/utils'
 
   export default {
     name: 'Main',
     components: {
       headerView,
-      sidebarMenu
+      sidebarMenu,
+      breadcrumbNav
     },
     computed: {
       ...mapState({
-        menuList: state => state.permission.menuList
+        menuList: state => state.permission.menuList,
+        openedSubmenuArr: state => state.permission.openedSubmenuArr,
+        currentPath: state => state.permission.currentPath
       })
     },
-    methods: {
-      initMenuList () {
-//        let pathArr = setCurrentPath(this, this.$route.name)
-//        console.log(pathArr)
-        console.log(this.$store.state.permission)
+    mounted () {
+      this.initMenuList()
+    },
+    watch:{
+      '$route'(to){
+        let pathArr = setCurrentPath(this, to.name)
+        if (pathArr.length >= 2) {
+          this.addOpenSubmenu(pathArr[0].name)
+        }
       }
     },
-    mounted () {
-//      console.log(this.menuList)
-      this.initMenuList()
+    methods: {
+      ...mapMutations({
+        addOpenSubmenu: 'permission/addOpenSubmenu',
+      }),
+      initMenuList () {
+        let pathArr = setCurrentPath(this, this.$route.name)
+        if (pathArr.length >= 2) {
+          this.addOpenSubmenu(pathArr[0].name)
+        }
+      }
     }
   }
 </script>
@@ -51,11 +67,11 @@
       padding-top 85px
       padding-left 20px
   .ivu-input, .ivu-select-selection
-    border: 1px solid #bfbfbf;
+    border 1px solid #bfbfbf
   .ivu-table-border td, .ivu-table-border th
-    border-right: 1px solid #bfbfbf;
+    border-right 1px solid #bfbfbf
   .ivu-table td, .ivu-table th
-    border-bottom: 1px solid #bfbfbf;
+    border-bottom 1px solid #bfbfbf
   .ivu-table-wrapper
-    border-color:#bfbfbf
+    border-color #bfbfbf
 </style>

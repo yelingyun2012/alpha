@@ -5,14 +5,15 @@ import Vuex from 'vuex'
  */
 import user from './modules/user'
 import permission from './modules/permission'
-import pageModel from './modules/pageModel'
+// import pageModel from './modules/pageModel'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     user,
-    permission,
-    pageModel
-  }
+    permission
+    // pageModel
+  },
+  // pageModel
 })
