@@ -1,16 +1,16 @@
 <template lang="pug">
   section
-    aside.page-name
+    aside.public-name
       span.explain 页面模型名称 :
       Input(v-model='pageModelName', placeholder='请输入页面模型', style="width: 20%;max-width:300px").typeIn
       Button(type="primary", @click="handleSearch") 查询
       Button(@click="handleAdd") 新增
-    aside.page-minute
-      header.page-site
+    aside.public-minute
+      header.public-site
         template(v-for="(item,index) of siteList")
           span(:class="{'task-site-active':activeIndex===index}", :key="item.number", @click="handleCut(index,item.siteId)") {{item.siteName}}
             i(v-if='item.siteName!=="全部"') ({{item.number}})
-      section.page-mission
+      section.public-mission
         Table(:columns="pageModelColumns", :data="pageModelData", border)
         Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
 </template>
@@ -33,7 +33,7 @@ export default {
       pageModelColumns: [
         {
           title: "ID",
-          width: 100,
+          width: 70,
           align: "center",
           key: "modelId"
         },
@@ -209,70 +209,4 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
-// 公共函数
-taskWrapper(top,right,bottom,left)
-  padding top right bottom left
-  background-color #fff
-.page
-  &-name
-    margin-bottom 20px
-    taskWrapper 30px 20px 30px 20px
-    .ivu-input
-      height 35px
-    .explain
-      color #323232
-      font-size 14px
-    .typeIn
-      margin-right 30px
-      margin-left 4px
-    .ivu-btn
-      padding 6px 23px
-      &:last-child
-        margin-left 10px
-        border-color #108EE9
-        color #108EE9
-        opacity .9
-        &:hover
-          border-color #57a3f3
-          color #57a3f3
-  &-minute // 任务详细
-    taskWrapper 20px 20px 20px 20px
-  &-site
-    padding-bottom 10px
-    border-bottom 1px dashed #B7B7B7
-    span
-      display inline-block
-      padding 6px 15px
-      color #589BEE
-      font-size 14px
-      cursor pointer
-      &.task-site-active
-        border-radius 4px
-        background-color #2D8CF0
-        color #fff
-      i
-        font-style inherit
-  &-mission
-    margin-top 20px
-    .ivu-page
-      margin-top 20px
-      margin-right 20px
-      text-align right
-.signInTab
-  display inline-block
-  padding 4px 10px
-  border 1px solid #A7E1C4
-  border-radius 2px
-  background #EBF8F2
-  color #646464
-  opacity .7
-.signOutTab
-  display inline-block
-  padding 4px 10px
-  border 1px solid #FABEB9
-  border-radius 2px
-  background #FFF5F4
-  color #646464
-  opacity .7
-</style>
+<style src="../../assets/css/common.styl" lang="stylus" scoped></style>

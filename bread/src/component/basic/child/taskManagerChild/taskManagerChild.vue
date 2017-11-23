@@ -1,16 +1,16 @@
 <template lang="pug">
-  section.task-inform
+  section.child-inform
     header
-      .task-header-typeIn
+      .child-header-typeIn
         Form(ref="formTaskName", :model="formValidate", :rules="ruleValidate", :label-width="100")
-          FormItem(label="任务名称", prop="taskName")
-            Input(v-model="formValidate.taskName", placeholder="", style="max-width:300px;margin-bottom:30px")
-      .task-header-btn
+          FormItem(label="任务名称：", prop="taskName")
+            Input(v-model="formValidate.taskName", placeholder="", style="max-width:300px;",:maxlength="200")
+      .child-header-btn
         Button(type="error", v-if="$route.params.id==='alter'", :disabled='signStatus', @click="initSignOut") 签出
         Button(type="success", v-if="$route.params.id==='alter'", :disabled='!signStatus || signUserStatus', @click="initSignIn" ,style="margin-left:10px") 签入
         Button(type="primary", v-if="$route.params.id==='add'", @click="handleSave('formTaskName')") 保存
         Button(@click="handleBack") 返回
-    section.task-section
+    section.child-section
       Tabs(type='card')
         TabPane(label='基本属性')
           taskBasicAttribute(ref='property')

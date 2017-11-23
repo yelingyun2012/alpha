@@ -1,63 +1,63 @@
 <template lang="pug">
   section.task-manager-basic
-    Form(:label-width="130")
+    Form(:label-width="150")
       Row
         Col(span="8")
-          FormItem(label='任务周期类型:')
+          FormItem(label='任务周期类型：')
             Select(style='width:300px', v-model="taskCycleTypeVal")
               Option(v-for='task in taskCycleTypeData', :value="task.itemType", :key="task.itemType") {{task.itemName}}
         Col(span="8")
-          FormItem(label="编码:")
+          FormItem(label="编码：")
             Select(style='width:300px', v-model="codingSchemeVal")
               Option(v-for="code in codingSchemeData", :value="code.value", :key="code.value") {{code.label}}
       Row
         Col(span="8")
-          FormItem(label="页面请求方式:")
+          FormItem(label="页面请求方式：")
             Select(style='width:300px', v-model="requestMethodVal")
               Option(v-for="method in requestMethodValData", :value="method.itemType", :key="method.itemType") {{method.itemName}}
         Col(span="8")
           aside(style='display:inline-block')
-            label.periodic 需要URL去重:
+            label.periodic 需要URL去重：
             checkbox(v-model="urlDeWeightVal")
           aside(style='display:inline-block', v-if='periodicWeight')
-            label.periodic.periodicWeight 需要URL周期性去重
+            label.periodic.periodicWeight 需要URL周期性去重：
             checkbox(v-model="periodicWeightVal")
       Row
         Col(span="8")
-          FormItem(label="URL去重保留时长:")
+          FormItem(label="URL去重保留时长：")
             Select(style='width:300px', v-model="durationVal")
               Option(v-for='duration in theRetentionTimeData', :value='duration.value', :key='duration.value') {{duration.label}}
         Col(span="8")
-          FormItem(label="连接超时时间:")
+          FormItem(label="连接超时时间：")
             Select(style='width:300px', v-model="connectionVal")
               Option(v-for='connection in connectionTimeoutData', :value='connection.value', :key='connection.value') {{connection.label}}
       Row
         Col(span="8")
-          FormItem(label="最大重试次数:")
+          FormItem(label="最大重试次数：")
             Select(style='width:300px', v-model="numberVal")
               Option(v-for="number in numberOfRetriesData", :value="number.value", :key="number.value") {{number.label}}
         Col(span="8")
-          FormItem(label="代理选择:")
+          FormItem(label="代理选择：")
             Select(style='width:300px', v-model="agencyVal")
               Option(v-for='agency in agencyData', :value='agency.value', :key='agency.value') {{agency.label}}
       Row
         Col(span="8")
-          FormItem(label="优先级:")
+          FormItem(label="优先级：")
             Select(style='width:300px', v-model="taskPriorityVal")
               Option(v-for="priority in taskPriorityValData", :value="priority.itemType", :key="priority.itemType") {{priority.itemName}}
         Col(span="8")
-          FormItem(label="采集时间间隔:")
+          FormItem(label="采集时间间隔：")
             Select(style='width:300px', v-model="intervalVal")
               Option(v-for="interval in intervalData", :value="interval.value", :key="interval.value") {{interval.label}}
       Row
         Col(span="8")
-          FormItem(label="采集开始时间:")
+          FormItem(label="采集开始时间：")
             DatePicker(type="datetime", :value='startTimeVal' ,placeholder="选择日期", style="width: 300px", @on-change="collectStart", @on-open-change="setAttr")
         Col(span="8")
-          FormItem(label="采集结束时间:")
+          FormItem(label="采集结束时间：")
             DatePicker(type="datetime", :value='endTimeVal' ,placeholder="选择日期", style="width: 300px", @on-change="collectEnd", @on-open-change="setAttr")
-      FormItem(label="用户代理:")
-        Input(style="width:58%", v-model="userAgentVal")
+      FormItem(label="用户代理：")
+        Input(style="width:58%", v-model="userAgentVal",:maxlength="500",placeholder="User Agent")
 </template>
 <script>
   import { queryType } from '../../../../config/getData'
@@ -216,7 +216,7 @@
   .periodic
     display inline-block
     padding 10px 12px 10px 0
-    width 130px
+    width 150px
     color #323232
     text-align right
     font-size 14px

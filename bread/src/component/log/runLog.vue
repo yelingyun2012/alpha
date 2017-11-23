@@ -1,6 +1,6 @@
 <template lang="pug">
   section
-    aside.log-name
+    aside.public-name
       Row
         Col(span="24")
           span.title 时间：
@@ -25,11 +25,12 @@
       Row
         Col(span="24").btn
           Button(type="primary", @click="handleSearch") 查询
-    aside.log-minute
-      Table(:columns="logColumns", :data="logData", border)
-      Page(:total="pageTotal", :current="pageNo", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
-      Modal(v-model="modelShow", title="详情", width="1000",class-name="vertical-center-modal")
-        pre(v-html="modelData", style="margin:0;")
+    aside.public-minute
+      section.public-mission
+        Table(:columns="logColumns", :data="logData", border)
+        Page(:total="pageTotal", :current="pageNo", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
+    Modal(v-model="modelShow", title="详情", width="1000",class-name="vertical-center-modal")
+      pre(v-html="modelData", style="margin:0;")
 </template>
 
 <script>
@@ -130,26 +131,28 @@ export default {
           key: "action",
           align: "center",
           render: (h, params) => {
-            return h("div", [
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "primary",
-                    size: "small"
-                  },
-                  style: {
-                    marginRight: "5px"
-                  },
-                  on: {
-                    click: () => {
-                      this.goDetail(params.row);
-                    }
+            return h(
+              "span",
+              {
+                on: {
+                  click: event => {
+                    this.goDetail(params.row);
                   }
-                },
-                "详情"
-              )
-            ]);
+                }
+              },
+              [
+                h("Icon", {
+                  style: {
+                    cursor: "pointer",
+                    fontSize: "26px",
+                    color: "#2d8cf0"
+                  },
+                  attrs: {
+                    type: "document-text"
+                  }
+                })
+              ]
+            );
           }
         }
       ],
@@ -204,22 +207,24 @@ export default {
     },
     //获取数据
     getData(data) {
-      taskLogList(data).then(res => {
-        if (res.data.respCode === "0") {
-          var resData = res.data.data;
-          if (resData.length !== 0) {
-            for (var i = 0; i < resData.length; i++) {
-              resData[i].createTime = this.formatDateTime(
-                Number(resData[i].createTime)
-              );
+      taskLogList(data)
+        .then(res => {
+          if (res.data.respCode === "0") {
+            var resData = res.data.data;
+            if (resData.length !== 0) {
+              for (var i = 0; i < resData.length; i++) {
+                resData[i].createTime = this.formatDateTime(
+                  Number(resData[i].createTime)
+                );
+              }
             }
+            this.logData = resData;
+            this.pageTotal = res.data.totalNumber;
           }
-          this.logData = resData;
-          this.pageTotal = res.data.totalNumber;
-        }
-      }).catch(err => {
-        this.$Message.error(err.match(/([^\[\]]+)(?=\])/g)[0]);
-      });
+        })
+        .catch(err => {
+          this.$Message.error(err.match(/([^\[\]]+)(?=\])/g)[0]);
+        });
     },
     //时间转换
     formatDateTime(inputTime) {
@@ -258,44 +263,20 @@ export default {
 };
 </script>
 
-<style lang="stylus">
-// 公共函数
-taskWrapper(top,right,bottom,left)
-  padding top right bottom left
-  background-color #fff
-.log
+<style src="../../assets/css/common.styl" lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.public
   &-name // 任务名称
-    margin-bottom 20px
-    color #323232
-    font-size 14px
-    taskWrapper 30px 20px 30px 20px
     .select
       margin-left 10px
       width 160px
     .rowCenter
-      margin 20px 0 24px
-    .title
-      display inline-block
-      width 90px
-      text-align right
+      margin 20px 0 0
     .inputText
       width calc(100% - 90px - 20px)
     .btn
+      margin-top 24px
       text-align right
-      button
-        width 60px
-        height 35px
-        font-size 14px
-  &-minute // 任务详细
-    taskWrapper 20px 20px 20px 20px
-    .ivu-page
-      margin-top 20px
-      margin-right 20px
-      text-align right
-.vertical-center-modal
-  display flex
-  justify-content center
-  align-items center
-  .ivu-modal
-    top 0
+    .ivu-btn:last-child
+      color #fff
 </style>

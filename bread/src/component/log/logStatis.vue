@@ -1,6 +1,6 @@
 <template lang="pug">
   section
-    aside.logStatis-name
+    aside.public-name
       Row
         Col(span="24")
           span.title 时间：
@@ -25,19 +25,20 @@
           Button(type="text" @click="searchToggle") 
             | {{ searchToggleState? '收起' : '高级' }}
             Icon(:type=" searchToggleState ? 'chevron-up' : 'chevron-down' " style="margin-left:5px;")
-    aside.logStatis-minute
-      Table(:columns="logColumns", :data="logData", border)
-      Page(:total="pageTotal", :current="pageNo", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
-      Modal(v-model="pieShow", title="采集详情", width="1000",class-name="vertical-center-modal")
-        div.pieDiv
-            div(id="myPie")
-            div(id="dateList")
-              ul
-                li(v-for="item in pieData")
-                  i
-                  span {{ item.pieName }}
-                  span.name {{ item.name }}
-        div(slot="footer")
+    aside.public-minute
+      section.public-mission
+        Table(:columns="logColumns", :data="logData", border)
+        Page(:total="pageTotal", :current="pageNo", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
+    Modal(v-model="pieShow", title="采集详情", width="1000",class-name="vertical-center-modal")
+      div.pieDiv
+          div(id="myPie")
+          div(id="dateList")
+            ul
+              li(v-for="item in pieData")
+                i
+                span {{ item.pieName }}
+                span.name {{ item.name }}
+      div(slot="footer", style="display:none;")
 </template>
 
 <script>
@@ -72,7 +73,7 @@ export default {
       ],
       //查询
       search: {
-        startTime: new Date(new Date() - (60 * 60 * 24 * 1000)), //开始时间
+        startTime: new Date(new Date() - 60 * 60 * 24 * 1000), //开始时间
         endTime: new Date(), //结束时间
         periodType: 0, //统计
         taskName: "", //任务名称
@@ -88,7 +89,7 @@ export default {
       logColumns: [
         {
           title: "运行时间段",
-          width:140,
+          width: 140,
           render: (h, params) => {
             if (params.row.startTime !== undefined)
               return `${params.row.startTime} - ${params.row.endTime}`;
@@ -125,26 +126,28 @@ export default {
           width: 150,
           align: "center",
           render: (h, params) => {
-            return h("div", [
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "primary",
-                    size: "small"
-                  },
-                  style: {
-                    marginRight: "5px"
-                  },
-                  on: {
-                    click: () => {
-                      this.goDetail(params.row);
-                    }
+            return h(
+              "span",
+              {
+                on: {
+                  click: event => {
+                    this.goDetail(params.row);
                   }
-                },
-                "详情"
-              )
-            ]);
+                }
+              },
+              [
+                h("Icon", {
+                  style: {
+                    cursor: "pointer",
+                    fontSize: "26px",
+                    color: "#2d8cf0"
+                  },
+                  attrs: {
+                    type: "document-text"
+                  }
+                })
+              ]
+            );
           }
         }
       ],
@@ -222,7 +225,7 @@ export default {
       this.chuliData();
     },
     //处理数据
-    chuliData(){
+    chuliData() {
       let con = (this.postData = JSON.parse(JSON.stringify(this.search)));
       let startTime = (con.startTime = new Date(con.startTime).getTime());
       let endTime = (con.endTime = new Date(con.endTime).getTime());
@@ -336,12 +339,12 @@ export default {
           if (i !== 0) {
             sumPie -= val;
           }
-          if(val !== "0.00"){
+          if (val !== "0.00") {
             colorShow.push(color[i]);
           }
         }
       }
-      if(sum !== 0){
+      if (sum !== 0) {
         this.pieData[0].name = sumPie.toFixed(2) + "%";
       }
       let myPie = echarts.init(document.getElementById("myPie"));
@@ -360,7 +363,7 @@ export default {
                 }
               }
             },
-            data: this.pieData.filter(function(x){
+            data: this.pieData.filter(function(x) {
               return x.name !== "0.00%";
             })
           }
@@ -375,89 +378,65 @@ export default {
 };
 </script>
 
-<style lang="stylus">
-// 公共函数
-taskWrapper(top,right,bottom,left)
-  padding top right bottom left
-  background-color #fff
-.logStatis
+<style src="../../assets/css/common.styl" lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.public
   &-name // 任务名称
-    margin-bottom 20px
-    color #323232
-    font-size 14px
-    taskWrapper 30px 20px 30px 20px
     .select
       margin-left 10px
       width 160px
     .rowCenter
       margin 20px 0 0
-    .title
-      display inline-block
-      width 90px
-      text-align right
     .inputText
       width calc(100% - 90px - 20px)
     .btn
       margin-top 24px
       text-align right
       button
-        min-width 60px
-        height 35px
-        font-size 14px
-  &-minute // 任务详细
-    taskWrapper 20px 20px 20px 20px
-    .ivu-page
-      margin-top 20px
-      margin-right 20px
-      text-align right
-.vertical-center-modal
-  display flex
-  justify-content center
-  align-items center
-  .ivu-modal
-    top 0
-  .ivu-modal-footer
-    display none
-  .pieDiv
-    overflow hidden
-    margin-left 20px
-    width 800px
-    div
-      float left
-      height 400px
-      &#myPie
-        width 500px
-      &#dateList
-        display flex
-        align-items center
-        width 300px
-        ul
-          width 100%
-          li
-            height 50px
-            border-bottom 1px solid #453937
-            color #453937
-            font-size 16px
-            line-height 50px
+        &:last-child
+          border-color #fff
+          &:hover
+            border-color #fff
+.pieDiv
+  overflow hidden
+  margin-left 20px
+  width 800px
+  div
+    float left
+    height 400px
+    &#myPie
+      width 500px
+    &#dateList
+      display flex
+      align-items center
+      width 300px
+      ul
+        width 100%
+        li
+          height 50px
+          border-bottom 1px solid #453937
+          color #453937
+          font-size 16px
+          line-height 50px
+          i
+            display inline-block
+            margin-right 20px
+            width 8px
+            height 8px
+            border-radius 50%
+          &:nth-child(1)
             i
-              display inline-block
-              margin-right 20px
-              width 8px
-              height 8px
-              border-radius 50%
-            &:nth-child(1)
-              i
-                background #4FC1E9
-            &:nth-child(2)
-              i
-                background #AC92EC
-            &:nth-child(3)
-              i
-                background #A0D468
-            &:nth-child(4)
-              i
-                background #FC6E51
-            span.name
-              float right
-              margin-right 20px
+              background #4FC1E9
+          &:nth-child(2)
+            i
+              background #AC92EC
+          &:nth-child(3)
+            i
+              background #A0D468
+          &:nth-child(4)
+            i
+              background #FC6E51
+          span.name
+            float right
+            margin-right 20px
 </style>

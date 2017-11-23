@@ -325,7 +325,7 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .pageModelBasic
   margin 0 20px
   .modelLeft
@@ -374,7 +374,6 @@ export default {
     .pageModelTree
       display inline-block
       margin-bottom 20px
-      padding 0 20px
       width 100%
       background #F7F7F7
       & > .pageModelBasicTree
