@@ -123,7 +123,7 @@ export default {
           }
         })
         .catch(err => {
-          this.$Message.error(err);
+          this.$Message.error(err.match(/([^\[\]]+)(?=\])/g)[0]);
         });
     },
     //点击历史记录
@@ -141,7 +141,7 @@ export default {
           this.testFocus();
         })
         .catch(err => {
-          this.$Message.error(err);
+          this.$Message.error(err.match(/([^\[\]]+)(?=\])/g)[0]);
         });
     },
     //json格式化
@@ -179,7 +179,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err.statusCode);
+          this.$Message.error(err.match(/([^\[\]]+)(?=\])/g)[0]);
         });
     },
     //添加

@@ -306,7 +306,7 @@ export default {
                 this.$refs.pageModelBasic.syntaxHighlight(res.data);
               }
             }).catch(err => {
-              this.$Message.error(err);
+              this.$Message.error(err.match(/([^\[\]]+)(?=\])/g)[0]);
             });
           }
         } else {

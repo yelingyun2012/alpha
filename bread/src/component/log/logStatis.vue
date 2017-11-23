@@ -267,7 +267,7 @@ export default {
           }
         })
         .catch(err => {
-          this.$Message.error(err);
+          this.$Message.error(err.match(/([^\[\]]+)(?=\])/g)[0]);
         });
     },
     //时间转换

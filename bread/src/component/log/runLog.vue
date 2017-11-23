@@ -217,6 +217,8 @@ export default {
           this.logData = resData;
           this.pageTotal = res.data.totalNumber;
         }
+      }).catch(err => {
+        this.$Message.error(err.match(/([^\[\]]+)(?=\])/g)[0]);
       });
     },
     //时间转换
