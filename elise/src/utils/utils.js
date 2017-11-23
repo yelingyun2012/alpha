@@ -15,7 +15,9 @@ export const setCurrentPath = (vm, name) => {
       return false
     }
   })[0]
-  if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
+  if (currentPathObj.name === 'otherRouter') {
+    return false
+  } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
     currentPathArr = [{
       title: currentPathObj.title,
       path: '',

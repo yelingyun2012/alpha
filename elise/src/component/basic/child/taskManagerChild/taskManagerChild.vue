@@ -22,6 +22,7 @@
   import taskPageModel from './taskPageModel.vue'
   import { taskCheckout, taskAdd, taskCheckin, taskQuery } from '../../../../config/getData'
   import { getCookie } from '../../../../utils/cookie'
+  import { mapMutations } from 'vuex'
 
   export default {
     name: 'TaskManagerChild',
@@ -38,6 +39,9 @@
       }
     },
     methods: {
+      ...mapMutations({
+        setCurrentPath: 'permission/setCurrentPath'
+      }),
       handleBack () {
         this.$router.push('/basic/taskManager')
         window.localStorage.removeItem('haha')
@@ -163,7 +167,14 @@
       taskPageModel
     },
     created () {
-      console.log(window.localStorage.getItem('currentPath'))
+      let setBreadCrumb = {
+        title: '任务操作',
+        path: this.$route.path,
+        name: this.$route.name
+      }
+      let b=[...JSON.parse(JSON.stringify(window.localStorage.getItem('currentPath'))),...setBreadCrumb]
+      console.log(b)
+      this.setCurrentPath()
       if (this.$route.params.id === 'alter') {
         this.initTaskQuery()
       }
