@@ -12,13 +12,13 @@
         </Select>
       </FormItem>
       <FormItem label="模型正则表达式：" prop="modelRegularExpression">
-        <Input v-model="basicData.modelRegularExpression" type="textarea" :autosize="{minRows: 4,maxRows: 5}"></Input>
+        <Input v-model="basicData.modelRegularExpression" type="textarea" :autosize="{minRows: 4,maxRows: 5}" :maxlength="500"></Input>
       </FormItem>
       <FormItem label="允许爬行URL正则：" prop="urlsAllowCrawlRegex">
-        <Input v-model="basicData.urlsAllowCrawlRegex" type="textarea" :autosize="{minRows: 4,maxRows: 5}"></Input>
+        <Input v-model="basicData.urlsAllowCrawlRegex" type="textarea" :autosize="{minRows: 4,maxRows: 5}" :maxlength="500"></Input>
       </FormItem>
       <FormItem label="不允许爬行URL正则：" prop="urlsNotAllowCrawlRegex">
-        <Input v-model="basicData.urlsNotAllowCrawlRegex" type="textarea" :autosize="{minRows: 4,maxRows: 5}"></Input>
+        <Input v-model="basicData.urlsNotAllowCrawlRegex" type="textarea" :autosize="{minRows: 4,maxRows: 5}" :maxlength="500"></Input>
       </FormItem>
       <FormItem label="抽取url：">
         <Row>
@@ -35,7 +35,7 @@
               <Option v-for="item in extractTypeList" :value="item.itemType" :key="item.itemType">{{item.itemName}}</Option>
             </Select>
             <FormItem prop="urlExtractRule" style="width:300px;display: inline-block;">
-              <Input v-model="basicData.urlExtractRule"></Input>
+              <Input v-model="basicData.urlExtractRule" :maxlength="200"></Input>
             </FormItem>
           </Col>
         </Row>
@@ -59,10 +59,10 @@
             </Select>
           </FormItem>
           <FormItem label="元素刷新定位规格：（xpath格式）" prop="eleLocateRule">
-            <Input v-model="basicData.eleLocateRule" type="textarea" :autosize="{minRows: 3,maxRows: 5}"></Input>
+            <Input v-model="basicData.eleLocateRule" type="textarea" :autosize="{minRows: 3,maxRows: 5}" :maxlength="200"></Input>
           </FormItem>
           <FormItem label="页面加载完成元素判断规则：（xpath格式）" prop="loadFinishedDecisionRule">
-            <Input v-model="basicData.loadFinishedDecisionRule" type="textarea" :autosize="{minRows: 3,maxRows: 5}"></Input>
+            <Input v-model="basicData.loadFinishedDecisionRule" type="textarea" :autosize="{minRows: 3,maxRows: 5}" :maxlength="200"></Input>
           </FormItem>
           <FormItem label="是否刷新：" prop="refreshable">
             <RadioGroup v-model="basicData.refreshable">
@@ -97,10 +97,10 @@
             </Select>
           </FormItem>
           <FormItem label="抽取规则表达式" prop="extractRule">
-            <Input v-model="basicData.extractRule" type="textarea" :autosize="{minRows: 3,maxRows: 5}"></Input>
+            <Input v-model="basicData.extractRule" type="textarea" :autosize="{minRows: 3,maxRows: 5}" :maxlength="500"></Input>
           </FormItem>
           <FormItem label="下一页表达式：" prop="pageDownExpression">
-            <Input v-model="basicData.pageDownExpression" type="textarea" :autosize="{minRows: 3,maxRows: 5}"></Input>
+            <Input v-model="basicData.pageDownExpression" type="textarea" :autosize="{minRows: 3,maxRows: 5}" :maxlength="500"></Input>
           </FormItem>
         </div>
       </FormItem>
@@ -227,7 +227,7 @@ export default {
         if (valid) {
           if(val === 'delete'){
             let data = JSON.parse(JSON.stringify(this.basicData))
-            if (data.browserCrawlable === 2) {
+            if (data.browserCrawlable === 1) {
               delete data.refreshType
               delete data.maxDropDownNum
               delete data.eleLocateRule
