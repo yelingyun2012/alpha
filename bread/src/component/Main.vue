@@ -2,36 +2,65 @@
   section
     headerView
     aside.sidebar-con
-      sidebarMenu(:menuList="menuList")
+      sidebarMenu(:menuList="sidebarList", :open-names="openedSubmenuArr")
     aside.main-con
+      breadcrumbNav(:currentPath="currentPath")
       router-view
 </template>
 <script>
   import { mapState, mapMutations } from 'vuex'
   import headerView from '../component/layout/header.vue'
   import sidebarMenu from '../component/layout/sidebarMenu.vue'
+  import breadcrumbNav from '../component/layout/breadcrumb.vue'
+  import { setCurrentPath } from '../utils/utils'
+  import { getCookie } from '../utils/cookie'
 
   export default {
     name: 'Main',
     components: {
       headerView,
-      sidebarMenu
+      sidebarMenu,
+      breadcrumbNav
     },
     computed: {
       ...mapState({
-        menuList: state => state.permission.menuList
-      })
+        menuList: state => state.permission.menuList,
+        openedSubmenuArr: state => state.permission.openedSubmenuArr,
+        currentPath: state => state.permission.currentPath
+      }),
+      sidebarList: function () {
+        let sidebarMenuList
+        if (this.menuList[2].access === JSON.parse(getCookie('userInfo')).userRoad) {
+          sidebarMenuList = this.menuList
+        } else {
+          sidebarMenuList = this.menuList.filter(item => {
+            return item.access === undefined
+          })
+        }
+        return sidebarMenuList
+      }
+    },
+    mounted () {
+      this.initMenuList()
+    },
+    watch: {
+      '$route' (to) {
+        let pathArr = setCurrentPath(this, to.name)
+        if (pathArr.length >= 2) {
+          this.addOpenSubmenu(pathArr[0].name)
+        }
+      }
     },
     methods: {
       ...mapMutations({
         addOpenSubmenu: 'permission/addOpenSubmenu'
       }),
-      init () {
-        this.addOpenSubmenu('basic')
+      initMenuList () {
+        let pathArr = setCurrentPath(this, this.$route.name)
+        if (pathArr.length >= 2) {
+          this.addOpenSubmenu(pathArr[0].name)
+        }
       }
-    },
-    mounted () {
-      this.init()
     }
   }
 </script>

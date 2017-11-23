@@ -22,6 +22,7 @@
   import taskPageModel from './taskPageModel.vue'
   import { taskCheckout, taskAdd, taskCheckin, taskQuery } from '../../../../config/getData'
   import { getCookie } from '../../../../utils/cookie'
+  import { mapMutations } from 'vuex'
 
   export default {
     name: 'TaskManagerChild',
@@ -38,6 +39,9 @@
       }
     },
     methods: {
+      ...mapMutations({
+        setCurrentPath: 'permission/setCurrentPath'
+      }),
       handleBack () {
         this.$router.push('/basic/taskManager')
       },
@@ -162,6 +166,20 @@
       taskPageModel
     },
     created () {
+      let setMenuList = [{
+        title: '基本配置',
+        path: '',
+        name: 'basic'
+      }, {
+        title: '任务管理',
+        path: '',
+        name: 'taskManager'
+      }, {
+        title: '新建任务',
+        path: this.$route.path,
+        name: this.$route.name
+      }]
+      this.setCurrentPath(setMenuList)
       if (this.$route.params.id === 'alter') {
         this.initTaskQuery()
       }

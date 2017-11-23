@@ -23,7 +23,7 @@ import Radio from 'iview/src/components/radio'
 import Dropdown from 'iview/src/components/dropdown'
 import Modal from 'iview/src/components/modal'
 import Progress from 'iview/src/components/progress'
-
+import Breadcrumb from 'iview/src/components/breadcrumb'
 // 组件组
 const components = {
   Button,
@@ -62,7 +62,9 @@ const components = {
   Dropdown,
   DropdownItem: Dropdown.Item,
   DropdownMenu: Dropdown.Menu,
-  Progress
+  Progress,
+  Breadcrumb,
+  BreadcrumbItem: Breadcrumb.Item,
 }
 
 // 实例化组件组

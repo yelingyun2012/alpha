@@ -172,9 +172,8 @@
         path: this.$route.path,
         name: this.$route.name
       }
-      let b=[...JSON.parse(JSON.stringify(window.localStorage.getItem('currentPath'))),...setBreadCrumb]
-      console.log(b)
-      this.setCurrentPath()
+      this.setCurrentPath(JSON.parse(window.localStorage.getItem('currentPath')).concat(setBreadCrumb))
+
       if (this.$route.params.id === 'alter') {
         this.initTaskQuery()
       }

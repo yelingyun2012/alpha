@@ -6,6 +6,23 @@ import App from '../../component/App.vue'
 import '../../utils/iview'
 // 引入路由配置
 import '../../config/permission'
+
+import { getCookie } from '../../utils/cookie'
+
+router.beforeEach((to, from, next) => {
+  if (!getCookie('token') && to.name !== 'Login') {
+    next('/login')
+  } else if (getCookie('token') && to.name === 'Login') {
+    next('/basic')
+  } else {
+    next()
+  }
+})
+
+router.afterEach(() => {
+  window.scrollTo(0, 0)
+})
+
 /**
  * 实例化Vue对象
  */

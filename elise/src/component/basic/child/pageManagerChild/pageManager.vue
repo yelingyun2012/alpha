@@ -169,7 +169,7 @@ export default {
       ajaxUrl(data).then(res => {
         if(res.data.respCode === "0"){
           this.$Message.success(txt);
-          this.$router.push("/basic/pageModel");
+          this.$router.push("/basic/pageModel1");
         }else{
           this.$Message.error(res.data.respMsg);
         }
@@ -180,7 +180,7 @@ export default {
         let queryData = response.data.data;
         this.formValidate.modelName = queryData.modelName;
         this.$refs.pageSite.siteId = queryData.siteId;
-        
+
         this.$refs.pageBasic.basicData.needLogin = queryData.needLogin;
         this.$refs.pageBasic.basicData.modelType = queryData.modelType;
         this.$refs.pageBasic.basicData.contentType = queryData.contentType;
@@ -288,7 +288,7 @@ export default {
               modelId: modelId
             };
             postData.browserParameter = JSON.stringify(browserParameter);
-            
+
             let pageTurningParameter = {
               pageTurningType: objData.pageTurningType,
               extractType: objData.extractType,
@@ -297,7 +297,7 @@ export default {
               modelId: modelId
             };
             postData.pageTurningParameter = JSON.stringify(pageTurningParameter);
-            
+
             postData.testUrl = testUrl;
 
             pageModelTest(postData).then(res=>{

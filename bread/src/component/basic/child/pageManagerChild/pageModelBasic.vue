@@ -53,6 +53,7 @@ import {
 import { getCookie } from "../../../../utils/cookie";
 import pageModelBasicTree from "./pageModelBasicTree";
 import pageModelBasicOption from "./pageModelBasicOption";
+import {mapActions} from 'vuex'
 
 export default {
   name: "pageModelBasic",
@@ -93,6 +94,9 @@ export default {
     });
   },
   methods: {
+    ...mapActions({
+      setHttpCon:'pageModel/setHttpCon'
+    }),
     //取消测试记录下拉
     pageModelClick() {
       this.historyShow = false;
@@ -175,7 +179,7 @@ export default {
         .then(response => {
           if (response.data.respCode === "0") {
             let httpCon = response.data.data;
-            this.$store.dispatch("setHttpCon", httpCon);
+            this.setHttpCon(httpCon)
           }
         })
         .catch(err => {

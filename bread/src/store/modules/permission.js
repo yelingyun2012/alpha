@@ -1,8 +1,10 @@
-import { appRouter } from '../../router/index'
+import { appRouter, otherRouter } from '../../router/index'
 
 const state = {
+  routers: [...appRouter, ...otherRouter], // 路由表
   menuList: [],
-  openedSubmenuArr: []
+  openedSubmenuArr: [],
+  currentPath: [] // 打开路径
 }
 const mutations = {
   updateMenuList (state) {
@@ -13,6 +15,9 @@ const mutations = {
     if (name.length === 0) isEmpty = true
     if (state.openedSubmenuArr.includes(name)) hasThisName = true
     if (!hasThisName && !isEmpty) state.openedSubmenuArr.push(name)
+  },
+  setCurrentPath (state, pathArr) {
+    state.currentPath = pathArr
   }
 }
 
