@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import {mapGetters, mapActions } from 'vuex'
 
   export default {
     name: 'pageModelBasicTree',
@@ -41,14 +41,18 @@
       })
     },
     computed: {
+      ...mapGetters({
+        getToggleId:'pageModel/getToggleId',
+        getHttpCon:'pageModel/getHttpCon',
+      }),
       isFolder () {
         return this.item.children && this.item.children.length
       },
       toggleId () {
-        return this.$store.getters.getToggleId
+        return this.getToggleId
       },
       httpCon () {
-        return this.$store.getters.getHttpCon
+        return this.getHttpCon
       }
     },
     methods: {
