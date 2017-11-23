@@ -34,6 +34,7 @@
 
 <script>
 import { taskLogList } from "../../config/getData";
+import { statusCode } from "../../utils/logStatusCode";
 import { getCookie } from "../../utils/cookie";
 
 export default {
@@ -110,8 +111,10 @@ export default {
         },
         {
           title: "采集状态",
-          key: "crawlStatus",
-          align: "center"
+          align: "center",
+          render: (h, params) => {
+            return statusCode[params.row.crawlStatus];
+          }
         },
         {
           title: "发生时间",
@@ -204,9 +207,11 @@ export default {
       taskLogList(data).then(res => {
         if (res.data.respCode === "0") {
           var resData = res.data.data;
-          if(resData.length !== 0){
+          if (resData.length !== 0) {
             for (var i = 0; i < resData.length; i++) {
-              resData[i].createTime = this.formatDateTime(Number(resData[i].createTime));
+              resData[i].createTime = this.formatDateTime(
+                Number(resData[i].createTime)
+              );
             }
           }
           this.logData = resData;

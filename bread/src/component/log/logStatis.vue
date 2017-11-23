@@ -325,8 +325,8 @@ export default {
       let color = ["#4FC1E9", "#AC92EC", "#A0D468", "#FC6E51"];
       let sumPie = 100;
       let pieData = this.pieData;
+      let colorShow = [];
       for (let i = 0; i < pieData.length; i++) {
-        pieData[i].color = color[i];
         if (sum === 0) {
           pieData[i].name = "0.00%";
         } else {
@@ -335,6 +335,9 @@ export default {
           pieData[i].name = val + "%";
           if (i !== 0) {
             sumPie -= val;
+          }
+          if(val !== "0.00"){
+            colorShow.push(color[i]);
           }
         }
       }
@@ -346,9 +349,7 @@ export default {
         series: [
           {
             type: "pie",
-            color: this.pieData.filter(function(x){
-              x.name !== "0.00%" ? x.color : ""
-            }),
+            color: colorShow,
             label: {
               normal: {
                 position: "inner",
@@ -360,7 +361,7 @@ export default {
               }
             },
             data: this.pieData.filter(function(x){
-              return (x.name !== "0.00%");
+              return x.name !== "0.00%";
             })
           }
         ]

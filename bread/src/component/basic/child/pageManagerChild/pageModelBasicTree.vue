@@ -1,7 +1,7 @@
 <template>
   <div class="pageModelBasicTree">
     <ul>
-      <div style="padding:20px 0;">
+      <div class="ulBlock">
         <span @click.stop="toggle(item.propertyId)" v-show="toggleId !== item.propertyId" class="w100">{{item.propertyName}}</span>
         <span @click.stop v-show="toggleId === item.propertyId"><Input v-model="item.propertyName" class="w100"></Input></span>
         <Select v-model="item.parseType" style="width: 100px;text-align:left;">
@@ -31,36 +31,39 @@ export default {
   mounted() {
     document.addEventListener("click", e => {
       if (!this.$el.contains(e.target)) {
-        this.$store.dispatch("setToggleId", "-1")
+        this.$store.dispatch("setToggleId", "-1");
       }
-    })
+    });
   },
   computed: {
     isFolder() {
-      return this.item.children && this.item.children.length
+      return this.item.children && this.item.children.length;
     },
     toggleId() {
-      return this.$store.getters.getToggleId
+      return this.$store.getters.getToggleId;
     },
     httpCon() {
-      return this.$store.getters.getHttpCon
+      return this.$store.getters.getHttpCon;
     }
   },
   methods: {
     toggle(id) {
-      this.$store.dispatch("setToggleId", id)
+      this.$store.dispatch("setToggleId", id);
     },
     //删除
     delItem(index) {
-      this.item["children"].splice(index, 1)
+      this.item["children"].splice(index, 1);
     }
   }
-}
+};
 </script>
 
 <style lang='stylus' scoped>
 ul
   padding-left 20px
+  .ulBlock
+    position relative
+    padding 20px 0
 .w100
   display inline-block
   width 100px

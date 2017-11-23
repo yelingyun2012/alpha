@@ -42,11 +42,11 @@
       </FormItem>
       <FormItem label="浏览器采集：" prop="browserCrawlable">
         <RadioGroup v-model="basicData.browserCrawlable">
-          <Radio :label="1">是</Radio>
-          <Radio :label="2">否</Radio>
+          <Radio :label="2">是</Radio>
+          <Radio :label="1">否</Radio>
         </RadioGroup>
       </FormItem>
-      <FormItem label=" " v-if=" basicData.browserCrawlable === 1 ">
+      <FormItem label=" " v-if=" basicData.browserCrawlable === 2 ">
         <div class="browserCrawlable">
           <FormItem label="刷新方式：" prop="refreshType">
             <Select v-model="basicData.refreshType">
@@ -149,7 +149,7 @@ export default {
         urlsAllowCrawlRegex: "", //允许爬行URL正则
         urlsNotAllowCrawlRegex: "", //不允许爬行URL正则
         urlExtractable: 0, //抽取url
-        browserCrawlable: 2, //浏览器采集
+        browserCrawlable: 1, //浏览器采集
         pageTurningable: 0, //翻页
 
         urlExtractRule:"",  //抽取url地址
