@@ -1,0 +1,48 @@
+/***
+ * 公共函数
+ */
+error-con(w, ele = undefinde, h = 170px)
+  position relative
+  display inline-block
+  margin-right 10px
+  width w
+  height h
+  border-radius 50%
+  if ele != undefinde
+    border 20px solid #ed3f14
+    color #ed3f14
+/***
+ * 公共样式
+ */
+.error
+  &-body
+    position absolute
+    top 50%
+    left 50%
+    width 700px
+    height 500px
+    transform translate(-50%, -50%)
+  &-codeing
+    margin-top 40px
+    color #2d8cf0
+    text-align center
+    font-weight 700
+    font-size 240px
+    line-height 260px
+  &-message
+    color #dddde2
+    text-align center
+    font-weight 500
+    font-size 30px
+  &-btnCon
+    margin-bottom 40px
+    padding 20px 0
+    text-align center
+    .ivu-btn-large
+      &:first-child
+        width 200px
+        border-color transparent
+        background-color transparent
+      &:last-child
+        margin-left 40px
+        width 200px

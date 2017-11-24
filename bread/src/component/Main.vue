@@ -68,6 +68,7 @@ export default {
 </script>
 
 <style lang="stylus">
+  @import "common.styl"
   .sidebar
     &-con
       position fixed
@@ -75,12 +76,21 @@ export default {
       bottom 0
       height 100%
       background-color #fff
+      width 200px
+      max-width 200px
+      @media screen and (max-width:1440px) {
+        width 160px
+        max-width 160px
+      }
   .main
     &-con
-      margin-left 160px
+      margin-left 200px
       padding 10px
       padding-top 85px
       padding-left 20px
+      @media screen and (max-width:1440px){
+        margin-left 160px
+      }
   .ivu-input, .ivu-select-selection
     border 1px solid #bfbfbf
   .ivu-table-border td, .ivu-table-border th

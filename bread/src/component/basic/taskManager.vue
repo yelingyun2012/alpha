@@ -1,16 +1,17 @@
 <template lang="pug">
   section
-    aside.task-name
+    aside.page-title
       span.explain 任务名称 :
       Input(v-model='taskName', placeholder='请输入任务名称', style="width: 20%;max-width:300px").typeIn
       Button(type="primary", @click="handleSearch") 查询
       Button(@click="handleAdd") 新增
-    aside.task-minute
+
+    aside.page-minute
       header.task-site
         template(v-for="(item,index) of siteList")
           span(:class="{'task-site-active':activeIndex===index}", :key="item.number", @click="handleCut(index,item.siteId)") {{item.siteName}}
             i(style='font-style: inherit;', v-if='item.siteName!=="全部"') ({{item.number}})
-      section.task-mission
+      section.page-mission
         Table(:columns="taskColumns", :data="taskData", border)
         Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
 </template>
@@ -448,42 +449,8 @@
   }
 </script>
 <style lang="stylus">
-  // 公共函数
-  taskWrapper(top, right, bottom, left)
-    padding top right bottom left
-    background-color #fff
-  tableDefault()
-  .ivu-table-cell
-    padding-right 10px
-    padding-left 10px
+  @import "../func.styl"
   .task
-    &-name // 任务名称
-      margin-bottom 20px
-      taskWrapper 30px 20px 30px 20px
-      .ivu-input
-        height 35px
-      .explain
-        color #323232
-        font-size 14px
-      .typeIn
-        margin-right 30px
-        margin-left 4px
-      .ivu-btn
-        padding 6px 23px
-        &-success
-          background-color rgba(23, 187, 156, 1)
-          &:hover
-            background-color rgba(23, 187, 156, .8)
-        &:last-child
-          margin-left 10px
-          border-color #108EE9
-          color #108EE9
-          opacity .9
-          &:hover
-            border-color #57a3f3
-            color #57a3f3
-    &-minute // 任务详细
-      taskWrapper 20px 20px 20px 20px
     &-site
       padding-bottom 10px
       border-bottom 1px dashed #B7B7B7
@@ -527,17 +494,4 @@
     background #FFF5F4
     border 1px solid #FABEB9
     border-radius 2px
-  .test {
-    position: absolute;
-    transform: translateX(-50%);
-    transform-origin: 0 center;
-    top: -4px;
-    right: -8px;
-    height: 8px;
-    width: 8px;
-    border-radius: 100%;
-    background: #ed3f14;
-    z-index: 10;
-    box-shadow: 0 0 0 1px #fff;
-  }
 </style>
