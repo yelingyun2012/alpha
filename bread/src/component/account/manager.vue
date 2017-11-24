@@ -8,7 +8,9 @@
     aside.public-minute
       section.public-mission
         Table(:columns="accountColumns", :data="accountData",border)
-        Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
+        section.public-page
+          Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage",ref="goto")
+          Button(type="primary", @click="pageGoto") GO
 </template>
 <script>
 import { userList, userDelete, userUpdateEnableds } from "../../config/getData";
@@ -203,13 +205,27 @@ export default {
         }
       });
     },
-
     handleSearch() {
       this.pageIndex = 1;
       this.initUserList();
     },
     handlePage(pageIndex) {
       this.pageIndex = pageIndex;
+      this.initUserList();
+    },
+    //分页跳转
+    pageGoto(){
+      let val = parseInt(document.querySelector('.ivu-page-options-elevator input[type="text"]').value);
+      const page = this.$refs.goto.allPages;
+      if(val > page){
+        this.pageIndex = page;
+        document.querySelector('.ivu-page-options-elevator input[type="text"]').value = page;
+      }else if(val <= 0){
+        this.pageIndex = 1;
+        document.querySelector('.ivu-page-options-elevator input[type="text"]').value = 1;
+      }else{
+        this.pageIndex = val;
+      }
       this.initUserList();
     },
     handleAdd() {

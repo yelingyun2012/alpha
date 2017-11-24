@@ -12,7 +12,9 @@
             i(style='font-style: inherit;', v-if='item.siteName!=="全部"') ({{item.number}})
       section.public-mission
         Table(:columns="taskColumns", :data="taskData", border)
-        Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
+        section.public-page
+          Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage",ref="goto")
+          Button(type="primary", @click="pageGoto") GO
 </template>
 <script>
 import {
@@ -415,6 +417,21 @@ export default {
     },
     handlePage(pageIndex) {
       this.pageIndex = pageIndex;
+      this.initTaskList();
+    },
+    //分页跳转
+    pageGoto(){
+      let val = parseInt(document.querySelector('.ivu-page-options-elevator input[type="text"]').value);
+      const page = this.$refs.goto.allPages;
+      if(val > page){
+        this.pageIndex = page;
+        document.querySelector('.ivu-page-options-elevator input[type="text"]').value = page;
+      }else if(val <= 0){
+        this.pageIndex = 1;
+        document.querySelector('.ivu-page-options-elevator input[type="text"]').value = 1;
+      }else{
+        this.pageIndex = val;
+      }
       this.initTaskList();
     },
     // 统计站点

@@ -28,7 +28,9 @@
     aside.public-minute
       section.public-mission
         Table(:columns="logColumns", :data="logData", border)
-        Page(:total="pageTotal", :current="pageNo", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
+        section.public-page
+          Page(:total="pageTotal", :current="pageNo", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage",ref="goto")
+          Button(type="primary", @click="pageGoto") GO
     Modal(v-model="modelShow", title="详情", width="1000",class-name="vertical-center-modal")
       pre(v-html="modelData", style="margin:0;")
 </template>
@@ -162,15 +164,12 @@ export default {
       //页码
       pageTotal: 0,
       pageSize: 10,
-      pageNo: 1
+      pageNo: 1,
     };
   },
   mounted() {
     this.$nextTick(() => {
-      this.postData = JSON.parse(JSON.stringify(this.search));
-      this.postData.startTime = new Date(this.postData.startTime).getTime();
-      this.postData.endTime = new Date(this.postData.endTime).getTime();
-      this.getData(this.postData);
+      this.chuliData();
     });
   },
   methods: {
@@ -192,6 +191,24 @@ export default {
     handlePage(pageNo) {
       this.pageNo = pageNo;
       this.search.pageNo = pageNo;
+      this.chuliData();
+    },
+    //分页跳转
+    pageGoto(){
+      let val = parseInt(document.querySelector('.ivu-page-options-elevator input[type="text"]').value);
+      const page = this.$refs.goto.allPages;
+      if(val > page){
+        this.search.pageNo = page;
+        this.pageNo = page;
+        document.querySelector('.ivu-page-options-elevator input[type="text"]').value = page;
+      }else if(val <= 0){
+        this.search.pageNo = 1;
+        this.pageNo = 1;
+        document.querySelector('.ivu-page-options-elevator input[type="text"]').value = 1;
+      }else{
+        this.search.pageNo = val;
+        this.pageNo = val;
+      }
       this.chuliData();
     },
     //处理数据
