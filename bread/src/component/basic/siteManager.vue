@@ -285,4 +285,3 @@ export default {
   }
 };
 </script>
-<style src="../../assets/css/common.styl" lang="stylus" scoped></style>

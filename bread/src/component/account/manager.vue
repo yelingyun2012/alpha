@@ -248,7 +248,7 @@ export default {
   }
 };
 </script>
-<style src="../../assets/css/common.styl" lang="stylus" scoped></style>
+
 <style lang="stylus">
 .manageDelete
   padding 7px 20px
