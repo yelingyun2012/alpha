@@ -5,7 +5,6 @@
       Input(v-model='taskName', placeholder='请输入任务名称', style="width: 20%;max-width:300px").typeIn
       Button(type="primary", @click="handleSearch") 查询
       Button(@click="handleAdd") 新增
-
     aside.page-minute
       header.task-site
         template(v-for="(item,index) of siteList")
@@ -13,7 +12,9 @@
             i(style='font-style: inherit;', v-if='item.siteName!=="全部"') ({{item.number}})
       section.page-mission
         Table(:columns="taskColumns", :data="taskData", border)
-        Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage")
+        section.page-mission-bottom
+          Page(:total="pageTotal", :current="pageIndex", :page-size="pageSize", show-elevator, show-total, @on-change="handlePage",ref="goto")
+          Button(type="primary", @click="pageGoto") GO
 </template>
 <script>
   import {
@@ -105,7 +106,6 @@
           {
             title: '签出状态',
             align: 'center',
-//            width: 150,
             render: (h, params) => {
               switch (params.row.checkType) {
                 case 0:
@@ -214,21 +214,15 @@
           },
           {
             title: '操作',
-            width:190,
+            width: 190,
             key: 'operate',
             render: (h, params) => {
               // 停止操作
               let secure = h(
                 'span',
                 {
-                  style: {
-                    fontSize: '16px',
-                    padding: '5px 18px',
-                    background: '#F2F2F2',
-                    color: '#FFBF00',
-                    display: 'inline-block',
-                    borderRadius: '4px',
-                    margin: '0 5px'
+                  'class': {
+                    taskStopOperateBtn: true
                   },
                   on: {
                     click: event => {
@@ -261,14 +255,8 @@
               let startUpFunction = h(
                 'span',
                 {
-                  style: {
-                    fontSize: '16px',
-                    padding: '5px 18px',
-                    background: '#F2F2F2',
-                    color: '#329A23',
-                    display: 'inline-block',
-                    borderRadius: '4px',
-                    margin: '0 5px'
+                  'class':{
+                    taskOpenOperateBtn:true
                   },
                   on: {
                     click: event => {
@@ -301,14 +289,8 @@
               let suspendOperations = h(
                 'span',
                 {
-                  style: {
-                    fontSize: '16px',
-                    padding: '5px 18px',
-                    background: '#F2F2F2',
-                    color: '#108EE9',
-                    display: 'inline-block',
-                    borderRadius: '4px',
-                    margin: '0 5px'
+                  'class':{
+                    taskPauseOperateBtn:true
                   },
                   on: {
                     click: event => {
@@ -341,14 +323,8 @@
               let deleteOperation = h(
                 'span',
                 {
-                  style: {
-                    fontSize: '16px',
-                    padding: '5px 18px',
-                    background: '#F2F2F2',
-                    color: '#F04134',
-                    display: 'inline-block',
-                    borderRadius: '4px',
-                    margin: '0 5px'
+                  'class':{
+                    taskDeleteOperateBtn:true
                   },
                   on: {
                     click: event => {
@@ -419,6 +395,27 @@
         this.pageIndex = pageIndex
         this.initTaskList()
       },
+      //分页跳转
+      pageGoto () {
+        let val = parseInt(
+          document.querySelector('.ivu-page-options-elevator input[type="text"]').value
+        )
+        const page = this.$refs.goto.allPages
+        if (val > page) {
+          this.pageIndex = page
+          document.querySelector(
+            '.ivu-page-options-elevator input[type="text"]'
+          ).value = page
+        } else if (val <= 0) {
+          this.pageIndex = 1
+          document.querySelector(
+            '.ivu-page-options-elevator input[type="text"]'
+          ).value = 1
+        } else {
+          this.pageIndex = val
+        }
+        this.initTaskList()
+      },
       // 统计站点
       async initSite () {
         try {
@@ -448,7 +445,7 @@
     }
   }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
   @import "../func.styl"
   .task
     &-site
@@ -464,34 +461,12 @@
           border-radius 4px
           background-color #2D8CF0
           color #fff
-    &-mission
-      margin-top 20px
-      .ivu-page
-        margin-top 20px
-        margin-right 20px
-        text-align right
-      .ivu-table-header
-        tr
-          th
-            tableDefault()
-      .ivu-table-body
-        tr
-          td
-            tableDefault()
-  .signInTab
-    color #646464
-    display inline-block
-    padding 4px 10px
-    opacity 0.7
-    background #EBF8F2
-    border 1px solid #A7E1C4
-    border-radius 2px
-  .signOutTab
-    color #646464
-    display inline-block
-    padding 4px 10px
-    opacity 0.7
-    background #FFF5F4
-    border 1px solid #FABEB9
-    border-radius 2px
+  .taskStopOperateBtn
+    taskOperateBtn(#FFBF00)
+  .taskOpenOperateBtn
+    taskOperateBtn(#329A23)
+  .taskPauseOperateBtn
+    taskOperateBtn(#108EE9)
+  .taskDeleteOperateBtn
+    taskOperateBtn(#F04134)
 </style>
