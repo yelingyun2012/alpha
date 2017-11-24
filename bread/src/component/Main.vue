@@ -74,7 +74,7 @@
       background-color #fff
   .main
     &-con
-      margin-left 200px
+      margin-left 160px
       padding 10px
       padding-top 85px
       padding-left 20px

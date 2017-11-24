@@ -171,7 +171,7 @@ export default {
       ajaxUrl(data).then(res => {
         if (res.data.respCode === "0") {
           this.$Message.success(txt);
-          this.$router.push("/basic/pageModel1");
+          this.$router.push("/basic/pageModel");
         }else{
           this.$Message.error(res.data.respMsg);
         }
