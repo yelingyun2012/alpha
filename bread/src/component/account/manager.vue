@@ -205,6 +205,7 @@ export default {
         }
       });
     },
+
     handleSearch() {
       this.pageIndex = 1;
       this.initUserList();
@@ -214,16 +215,23 @@ export default {
       this.initUserList();
     },
     //分页跳转
-    pageGoto(){
-      let val = parseInt(document.querySelector('.ivu-page-options-elevator input[type="text"]').value);
+    pageGoto() {
+      let val = parseInt(
+        document.querySelector('.ivu-page-options-elevator input[type="text"]')
+          .value
+      );
       const page = this.$refs.goto.allPages;
-      if(val > page){
+      if (val > page) {
         this.pageIndex = page;
-        document.querySelector('.ivu-page-options-elevator input[type="text"]').value = page;
-      }else if(val <= 0){
+        document.querySelector(
+          '.ivu-page-options-elevator input[type="text"]'
+        ).value = page;
+      } else if (val <= 0) {
         this.pageIndex = 1;
-        document.querySelector('.ivu-page-options-elevator input[type="text"]').value = 1;
-      }else{
+        document.querySelector(
+          '.ivu-page-options-elevator input[type="text"]'
+        ).value = 1;
+      } else {
         this.pageIndex = val;
       }
       this.initUserList();
@@ -253,6 +261,7 @@ export default {
           token: getCookie("token")
         });
         this.accountData.splice(index, 1);
+        this.pageTotal = this.pageTotal - 1;
         this.$Message.success("删除成功");
       } catch (error) {
         this.$Message.warning(error.match(/([^\[\]]+)(?=\])/g)[0]);
@@ -266,6 +275,75 @@ export default {
 </script>
 
 <style lang="stylus">
+taskWrapper(top,right,bottom,left)
+  padding top right bottom left
+  background-color #fff
+.public
+  &-name
+    margin-bottom 20px
+    taskWrapper 30px 20px 30px 20px
+    .ivu-input
+      height 35px
+    .explain
+      color #323232
+      font-size 14px
+    .typeIn
+      margin-right 30px
+      margin-left 4px
+    .ivu-btn
+      padding 6px 23px
+      &:last-child
+        margin-left 10px
+        border-color #108EE9
+        color #108EE9
+        opacity .9
+        &:hover
+          border-color #57a3f3
+          color #57a3f3
+  &-minute // 任务详细
+    taskWrapper 20px 20px 20px 20px
+  &-site
+    margin-bottom 20px
+    padding-bottom 10px
+    border-bottom 1px dashed #B7B7B7
+    span
+      display inline-block
+      padding 6px 15px
+      color #589BEE
+      font-size 14px
+      cursor pointer
+      &.task-site-active
+        border-radius 4px
+        background-color #2D8CF0
+        color #fff
+      i
+        font-style inherit
+  &-mission, .ivu-page
+    margin-top 20px
+    margin-right 20px
+    text-align right
+.signInTab
+  display inline-block
+  padding 4px 10px
+  border 1px solid #A7E1C4
+  border-radius 2px
+  background #EBF8F2
+  color #646464
+  opacity .7
+.signOutTab
+  display inline-block
+  padding 4px 10px
+  border 1px solid #FABEB9
+  border-radius 2px
+  background #FFF5F4
+  color #646464
+  opacity .7
+.vertical-center-modal
+  display flex
+  justify-content center
+  align-items center
+  .ivu-modal
+    top 0
 .manageDelete
   padding 7px 20px
   border-radius 4px

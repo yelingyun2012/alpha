@@ -68,26 +68,25 @@ export default {
 </script>
 
 <style lang="stylus">
-@import '../assets/css/common';
-.sidebar
-  &-con
-    position fixed
-    top 85px
-    bottom 0
-    height 100%
-    background-color #fff
-.main
-  &-con
-    margin-left 200px
-    padding 10px
-    padding-top 85px
-    padding-left 20px
-.ivu-input, .ivu-select-selection
-  border 1px solid #bfbfbf
-.ivu-table-border td, .ivu-table-border th
-  border-right 1px solid #bfbfbf
-.ivu-table td, .ivu-table th
-  border-bottom 1px solid #bfbfbf
-.ivu-table-wrapper
-  border-color #bfbfbf
+  .sidebar
+    &-con
+      position fixed
+      top 85px
+      bottom 0
+      height 100%
+      background-color #fff
+  .main
+    &-con
+      margin-left 160px
+      padding 10px
+      padding-top 85px
+      padding-left 20px
+  .ivu-input, .ivu-select-selection
+    border 1px solid #bfbfbf
+  .ivu-table-border td, .ivu-table-border th
+    border-right 1px solid #bfbfbf
+  .ivu-table td, .ivu-table th
+    border-bottom 1px solid #bfbfbf
+  .ivu-table-wrapper
+    border-color #bfbfbf
 </style>

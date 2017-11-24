@@ -1,5 +1,5 @@
 <template lang="pug">
-  Menu(ref="sidebarMenu", :active-name="$route.name", :open-names="openNames", theme="light", width="200px", @on-select="changeMenu", accordion)
+  Menu(ref="sidebarMenu", :active-name="$route.name", :open-names="openNames", theme="light", width="160px", @on-select="changeMenu", accordion)
     template(v-for="item in menuList")
       MenuItem(v-if="item.children.length<=1", :name="item.children[0].name", :key="item.path")
         Icon(v-if="item.icon", :type="item.icon")
