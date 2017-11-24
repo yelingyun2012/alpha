@@ -378,7 +378,6 @@ export default {
 };
 </script>
 
-<style src="../../assets/css/common.styl" lang="stylus" scoped></style>
 <style lang="stylus" scoped>
 .public
   &-name // 任务名称

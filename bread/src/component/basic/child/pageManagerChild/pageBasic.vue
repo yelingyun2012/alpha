@@ -31,9 +31,11 @@
             </FormItem>
           </Col>
           <Col span="19" v-if="basicData.urlExtractable === 1">
-            <Select v-model="basicData.urlExtractRuleType" style="width:100px">
-              <Option v-for="item in extractTypeList" :value="item.itemType" :key="item.itemType">{{item.itemName}}</Option>
-            </Select>
+            <FormItem prop="urlExtractRuleType" style="display:inline-block">
+              <Select v-model="basicData.urlExtractRuleType" style="width:100px">
+                <Option v-for="item in extractTypeList" :value="item.itemType" :key="item.itemType">{{item.itemName}}</Option>
+              </Select>
+            </FormItem>
             <FormItem prop="urlExtractRule" style="width:300px;display: inline-block;">
               <Input v-model="basicData.urlExtractRule" :maxlength="200"></Input>
             </FormItem>
@@ -172,6 +174,9 @@ export default {
           { type: "number", required: true, message: "请选择", trigger: "change" }
         ],
         contentType: [
+          { type: "number", required: true, message: "请选择", trigger: "change" }
+        ],
+        urlExtractRuleType: [
           { type: "number", required: true, message: "请选择", trigger: "change" }
         ],
         modelRegularExpression: [

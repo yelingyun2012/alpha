@@ -250,7 +250,6 @@
   }
 </script>
 <style lang="stylus">
-  @import "../../assets/css/common.styl"
   .manageDelete
     padding 7px 20px
     border-radius 4px

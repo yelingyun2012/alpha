@@ -377,4 +377,36 @@ export default {
   }
 };
 </script>
-<style src="../../../../assets/css/inForm.styl" lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+  .child
+    &-inform
+      padding 30px 20px 20px
+      background-color #ffffff
+      .seed-name
+        color #323232
+        font-size 14px
+      .typeIn
+        margin-left 4px
+      header
+        display flex
+    &-header
+      &-typeIn
+        display block
+        flex-grow 1
+        flex-shrink 1
+      &-btn, .test
+        display block
+        .ivu-btn
+          padding 6px 23px
+          font-size 14px
+          &:last-child
+            margin-left 10px
+            border-color #108EE9
+            color #108EE9
+            opacity .9
+            &:hover
+              border-color #57a3f3
+              color #57a3f3
+    &-section
+      margin-top 40px
+</style>

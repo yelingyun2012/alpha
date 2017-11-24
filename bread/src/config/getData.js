@@ -120,7 +120,7 @@ export const pageModelCheckIn = params => fetch('pagemodel/checkin', {
 /**
  * 模型测试
  */
-export const pageModelTest = params => fetch('http://192.168.10.93:8686/modelVerify/getPageModelAttribute', {
+export const pageModelTest = params => fetch('http://192.168.10.144:8686/modelVerify/getPageModelAttribute', {
   method: 'post',
   data: params
 })
